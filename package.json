@@ -1,0 +1,39 @@
+{
+  "name": "presentations",
+  "version": "1.0.0",
+  "description": "My convention presentations.",
+  "main": "index.html",
+  "private": true,
+  "scripts": {
+    "postinstall": "bower install",
+    "start": "gulp serve",
+    "prestart": "gulp package",
+    "prepublish": "gulp package",
+    "new": "gulp new"
+  },
+  "author": {
+    "name": "Michael Krotscheck",
+    "email": "krotscheck@gmail.com",
+    "url": "http://www.krotscheck.net/"
+  },
+  "license": "Apache-2.0",
+  "dependencies": {},
+  "devDependencies": {
+    "bower": "^1.4.1",
+    "cheerio": "^0.19.0",
+    "gulp": "^3.9.0",
+    "gulp-compile-handlebars": "^0.5.0",
+    "gulp-filter": "^3.0.0",
+    "gulp-git": "^1.2.4",
+    "gulp-ignore": "^1.2.1",
+    "gulp-less": "^3.0.3",
+    "gulp-prompt": "^0.1.2",
+    "gulp-rename": "^1.2.2",
+    "gulp-util": "^3.0.6",
+    "gulp-webserver": "^0.9.1",
+    "main-bower-files": "^2.9.0",
+    "rimraf": "^2.4.2",
+    "streamqueue": "^1.1.0"
+  },
+  "repository": "git@github.com:krotscheck/presentations.git"
+}

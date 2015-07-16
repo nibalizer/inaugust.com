@@ -1,0 +1,33 @@
+{
+  "name": "presentations",
+  "version": "1.0.0",
+  "homepage": "https://krotscheck.github.com/presentations",
+  "authors": [
+    "Michael Krotscheck <krotscheck@gmail.com>"
+  ],
+  "license": "Apache-2.0",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "font-awesome": "~4.3.0",
+    "font-mfizz": "~2.0.1",
+    "reveal.js": "~3.1.0",
+    "bootstrap": "~3.3.5"
+  },
+  "overrides": {
+    "font-mfizz": {
+      "main": [
+        "css/font-mfizz.css",
+        "fonts/font-mfizz.eot",
+        "fonts/font-mfizz.svg",
+        "fonts/font-mfizz.ttf",
+        "fonts/font-mfizz.woff"
+      ]
+    }
+  }
+}
