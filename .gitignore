@@ -31,3 +31,4 @@ bower_components
 .idea
 *.iml
 dist
+.publish

@@ -8,6 +8,7 @@
 
   var gulp = require('gulp');
   var git = require('gulp-git');
+  var ghPages = require('gulp-gh-pages');
   var filter = require('gulp-filter');
   var less = require('gulp-less');
   var webserver = require('gulp-webserver');
@@ -214,6 +215,19 @@
    * Package the entire site into the dist folder.
    */
   gulp.task('package', ['package:html', 'package:hbs', 'package:libs']);
+
+  /**
+   * Push the contents of the dist directory to gh-pages.
+   */
+  gulp.task('gh-pages', function () {
+    return gulp.src(dir.dist + '/**/*')
+      .pipe(ghPages());
+  });
+
+  /**
+   * Build the current release package and push it to gh-pages.
+   */
+  gulp.task('release', ['package', 'gh-pages']);
 
   /**
    * Start a local server and serve the application code. This is

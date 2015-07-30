@@ -8,8 +8,8 @@
     "postinstall": "bower install",
     "start": "gulp serve",
     "prestart": "gulp package",
-    "prepublish": "gulp package",
-    "new": "gulp new"
+    "new": "gulp new",
+    "release": "gulp release"
   },
   "author": {
     "name": "Michael Krotscheck",
@@ -24,6 +24,7 @@
     "gulp": "^3.9.0",
     "gulp-compile-handlebars": "^0.5.0",
     "gulp-filter": "^3.0.0",
+    "gulp-gh-pages": "^0.5.2",
     "gulp-git": "^1.2.4",
     "gulp-ignore": "^1.2.1",
     "gulp-less": "^3.0.3",
