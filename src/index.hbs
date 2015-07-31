@@ -39,27 +39,12 @@
           <a href='talks'>Slides for Talks I've Given</a>
         </div>
       </div>
+      <h4>Thoughts:</h4>
       <div class="row">
         <div class="col-xs-12">
-            <br/>
-            <table class="table table-striped table-hover">
-                <thead>
-                <tr>
-                    <th>Post Title</th>
-                </tr>
-                </thead>
-                <tbody>
                 {{#each posts}}
-                    <tr>
-                        <td>
-                            <a href="{{path}}" target="_blank">
-                              {{title}}
-                            </a>
-                        </td>
-                    </tr>
+                <p> <a href="{{path}}"> {{title}} </a> </p>
                 {{/each}}
-                </tbody>
-            </table>
         </div>
     </div>
 </div>
@@ -70,14 +55,16 @@
                 <img alt="Creative Commons License"
                      src="https://i.creativecommons.org/l/by/4.0/88x31.png"/>
             </a>
-            This work by <span xmlns:cc="http://creativecommons.org/ns#"
+          <a xmlns:cc="http://creativecommons.org/ns#"
+              rel="cc:attributionURL"
+              href='http://inaugust.com'>http://inaugust.com</a>
+            by <span xmlns:cc="http://creativecommons.org/ns#"
                                property="cc:attributionName">{{author.name}}</span>
             is licensed under a <a rel="license"
                                    href="http://creativecommons.org/licenses/by/4.0/">Creative
             Commons Attribution 4.0 International License</a>.
+          Source code available at <a href='http://git.inaugust.com/cgit/inaugust.com'>http://git.inaugust.com/cgit/inaugust.com</a>
         </p>
-          <br />
-          Website source code available at <a href='http://git.inaugust.com/cgit/inaugust.com'>http://git.inaugust.com/cgit/inaugust.com</a>
     </div>
 </nav>
 </body>

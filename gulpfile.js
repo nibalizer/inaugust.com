@@ -30,6 +30,7 @@
     'css': dir.src + '/css/**/*.css',
     'js': dir.src + '/js/**/*.js',
     'talks': dir.src + '/talks',
+    'talkindex': dir.src + '/talks/index.hbs',
     'posts': dir.src + '/posts',
     'images': [
       dir.src + '/**/*.png',
@@ -320,7 +321,7 @@
   gulp.task('serve', function () {
     gulp.watch(paths.html, ['package:html']);
     gulp.watch(paths.images, ['package:images']);
-    gulp.watch(paths.hbs, ['package:talks']);
+    gulp.watch(paths.talks, ['package:talks']);
     gulp.watch(paths.css, ['package:css']);
     gulp.watch(paths.js, ['package:js']);
     gulp.watch(paths.posts, ['package:posts']);
