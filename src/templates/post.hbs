@@ -1,0 +1,66 @@
+<!doctype html>
+<html class="no-js">
+<head>
+  <meta charset="utf-8">
+  <title>{{ title }}</title>
+  <link rel="stylesheet" href="/css/bootstrap.css">
+  <link rel="stylesheet" href="/css/mordred.css">
+  <meta name="author" content="{{author.name}}">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <meta name="description" content="{{ description }}">
+  <meta name="viewport" content="width=device-width">
+  <link rel="shortcut icon" href="/favicon.ico">
+</head>
+
+<body>
+  <!--[if lt IE 10]>
+    <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+  <![endif]-->
+
+  <nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid"><a href="/">
+        <span class="navbar-brand">
+          Things you may or may not care or not care about.</a></span>
+    </div>
+  </nav>
+
+  <div class="jumbotron">
+    <div class="container-fluid">
+      <h1>
+        <span xmlns:dct="http://purl.org/dc/terms/"
+         href="http://purl.org/dc/dcmitype/InteractiveResource"
+         property="dct:title"
+         rel="dct:type">
+          {{ title }}
+      </h1>
+      <p class="lead">{{ description }}</p>
+    </div>
+  </div>
+
+  <div class="container-fluid">
+    {{{ body }}}
+  </div>
+
+  <nav class="navbar navbar-default navbar-bottom">
+    <div class="container-fluid">
+      <p class="navbar-text">
+      <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">
+        <img alt="Creative Commons License"
+             src="https://i.creativecommons.org/l/by/4.0/88x31.png"/>
+      </a>
+      <a xmlns:cc="http://creativecommons.org/ns#"
+             rel="cc:attributionURL"
+             href='http://inaugust.com'>http://inaugust.com</a>
+      by <span xmlns:cc="http://creativecommons.org/ns#"
+             property="cc:attributionName">{{author.name}}</span>
+      is licensed under a <a rel="license"
+                             href="http://creativecommons.org/licenses/by/4.0/">Creative
+                             Commons Attribution 4.0 International License</a>.
+                           Source code available at <a href='http://git.inaugust.com/cgit/inaugust.com'>http://git.inaugust.com/cgit/inaugust.com</a>
+      </p>
+    </div>
+  </nav>
+
+</body>
+</html>
