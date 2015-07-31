@@ -10,7 +10,13 @@ Building your own presentations
 
 If you would like to use this repository as a base from which to build your 
 own presentation website, you can clone the ``starter`` branch and work from 
-there. The following commands will get you started:
+there. First, you will need node and npm.
+
+	// On ubuntu:
+	apt-get install nodejs nodejs-legacy npm
+
+
+The following commands will get you started:
 
     // This will install miscellaneous runtime dependencies.
     npm install
