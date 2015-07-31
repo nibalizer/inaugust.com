@@ -30,6 +30,7 @@
     'css': dir.src + '/css/**/*.css',
     'js': dir.src + '/js/**/*.js',
     'talks': dir.src + '/talks',
+    'posts': dir.src + '/posts',
     'images': [
       dir.src + '/**/*.png',
       dir.src + '/**/*.gif',
@@ -71,7 +72,6 @@
         var $ = cheerio.load(fs.readFileSync(file));
         presentations.push({
           'title': $("head title").text(),
-          'author': $('head meta[name="author"]').attr('content'),
           'mtime': stat.mtime,
           'path': files[i] + '/index.html'
         });
@@ -83,6 +83,34 @@
       return a.mtime >= b.mtime ? 1 : -1;
     });
     return presentations;
+  }
+
+  /**
+   * This method parses through discovered posts, reads their
+   * html metadata, and returns an array of that metadata.
+   */
+  function buildPostManifest () {
+    var posts = [];
+    var files = fs.readdirSync(paths.posts);
+
+    for (var i = 0; i < files.length; i++) {
+      var file = paths.posts + '/' + files[i];
+      try {
+        var stat = fs.statSync(file);
+        var $ = cheerio.load(fs.readFileSync(file));
+        posts.push({
+          'title': $("head title").text(),
+          'mtime': stat.mtime,
+          'path': 'posts/' + files[i]
+        });
+      } catch (e) {
+        // Do nothing
+      }
+    }
+    posts.sort(function (a, b) {
+      return a.mtime >= b.mtime ? 1 : -1;
+    });
+    return posts;
   }
 
   /**
@@ -180,6 +208,25 @@
   });
 
   /**
+   * Package the handlebars files.
+   */
+  gulp.task('package:posts', function () {
+
+    var templateData = {
+      'posts': buildPostManifest(),
+      'author': packageJson.author
+    };
+
+    // Automatically build the site list.
+    return gulp.src(dir.src + '/index.hbs', {'base': dir.src})
+      .pipe(handlebars(templateData, handlebarsConfig))
+      .pipe(rename(function (path) {
+        path.extname = ".html";
+      }))
+      .pipe(gulp.dest(dir.dist));
+  });
+
+  /**
    * Copy the HTML files into the dist folder.
    */
   gulp.task('package:html', function () {
@@ -247,7 +294,8 @@
   /**
    * Package the entire site into the dist folder.
    */
-  gulp.task('package', ['package:html', 'package:talks', 'package:libs',
+  gulp.task('package', ['package:html', 'package:talks', 'package:posts',
+    'package:libs',
     'package:images', 'package:css', 'package:js']);
 
   gulp.task('rsync', function () {
@@ -275,6 +323,8 @@
     gulp.watch(paths.hbs, ['package:talks']);
     gulp.watch(paths.css, ['package:css']);
     gulp.watch(paths.js, ['package:js']);
+    gulp.watch(paths.posts, ['package:posts']);
+    gulp.watch(paths.index, ['package:posts']);
 
     return gulp.src(dir.dist)
       .pipe(webserver({

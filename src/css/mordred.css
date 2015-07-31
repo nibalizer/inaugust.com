@@ -63,6 +63,17 @@ body {
     margin-top: 28px;
   }
 
+@media print {
+
+.footer {
+   display: none;
+}
+.breadcrumbs {
+   display: none;
+}
+
+}
+
 /* Responsive: Portrait tablets and up */
 @media screen and (min-width: 768px) {
   .container {
@@ -81,4 +92,48 @@ body {
   .header {
     margin-bottom: 10px;
   }
+}
+
+h3.resumesection {
+        background-color: #999999;
+        font-family: Geneva, Arial, Helvetica, sans-serif;
+        color: #FFFFFF;
+        font-size: 12px;
+        letter-spacing: 12px;
+        text-align: center;
+        margin-bottom: 6px;
+
+}
+.job ul li {
+  line-height: 12pt;
+ 
+  font-size: 10pt;
+}
+  #porthead {
+   padding-left: 8px;
+   padding-top: 6px;
+
+}
+.titletitle {
+  padding-left: 6px;
+}
+.techskills {
+  padding-left: 6px;
+  line-height: 10pt;
+   font-size: 12pt;
+}
+.job {
+  font-size:12pt;
+  padding-left: 6px;
+}
+.jobskillslist {
+  font-size: 6pt;
+  font-style: italic;
+  margin-top: -12px; padding-top: 0px;
+  margin-bottom: 10px;
+  margin-left: 10px;
+}
+
+.lead ul li {
+  display: inline;
 }

@@ -1,0 +1,249 @@
+<!doctype html>
+<html class="no-js">
+  <head>
+    <meta charset="utf-8">
+    <title>The Big Tent</title>
+    <link rel="stylesheet"
+          href="/css/bootstrap.css">
+    <meta name="author" content="{{author.name}}">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+    <meta name="description" content="OpenStack as Layers but also tents but also cats">
+    <meta name="viewport" content="width=device-width">
+    <link rel="shortcut icon" href="/favicon.ico">
+
+  </head>
+  <body>
+    <!--[if lt IE 10]>
+      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+        <span class="navbar-brand"><a href="/">
+                Things you may or may not care or not care about.</a></span>
+    </div>
+</nav>
+
+    <!-- Main jumbotron for a primary marketing message or call to action -->
+    <div class="jumbotron">
+      <div class="container">
+          <h1>
+              <span xmlns:dct="http://purl.org/dc/terms/"
+                  href="http://purl.org/dc/dcmitype/InteractiveResource"
+                  property="dct:title"
+                  rel="dct:type">
+                  The Big Tent
+          </h1>
+        <p class="lead">OpenStack as Layers but also tents but also cats</p>
+      </div>
+  </div>
+
+  <div class="container">
+      <p>I'd like to build on the ideas in <a href="https://dague.net/2014/08/26/openstack-as-layers/">Sean's Layers</a>. I've been noodling on it for a while and have had a several interesting conversations with people. Before I tell you how I've taxonomied things in my head, I want to spend a second on why.</p>
+      <h3 id="why-do-we-care">Why do we care?</h3>
+      <p>Our choices in organizing our work effect a few different unrelated things:</p>
+      <ul>
+          <li>Who we are and what we all work on</li>
+          <li>What we release that we kinda expect people to ship</li>
+          <li>What an end user can count on</li>
+          <li>What an end user might find that would make life better for them</li>
+      </ul>
+      <p>Amazingly, we've been trying to define all of those with one word. I'm pretty sure that's bananas.</p>
+      <h3 id="who-cares">Who cares?</h3>
+      <p>As much as there are different reasons we care about this, there are different people who care about different aspects of the answer to this.</p>
+      <ul>
+          <li>OpenStack Developers - us, the people who actually hack on OpenStack itself</li>
+          <li>Distributors - people who redestribute packaged versions of OpenStack software</li>
+          <li>Deployers - people who deploy and run OpenStack Clouds</li>
+          <li>End users - people who use deployed OpenStack Clouds</li>
+      </ul>
+      <p>Even though I put &quot;end users&quot; last, I actually care about them a lot - but I'm going to speak to developers' concerns first, since that's who we all are.</p>
+      <h4 id="who-we-are-and-what-we-all-work-on">Who we are and what we all work on</h4>
+      <p>(This section is very OpenStack-developer centric. I cannot imagine that an end user or really even a deployer or distributor cares at all.)</p>
+      <p>Amongst other things, the OpenStack project is a community of people working on the common goal of &quot;Open Source Cloud&quot;. If you're one of us, you should be able to vote in our elections and you should absolutely be granted entry for free into our design summits or any other meetings we have. I say &quot;if you're one of us&quot; because the interaction, collaboration and participation aspects are important to us. It's a sliding scale, so you can definitely be more in or less in. Some examples of community that we care about: being on stackforge rather than github; having a PTL who you elect rather than a BDFL; having meetings on IRC. &quot;Do any of the people who hack on the project also hack on any other existing OpenStack projects, or are the people completely unconnected?&quot; is a potential social touchstone as well.</p>
+      <p>All in all, meeting the requirements for &quot;being one of us&quot; is not particularly hard, nor should it be. We're not aiming to keep people out, we're a big friendly tent, but there also exist in the world people of ill repute who are trying to sell snake oil and fool's gold. While we want to grow our culture, we also need some sort of way to define what that is and keep detractors out.</p>
+      <p>This is OpenStack as a big tent - we want you here - we just want to check at the door that you're being honest, as it were.</p>
+      <h4 id="what-we-release-that-we-kinda-expect-people-to-ship">What we release that we kinda expect people to ship</h4>
+      <p>(Distributors obviously care about this, as do deployers. End users, again, could not care less.)</p>
+      <p>Just because you're one of us doesn't mean that everything you do is something that might be included in a collection of software called &quot;OpenStack&quot;. I don't think it will be controversial to say that, CLEARLY, any work hacking on zuul is work that is part of our community, and also that CLEARLY zuul is not an element of the collection of software called &quot;OpenStack.&quot; I pick an obvious and non-controversial extreme example to show that I'm not splitting hairs.</p>
+      <p>Now, &quot;what is OpenStack&quot; is a much large question as trademarks and defcore get involved, and is not at all what I'm attempting to even think about - but from our point of view as the people who release things, we have a clear stake in putting our name on the software we release that we think has some quality of OpenStack-ness.</p>
+      <p>Inclusion in this can actually have both positive and negative responses from folks that aren't us. &quot;Oh cool! OpenStack has DNS now!&quot; and &quot;Oh crap! I had a thing that did DNS and now OpenStack has one!&quot; are both are valid emotions. Nothing I can say here will prevent or invalidate some people having each of those emotions for each new thing we add to OpenStack.</p>
+      <p>There is another aspect, which Tim Bell brings up frequently: quality. Our current systems tells you only that a project has been integrated with our development and release cycle. It does NOT tell you in any way if that project is any good.</p>
+      <h4 id="what-an-end-user-can-count-on">What an end user can count on</h4>
+      <p>(This is the first time we find a subject an end user cares about.)</p>
+      <p>There is a set of things which OpenStack just has to have, or else calling that thing &quot;OpenStack&quot; is just being silly. Branding and trademark and product discussions aside, there is, deep down, some set of things without which the cloud in question is absurdly useless.</p>
+      <p>This is also important because it shapes how much logic and discovery an end user has to have in order to accomplish their task.</p>
+      <h4 id="what-an-end-user-might-find-that-would-make-life-better-for-them">What an end user might find that would make life better for them</h4>
+      <p>As an end user, I can tell you that, crazy as it might sound, I have the ability to look at things and make some decisions. I know, as a user, if there is a feature in my cloud, and I can choose to use it or not. If I'm an advanced user like Infra spanning multiple clouds, I might care immensely if a feature is ubiquitous. But for other users, using an advanced thing might be awesome and ubiquity is not interesting.</p>
+      <h3 id="base-level-touchstone">Base Level Touchstone</h3>
+      <p>&quot;Can an end user actually get a working VM without function X?&quot;</p>
+      <p>Let's go back to the layers. I think the idea is great, and I'm going to quibble mildly with one or two of the assumptions and then propose a slightly different model.</p>
+      <p>I think Sean is right, for better or for worse, that starting with basic compute as a building block is spot on. I disagree though about stateless compute - but I think that's because I'm looking at this question from an end user POV, not a deployer POV. I'm sure that many deployers start very small with a stateless compute cloud. But as an end user, &quot;basic cloud == minimal stateless compute&quot; falls down for 2 reasons:</p>
+      <ul>
+          <li>To run a thing on a stateless compute cloud, you actually MUST have the more advanced services. This is kinda the whole point behind Cloud Foundry, right? Stateless compute, PLUS, some way of putting your databases and object storage in the cloud so that it's not on the compute instance yourself.</li>
+          <li>The first step in the &quot;Cloud Journey&quot; is not &quot;Cloud Native&quot; - it's running traditional applications in the cloud. Infra started out this way, even though now we've got some crazy completely elastic driven-by-load-demand cloud applications - for the first year of OpenStack, everything ran on one single Jenkins server on one cloud instance and kept its data in local storage.</li>
+      </ul>
+      <p>I'd like to keep Layer #1 as &quot;Base Compute Infrastructure&quot; - but I'd like to suggest that we define it with two touchstones in mind:</p>
+      <ul>
+          <li>What does a basic end user need to get a compute resource that works and seems like a computer? (end user facet)</li>
+          <li>What does Nova need to count on existing so that it can provide that.</li>
+      </ul>
+      <p>(Here is where we get to the first real concrete suggestion.)</p>
+      <p>For those reasons, I think the set is:</p>
+      <ul>
+          <li>Nova</li>
+          <li>Glance</li>
+          <li>Keystone</li>
+          <li>Cinder</li>
+          <li>Designate</li>
+          <li>and we want Neutron to be here</li>
+          <li>and all the common libraries (Oslo and otherwise) that are necessary for these</li>
+      </ul>
+      <p>For each of those things, Nova does not or will not have an internal replacement for the functionality. Nova REQUIRES that Glance exist to get images to deploy. Nova REQUIRES that Cinder exists to provide persistent disk volumes. Nova REQUIRES that Keystone exist for auth. And Nova REQUIRES that oslo.config exist to read its config file.</p>
+      <p>We gate these things together. If they don't work together, we should all go home. We also gate with tip of master vs. tip of master because we release these at the same time. Nova also REQUIRES a database and a message queue -but we don't need to gate on their master branches because we expect to consume releases of that external software. But Nova cannot consume releases of Cinder, because we also make Cinder, and we're going to release it at the same time.</p>
+      <p>These are also sevices that a user cannot reasonably provide for themselves within the cloud on a more pared down version of this list. A user can't provide their own reverse DNS because they don't own the IP space. A user can't provide their own network or storage, well, for all of the reasons.</p>
+      <p>And to build them, we rely on a set of shared libraries which grew over time from the a bunch of developers working on a bunch of projects together. We release these separately so that all our projects (not just the ones in Layer #1) can depend upon the same versions of things. This makes distributors and deployers happy, even if occasionally it makes life harder for developers.</p>
+      <h3 id="ubiquitous-wordpress-example">Ubiquitous Wordpress Example</h3>
+      <p>Every config management or orchestration example starts with a Wordpress example, so let's walk through that as a proof point of the above (assuming I don't want to rewrite wordpress to be an OpenStack-Native application).</p>
+      <p>Let's say I want to start a new blog, <a href="http://blog.inaugust.com">http://blog.inaugust.com</a>. In general terms, I need a computer to run it on, an operating system on that computer, some disk space that doesn't go away so that my beautiful blog entries don't disappear, an IP address so that you can connect to my blog, and a DNS entry so that you don't have to type in my IP address to see my blog. Finally, I need to be able to connect to my cloud and tell it I need those things.</p>
+      <p>What does that look like?:</p>
+      <pre><code>nova boot --flavor=&#39;2G&#39; \  # gets auth token and Nova url from Keystone
+          --image=&#39;Gentoo&#39; # Nova talks to Glance to get this
+cinder give-me-a-10G-volume
+nova attach-that-volume-to-my-computer # nova talks to cinder
+neutron give-me-an-ip
+nova attach-that-floating-ip-to-my-computer # nova talks to neutron
+designate call-that-ip &#39;blog.inaugust.com&#39; --also-reverse-dns-kthxbai # designate talks to neutron
+
+# Log in to host and actually install wordpress</code></pre>
+      <p>If any of those services are missing, I can't make a wordpress blog. If they are all there, I can. If you use juju or cloudfoundry or ansible to make a Wordpress blog, they are the ones responsible for doing all the steps for you. They may do them slightly fancier.</p>
+      <p>Also, please someone notice that the above is too many steps and should be:</p>
+      <pre><code>openstack boot gentoo on-a 2G-VM with-a publicIP with-a 10G-volume call-it blog.inaugust.com</code></pre>
+      <h4 id="concrete-suggestion-1">Concrete Suggestion #1</h4>
+      <p>Shrink the integrated gate and release to this and call it &quot;Layer #1&quot;</p>
+      <p>We need to test these things together because they make assumptions that the other pieces exist. Also, the set of things in Layer #1 should never change -- unless we refactor something already in Layer #1 into a new project. (You may notice that all of these projects were originally part of Nova.)</p>
+      <p>Once Designate is in, that's quite literally all of the things you need for a functioning VM.</p>
+      <p>We can call Layer #1 something else, but all the good names are overloaded and will cause us to have two years of arguments quibbling over the implications of wording choices.</p>
+      <h4 id="concrete-suggestion-2">Concrete Suggestion #2</h4>
+      <p>Make Layer #1 assume the rest of Layer #1 will always be there</p>
+      <p>Inside of these pieces of software, assumptions should be able to be made about the co-existence of the other pieces of software. Example - nova shouldn't need a config file option pointing to where glance is, it should just be able to ask the keystone service catalog.</p>
+      <h3 id="next-layers-up">Next layers up</h3>
+      <p>There are no next layers up</p>
+      <p>I think Layer #1 should be the only layer, because after that the metaphor of layers falls apart. Instead, let's talk about some groupings of stuff, as they relate to different end user categories.</p>
+      <p>There are &quot;Cloud Native&quot; applications, there are &quot;User Interface&quot; applications, and there are &quot;Operator&quot; applications. All of these fit into the tent, and some of them may have dependencies on others -- but they ALL depend on Layer #1 being there and being stable.</p>
+      <p>Also, all of this falls under the umbrella of &quot;work done on the OpenStack project.&quot;</p>
+      <p>It is entirely possible that in the future someone might describe a user story that involves some combination of Layer #1 and some of the Cloud Native applications as being something we need to have a name for. Today we have this, we know that we need it, and there are almost no people who would argue that clouds don't need to provide the functionality.</p>
+      <h3 id="features-for-cloud-native-applications">Features for Cloud-Native Applications</h3>
+      <p>OpenStack already has a bunch of services that provide features for end user applications which could be provided by services run within VMs instead. These are the services that get controversial because some people feel they cross various boundaries.</p>
+      <p>Whereas Layer #1 provides services that can be quite happily used and consumed by a traditional IT Ops person (how infra used cloud for at least the first two years), there are additional services that many people believe are <em>essential</em> in a cloud for people to write &quot;Cloud&quot; apps, but also other people <em>vehemently</em> believe are stepping over a line and do not want in a cloud. Let's look at two real world examples from Infra about the &quot;Cloud Journey&quot; and how our apps transformed from more traditional IT to more &quot;Cloud Native&quot;.</p>
+      <h4 id="tranformation-1---the-adoption-of-trove">Tranformation #1 - The Adoption of Trove</h4>
+      <p>Up until earlier this year, all of the services that Infra runs that rely on databases just ran a database locally on the compute instance they ran on. This, it turns out, worked fine - and we never had an outage of any sort due to any related cloud issues. We did take backups and do the normal things that normal Ops folks do.</p>
+      <p>Earlier this year, we migrated most of them to consume databases provided to us by a trove installation that was availabe from one of our cloud providers. The upside for us is that now we don't have to manage them, our puppet code got simpler, since it didn't have to describe install and whatnot of databases, only that the service we were puppetting needed a database location and user as parameters. In short, we offloaded the care and feeding of an essential part of our infrastructure to our cloud provider - yet we did not have to change anything in our applications themselves. For those of you who didn't know it, the OpenStack gerrit has been running on top of Trove for at least 6 months now. Congratulations.</p>
+      <h4 id="transformation-2---logs-in-swift">Transformation #2 - Logs in Swift</h4>
+      <p>You may have noticed that we store log files, and that we store A LOT of them. Those log files are stored in a normal filesystem that sits on top of a cinder volume (ok, sits on top of a BUNCH of cinder volumes that we stuck into LVM) We've actually reached the limit of the number of volumes one can attach to a nova instance in that cloud, and each of the volumes is as large as they let us make a single volume - so we're maxed out. We could install ceph or gluster or something - (AFS, if you know us well) - but instead we're moving to a model where instead of copying them from the build hosts to a central log server, which is a very traditional IT way of dealing with it - we're working on copying them to swift instead. This is much more &quot;Cloud Native&quot; - right? The build hosts are already ephemeral, but they produce some &quot;important&quot; data, and we should put that data into object storage. This does, it turns out, require changes to our application code ... and that's fine. It's still a worthwhile thing, and it's a worthwhile feature for our cloud to offer us.</p>
+      <p>Both of these features fall into the realm of &quot;our cloud has it, so we decided to use it&quot; - and in neither case would we have been screwed by our cloud not having it. They're in the &quot;reasonable people can reasonably disagree&quot; place.</p>
+      <h4 id="concrete-suggestion-3">Concrete Suggestion #3</h4>
+      <p>All projects should gate on their own functional test suite on top of devstack</p>
+      <p>Swift has a functional test suite that runs against a devstack install and only tests and gates swift. We should adopt this model for every Cloud-Native project. Since our projects talk to each other over REST APIs, if one breaks another in an assymetric gate, it means we're breaking something fairly fundamental that should have had a tempest test to test the API contract. If a nova change breaks horizon, there is absolutely no reason that it should take horizon to find that, since horizon is using the same REST API that a user would be. If and when it happens, someone needs to add a tempest test to cover the contract. This may hurt for a while, but ultimately should help us unwind the gate complexity and provide a more solid experience for our end users.</p>
+      <p>We gain two things by this.</p>
+      <p>First of all, although it may suck for a while, doing this should get us a bunch of interface and contract tests, which should make the fundamental things more solid, which means we can build more strongly on top of them. If Layer #1 doesn't work solidly, then there is not much of a benefit that the Cloud-Native projects gain in terms of desire for their existence. (If Nova doesn't work, why would anyone care about Trove?)</p>
+      <p>Secondly, it let's us open up the tent to more things being in &quot;OpenStack Cloud-Native project land&quot; without it needing to be a land rush. Because we're not putting Cloud-Native into the Layer #1 gate, it doesn't increase the multiplicative burden on the gate, or on the developers of those projects trying to debug failures in not-those-projects.</p>
+      <p>Reasonable people disagree about what Cloud Native applications belong in OpenStack, so if we ship a bunch of things that &quot;we&quot; clearly made, but that are a bit up for debate in terms of whether or not people want them, then we can let the market decide which of them are things that people can't live without and which are things that are only kinda cool.</p>
+      <h4 id="concrete-suggestion-4">Concrete Suggestion #4</h4>
+      <p>Add opportunistic two-project gates</p>
+      <p>Glance has a swift backend. If swift is a Cloud-Native project, then it's not going to be in the Layer #1 integrated gate. But it would be good for glance to test the interface contract with swift in a gate. There should be a glance functional test that runs on a devstack that's configured with the glance swfit backend that should gate glance and not swift. Same thing as the others, if there is a problem, it means there is a test that swift does not have of itself, and that should get fixed.</p>
+      <h4 id="operations">Operations</h4>
+      <p>It should be noted that Ironic and Ceilometer are both special cases because they are consuming 'internal' APIs. But actually, they are a different category of thing that we've started to see emerge, projects which aren't clearly user-facing and aren't cloud-native either, but are solving real problems which are typical problems for anyone running a cloud which ALSO need some degree of integration from applications in Layer #1 to be useful to anyone.</p>
+      <p>Just like Glance can be configured with a Swift backend, and because Swift is also an OpenStack project, and we should therefor have a gate check that Glance actually works when configured in that way, we should also have a gate check that Nova works when configured with an Ironic driver. The difference is that that is actually testing an internal API of Nova's - not a REST API.</p>
+      <p>I think we should think long and hard on this subject, because it's a good challenge, but I'd like to specifically not cover it here.</p>
+      <h3 id="what-we-release">What we release</h3>
+      <p>At this point, we can pull in just about anything we want to that we think is a good idea into the OpenStack bucket. The barrier to entry is &quot;Are you working on OpenStack / Are you one of us?&quot;</p>
+      <p>We still haven't addressed Quality, though.</p>
+      <p>Right now, because the integrated projects list is awkward, there is a rush to get in so that your project is allowed to add references to itself into the other projects in the integrated release. It also means we're not really giving a mechanism to try new ideas, other than fully accepting them into a tightly knit club. It means that, for process reasons, we need to graduate things before the market has had a chance to test them out. Finally, it means that people want their project to &quot;be in&quot; as a thing of value in and of itself, rather than what it really is, which is giving up autonomy and submitting various project decisions to the collective will.</p>
+      <h4 id="concrete-suggestion-5">Concrete Suggestion #5</h4>
+      <p>Tag projects as &quot;Production Ready&quot; when they're good enough to recommend using for the Cern LHC</p>
+      <p>Rather than tagging things negatively like &quot;beta&quot; or &quot;experimental&quot;, positively tag things as &quot;Production Ready&quot;. If a project does not have a &quot;Production Ready&quot; tag, we're still releasing it, and we're still standing behind it process-wise - but it may or may not have seen a lot of real world action, so you may want to be more careful before deploying it for mission critical things. I think we should be stingy in granting this tag - today, I'd say we should start with Swift and Layer #1 and that's it. That doesn't mean I think the other projects are bad - just that they need some bake-in.</p>
+      <p>What does that look like? We release OpenStack. We <em>also</em> tag some things as Production Ready. That is an arbitrary determination made by an elected body. There are no exact criteria except for convincing the TC that you're project is good, and making each member of the TC be willing to say to other people that they think it's solid enough to tell Tim Bell it's ready to deploy. If that's not a strong bar to meet, I don't know what is. Seriously, we should just make our motto: &quot;If it's good enough for the Cern LHC, it's good enough for your private cloud.&quot;</p>
+      <p>It should be noted that while there are no criteria to pass, if a project doesn't have tests or docs in the official places that were contributed by the project's doc writers, project's qa and project's infra folks, it clearly isn't production ready or cared about by enough people yet.</p>
+      <p>&quot;You're an OpenStack thing&quot; is a Process determination</p>
+      <p>&quot;You're a Production Ready OpenStack thing&quot; is a Quality determination.</p>
+      <h3 id="global-requirements">Global Requirements</h3>
+      <p>RedHat, Ubuntu and SuSE are all active and valued members of our community. They show up. They participate. They're certainly one of us. They have releases. Those releases, because of the way their repos work, require that it is possible to install all of the software from a single set of dependent library versions. It's not possible for Ubuntu Utopic to have two versions of python-requests. Even though a large production deployment might have two completely different teams of people deploying nova and swift onto completely different fleets of hardware possibly even on different base OS's, it is essential that everything we release be able to work inside of a pool of a single version of each thing.</p>
+      <h4 id="concrete-suggestion-6">Concrete Suggestion #6</h4>
+      <p>EVERYTHING participates in a single install-only devstack gate</p>
+      <p>In addition to the Layer #1 gate, each project is going to be gating on its own devstack-based per-project functional tests. But, we have to maintain that our single list of requirements results in something, so there should be a devstack install that is literally everything we've decided to release. Like, stack.sh --everything. We will not run tempest against this like we do in the integrated gate ... we'll only run stack.sh and then exit. What we'll be testing is that nothing in our tent will cause any of the services to not be able to start. It has to be a shared gate across all of the projects, because we need to make sure that no patches to anything cause anything else to not be able to install (like through some unforseen python library transitive dependency ordering issue - don't laugh, it's happened before). The likelihood that this gate ever breaks other people should be very low.</p>
+      <p>Now, does each service work? That's a thing to be tested in the individual project's functional tests in their own gates, which should each all probably have a test config that runs their functional tests against a devstack --everything cloud too.</p>
+      <h3 id="user-interface">User Interface</h3>
+      <p>No matter which things are in or out of a cloud, there are a set of end-user tools we produce to make things better for the user:</p>
+      <ul>
+          <li>Horizon</li>
+          <li>Heat</li>
+          <li>python-openstackclient</li>
+          <li>python-openstacksdk</li>
+      </ul>
+      <p>At the end of the day, I think these should exist to serve the end user quite divorced from what choices the deployer of a cloud may choose to make. I think they should know how to optionally interact with almost anything that we've chosen to release - because it is more helpful to the end user if they are expansive in what they understand. Remember, an end user does not care about what we decided to release or not release in icehouse.</p>
+      <h4 id="concrete-suggestion-7">Concrete Suggestion #7</h4>
+      <p>User interface tools should be aggressive in talking to anything we release.</p>
+      <p>The instant we confer any amount of legitimacy on a project, its patches should be welcome in the user inteface tools, because doing so gives the end users more options. Horizon, for instance, should already have Designate panels in it, and Manilla should be landing patches in python-openstackclient. If the MagentoDB folks want to wite a heat provider, we should figure out how to make that work.</p>
+      <h4 id="concrete-suggestion-8">Concrete Suggestion #8</h4>
+      <p>All user tools which are based on Layer #1 APIs should be able to be used standalone.</p>
+      <p>Deployers make choices - end users do not always care, and since Horizon and Heat both consume APIs, there is no reason why an end user should not be able to chose to run them if they want. For instance, I should be able to spin up a Horizon and use it to interact with Rackspace, even though Rackspace does not chose to deploy Horizon. For another example, HP has an internal public cloud customer that has been using Heat in production at high volume for over a year. HP public cloud does not run Heat - the internal customer runs a Heat and points it at the cloud end point - and they feel as if their experience is great.</p>
+      <p>This goes past just Horizon and Heat though. If a Layer #1 cloud is a basic thing that I can and should be able to count on, then I, as a user, may want to install a standalone trove or sahara that can use my cloud account to do its thing.</p>
+      <h4 id="concrete-suggestion-9">Concrete Suggestion #9</h4>
+      <p>All user interface tools should be multi-cloud aware</p>
+      <p>Even if HP and Rackspace both deployed heat, Infra still wouldn't be able to use it for nodepool, even though the usecase seems like it would be met because our single pool spans clouds. If the tools can be used standalone, they also need to be able to configured to point at more than one cloud. For instance, I'd love to be able to run a horizon myself and point it at both of my HP cloud accounts AND my Rackspace accounts and have it show me all of my stuff. (I'd really love it if the HP Cloud Horizon would let me register my Rackspace endpoint and credentials, but let's not get too greedy, that's trying to force a product choice on a vendor - I'm talking about end user choice here.)</p>
+      <h4 id="concrete-suggestion-10">Concrete Suggestion #10</h4>
+      <p>End user tools should adopt a rolling release model</p>
+      <p>As an end user, I do not care about icehouse vs. havana. I want the current state of end user tools to work with the current state and previous states of existing server tools. NOW - heat and horizon can also be installed IN the cloud - so they should adopt the swift rolling release plus coordinated release model. That way we can release a horizon known to work with the version of nova when we release them together, but also a person running a horizon or heat standalone doesn't necessarily have to know - or to wait 6 months for updates.</p>
+      <h3 id="the-design-summit">The Design Summit</h3>
+      <p>As may be clear at this point, the importance that we do things together and in the context of the project cannot be overstated. One of the most important things about our developer community are the design summits. We've already long ago outgrown the point where all of the people who need to be in any given room can be in the room and we're having to learn new lessons about what needs to be summit material and what needs to not be summit material. On the one hand, rethinking how we do things away from Incubated and Integrated makes the task of allocating room space and timeslots much harder. On the other hand, if the summit is mostly about cross project and project interaction issues, and less about purely internal project discussions, and if we're seeing growing benefit in using portions of the time for things like the Operator's summit and individual project meetups, then we should move forward with that worldview.</p>
+      <h4 id="concrete-suggestion-11">Concrete Suggestion #11</h4>
+      <p>Design summits should be strongly focused on cross-project and user/operator interaction.</p>
+      <p>If we focus the bulk of the pre-scheduled summit time on hard cross-project issues as well as scheduled time to sit with Operators and End Users, then we could actually defer a good portion of time and space scheduling to be more real time in response to Operator/End User feedback. That way we can make more efficient use of the time we are together, and if there is important information or requests from either of our classes of users, we can start to deal with it right then, rather than waiting for six months until our process allows us to schedule it.</p>
+      <h3 id="conclusions">Conclusions</h3>
+      <p>What does this all mean?</p>
+      <p>It means we get four new words/groupings:</p>
+      <ul>
+          <li>Layer #1</li>
+          <li>Cloud-Native</li>
+          <li>User Interface</li>
+          <li>Operator</li>
+      </ul>
+      <p>And a new tag actually related to quality:</p>
+      <ul>
+          <li>Production Ready</li>
+      </ul>
+      <p>We admit that there is a base-level of essential functionality that just HAS to work. This is Layer #1.</p>
+      <p>We have a nod somewhere that we care about users at all.</p>
+      <p>We can be more inclusive without also being more exclusive towards other thoughts. The Cloud-Native bucket will rightfully get quite expansive over time.</p>
+      <p>We no longer have the quality/readiness chicken and egg problem.</p>
+      <p>We can actually let the market decided more on the relative importance of things without us needing to predecide that.</p>
+      <p>We can take a much stronger position on some of the topics, such as &quot;Compute instances need IP Addresses&quot; without having to put ourselves in the position to take such a strong stance on everything else.</p>
+      <p>Who's with me?</p>
+
+      </div>
+
+<nav class="navbar navbar-default navbar-bottom">
+    <div class="container-fluid">
+        <p class="navbar-text">
+            <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">
+                <img alt="Creative Commons License"
+                     src="https://i.creativecommons.org/l/by/4.0/88x31.png"/>
+            </a>
+          <a xmlns:cc="http://creativecommons.org/ns#"
+              rel="cc:attributionURL"
+              href='http://inaugust.com'>http://inaugust.com</a> by
+            by <span xmlns:cc="http://creativecommons.org/ns#"
+                               property="cc:attributionName">Monty Taylor</span>
+            is licensed under a <a rel="license"
+                                   href="http://creativecommons.org/licenses/by/4.0/">Creative
+            Commons Attribution 4.0 International License</a>.
+          <br />
+          Website source code available at <a href='http://git.inaugust.com/cgit/inaugust.com'>http://git.inaugust.com/cgit/inaugust.com</a>
+        </p>
+      </div>
+</nav>
+
+</body>
+</html>
