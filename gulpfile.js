@@ -28,6 +28,8 @@
     'html': dir.src + '/**/*.html',
     'hbs': dir.src + '/index.hbs',
     'index': dir.src + '/index.hbs',
+    'css': dir.src + '/css/**/*.css',
+    'js': dir.src + '/js/**/*.js',
     'images': [
       dir.src + '/**/*.png',
       dir.src + '/**/*.gif',
@@ -103,10 +105,6 @@
       .pipe(filter('*.css'))
       .pipe(gulp.dest(dir.dist + '/css'));
 
-    var resolveLocalCSS = gulp.src(dir.src + '/css/**/*')
-      .pipe(filter('*.css'))
-      .pipe(gulp.dest(dir.dist + '/css'));
-
     var resolveLESS = gulp.src(bowerFiles)
       .pipe(filter('*.less'))
       .pipe(less())
@@ -117,10 +115,6 @@
       .pipe(gulp.dest(dir.dist + '/fonts'));
 
     var resolveLibs = gulp.src(bowerFiles)
-      .pipe(filter('*.js'))
-      .pipe(gulp.dest(dir.dist + '/js'));
-
-    var resolveLocalLibs = gulp.src(dir.src + '/js/**/*')
       .pipe(filter('*.js'))
       .pipe(gulp.dest(dir.dist + '/js'));
 
@@ -137,9 +131,9 @@
       ]))
       .pipe(gulp.dest(dir.dist));
 
-    return streamqueue({'objectMode': true}, resolveCSS, resolveLocalCSS,
+    return streamqueue({'objectMode': true}, resolveCSS,
       resolveLESS, resolveReveal,
-      resolveLibs, resolveLocalLibs, resolveFonts);
+      resolveLibs, resolveFonts);
   });
 
   /**
@@ -147,6 +141,22 @@
    */
   gulp.task('package:images', function () {
     return gulp.src(paths.images, {'base': dir.src})
+      .pipe(gulp.dest(dir.dist));
+  });
+
+  /**
+   * Package all css.
+   */
+  gulp.task('package:css', function () {
+    return gulp.src(paths.css, {'base': dir.src})
+      .pipe(gulp.dest(dir.dist));
+  });
+
+  /**
+   * Package all js.
+   */
+  gulp.task('package:js', function () {
+    return gulp.src(paths.js, {'base': dir.src})
       .pipe(gulp.dest(dir.dist));
   });
 
@@ -238,7 +248,7 @@
    * Package the entire site into the dist folder.
    */
   gulp.task('package', ['package:html', 'package:hbs', 'package:libs',
-    'package:images']);
+    'package:images', 'package:css', 'package:js']);
 
   gulp.task('rsync', function () {
     gulp.src('dest/**')
@@ -263,6 +273,8 @@
     gulp.watch(paths.html, ['package:html']);
     gulp.watch(paths.images, ['package:images']);
     gulp.watch(paths.hbs, ['package:hbs']);
+    gulp.watch(paths.css, ['package:css']);
+    gulp.watch(paths.js, ['package:js']);
 
     return gulp.src(dir.dist)
       .pipe(webserver({
