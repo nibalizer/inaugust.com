@@ -26,10 +26,10 @@
   // List of file paths.
   var paths = {
     'html': dir.src + '/**/*.html',
-    'hbs': dir.src + '/index.hbs',
     'index': dir.src + '/index.hbs',
     'css': dir.src + '/css/**/*.css',
     'js': dir.src + '/js/**/*.js',
+    'talks': dir.src + '/talks',
     'images': [
       dir.src + '/**/*.png',
       dir.src + '/**/*.gif',
@@ -62,10 +62,10 @@
    */
   function buildPresentationManifest () {
     var presentations = [];
-    var files = fs.readdirSync(dir.src);
+    var files = fs.readdirSync(paths.talks);
 
     for (var i = 0; i < files.length; i++) {
-      var file = dir.src + '/' + files[i] + '/index.html';
+      var file = paths.talks + '/' + files[i] + '/index.html';
       try {
         var stat = fs.statSync(file);
         var $ = cheerio.load(fs.readFileSync(file));
@@ -163,7 +163,7 @@
   /**
    * Package the handlebars files.
    */
-  gulp.task('package:hbs', function () {
+  gulp.task('package:talks', function () {
 
     var templateData = {
       'presentations': buildPresentationManifest(),
@@ -171,7 +171,7 @@
     };
 
     // Automatically build the site list.
-    return gulp.src(paths.hbs, {'base': dir.src})
+    return gulp.src(paths.talks + '/index.hbs', {'base': dir.src})
       .pipe(handlebars(templateData, handlebarsConfig))
       .pipe(rename(function (path) {
         path.extname = ".html";
@@ -247,7 +247,7 @@
   /**
    * Package the entire site into the dist folder.
    */
-  gulp.task('package', ['package:html', 'package:hbs', 'package:libs',
+  gulp.task('package', ['package:html', 'package:talks', 'package:libs',
     'package:images', 'package:css', 'package:js']);
 
   gulp.task('rsync', function () {
@@ -272,7 +272,7 @@
   gulp.task('serve', function () {
     gulp.watch(paths.html, ['package:html']);
     gulp.watch(paths.images, ['package:images']);
-    gulp.watch(paths.hbs, ['package:hbs']);
+    gulp.watch(paths.hbs, ['package:talks']);
     gulp.watch(paths.css, ['package:css']);
     gulp.watch(paths.js, ['package:js']);
 

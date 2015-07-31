@@ -17,7 +17,8 @@
     "font-awesome": "~4.3.0",
     "font-mfizz": "~2.0.1",
     "reveal.js": "~3.1.0",
-    "bootstrap": "~3.3.5"
+    "bootstrap": "~3.3.5",
+    "modernizr": "~2.8.2"
   },
   "overrides": {
     "font-mfizz": {
