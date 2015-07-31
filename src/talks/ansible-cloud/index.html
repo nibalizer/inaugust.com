@@ -1,0 +1,792 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+
+    <title>NoOps with Ansible and Puppet</title>
+
+    <meta name="author" content="Monty Taylor" />
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" href="/css/reveal.css">
+    <link rel="stylesheet" href="/css/theme/openstack.css" id="theme">
+
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="/lib/css/zenburn.css">
+
+    <!-- If the query includes 'print-pdf', include the PDF print sheet -->
+    <script>
+      var link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href =
+        window.location.search.match(/print-pdf/gi) ? '/css/print/pdf.css' :
+          '/css/print/paper.css';
+      document.getElementsByTagName('head')[0].appendChild(link);
+    </script>
+  </head>
+  <body>
+  <body>
+
+  <div class="background">
+      <img alt="" id="head-icon" width="218" height="67"
+           src="/images/openstack-cloud-software-horizontal-small.png" /></div>
+
+
+  <div class="reveal">
+    <div class="slides">
+
+      <section data-state="cover">
+        <img src="/images/openstack-cloud-software-vertical-large.png"
+             alt="OpenStack" id="cover"/>
+
+          <h1><span xmlns:dct="http://purl.org/dc/terms/"
+                    href="http://purl.org/dc/dcmitype/InteractiveResource"
+                    property="dct:title"
+                    rel="dct:type">
+                NoOps with Ansible and Puppet
+        </span></h1>
+          <h3 xmlns:cc="http://creativecommons.org/ns#"
+              property="cc:attributionName">Monty Taylor</h3>
+          <h4><a xmlns:cc="http://creativecommons.org/ns#"
+                 rel="cc:attributionURL"
+                 href='http://inaugust.com/talks/ansible-cloud.html'>http://inaugust.com/talks/ansible-cloud.html</a> </h4>
+          <h3> twitter: @e_monty </h3>
+      </section>
+
+      <section id="who-am-i" class="slide level2">
+          <h1>Who am I?</h1>
+          <ul>
+              <li>Distinguished Technologist at HP</li>
+              <li>OpenStack Technical Committee</li>
+              <li>OpenStack Foundation Board of Directors</li>
+              <li>OpenStack Developer Infrastructure Core Team</li>
+              <li>Former Consultant for MySQL, Inc</li>
+              <li>Former Drizzle Core Developer</li>
+          </ul>
+      </section>
+
+      <section id="what-are-we-going-to-talk-about" class="slide level2">
+          <h1>What are we going to talk about?</h1>
+          <ul>
+              <li>NoOps</li>
+              <li>Cloud Applications</li>
+              <li>Puppet</li>
+              <li>Ansible</li>
+          </ul>
+      </section>
+
+      <section id="no-ops" class="slide level2">
+          <h1>NoOps</h1>
+          <p class="fragment">NoOps means developers can code and let a service deploy, manage and scale their code</p>
+          <p class="fragment">I don't want to "do ops"</p>
+          <p class="fragment">I want to change the system by landing commits</p>
+          <p class="fragment">If I have to use my root access, it's a bug</p>
+      </section>
+
+      <section id="cloud-native" class="slide level2">
+          <h1>Cloud Native</h1>
+          <ul>
+              <li>Ephemeral Compute</li>
+              <li>Data services</li>
+              <li>Design your applications to be resilient via scale out</li>
+          </ul>
+      </section>
+
+      <section id="cloud-scale-out" class="slide level2">
+          <h1>Cloud Scale Out</h1>
+          <ul>
+              <li>Forget HA of one system</li>
+              <li>Forget long-lived systems</li>
+              <li>Shared-nothing for EVERYTHING</li>
+          </ul>
+      </section>
+
+      <section id="cloud-scale-out-is-great-for-new-applications" class="slide level2">
+          <h1>Cloud Scale Out is great for new applications</h1>
+      </section>
+
+      <section id="what-about-existing-applications" class="slide level2">
+          <h1>What about existing applications?</h1>
+      </section>
+
+      <section>
+          <section id="openstack-infra" data-transition='zoom'>
+              <h1>OpenStack Infra</h1>
+          </section>
+
+          <section id="tooling-automation-and-ci-for-openstack-project" class="slide level2" data-transition='zoom'>
+              <h1>Tooling, Automation and CI for OpenStack Project</h1>
+          </section>
+
+          <section id="developers" class="slide level2" data-transition='zoom'>
+              <h1>2000 Developers</h1>
+          </section>
+
+          <section id="gated-commits" class="slide level2" data-transition='zoom'>
+              <h1>Gated Commits</h1>
+              <p>Every commit is fully integration tested (twice) before landing</p>
+          </section>
+
+          <section id="each-test-runs-on-a-single-use-cloud-slave" class="slide level2" data-transition='zoom'>
+              <h1>Each Test Runs on a Single Use Cloud Slave</h1>
+              <p>This is that "cloud scale out" part</p>
+          </section>
+
+          <section id="million-test-jobs-in-the-last-6-months" class="slide level2" data-transition='zoom'>
+              <h1>1.7 Million Test Jobs in the last 6 Months</h1>
+          </section>
+
+          <section id="15-million-tests-in-december" class="slide level2" data-transition='zoom'>
+              <h1>15 Million Tests in December</h1>
+          </section>
+
+          <section id="terabytes-of-log-data-in-six-months" class="slide level2" data-transition='zoom'>
+              <h1>18 Terabytes of Log Data in six months</h1>
+          </section>
+
+          <section id="we-have-no-servers" class="slide level2" data-transition='zoom'>
+              <h1>We have no servers</h1>
+              <p>It all runs across HP and Rackspace Public Clouds.</p>
+          </section>
+
+      </section>
+
+      <section id="architecture" class="slide level2">
+          <h1>Architecture</h1>
+          <p><img src="/images/infra_architecture.jpg" alt="image" /></p>
+      </section>
+
+      <section id="it-didnt-start-this-way" class="slide level2">
+          <h1>It didn't start this way</h1>
+          <p><img src="/images/original.jpg" alt="image" /></p>
+      </section>
+
+      <section id="step-one-puppet" class="titleslide slide level1">
+          <h1>Step One: Puppet</h1>
+      </section>
+
+      <section id="overview" class="slide level2">
+          <h1>Overview</h1>
+          <ul>
+              <li>Open Source Config Management System</li>
+              <li>Written in Ruby</li>
+              <li>Models intended state</li>
+              <li>Wants to own entire system</li>
+          </ul>
+      </section>
+
+      <section id="config-management-is-great" class="slide level2">
+          <h1>Config Management is Great</h1>
+          <ul>
+              <li>Repeatable and consistent machines</li>
+              <li>Code Review</li>
+              <li>Collaboration from non-root users</li>
+              <li>Less repetition for me</li>
+              <li>Open Source Infrastructure</li>
+              <li><a href="http://git.openstack.org/cgit/openstack-infra/system-config/">http://git.openstack.org/cgit/openstack-infra/system-config/</a></li>
+              <li><a href="http://puppetdb.openstack.org/">http://puppetdb.openstack.org/</a></li>
+          </ul>
+      </section>
+
+      <section id="ruby-dsl" class="slide level2">
+          <h1>Ruby DSL</h1>
+          <pre><code>
+package { 'git':
+  ensure =&gt; 'present',
+}
+          </code></pre>
+      </section>
+
+      <section id="leaky-abstraction" class="slide level2">
+          <h1>Leaky Abstraction</h1>
+          <pre><code>
+if !defined(Package['git']) {
+  package { 'git':
+    ensure =&gt; 'present',
+  }
+}
+          </code></pre>
+      </section>
+
+      <section id="three-ways-to-run" class="slide level2">
+          <h1>Three ways to run</h1>
+          <ul>
+              <li>puppet apply</li>
+              <li>puppetmaster + puppet agent daemons</li>
+              <li>puppetmaster + puppet agent non-daemon</li>
+          </ul>
+      </section>
+
+      <section id="managing-users-and-ssh-keys" class="slide level2">
+          <h1>Managing users and ssh keys</h1>
+          <pre><code>
+define user::virtual::localuser(
+  $realname,
+  $groups     = [ 'sudo', 'admin', ],
+  $sshkeys    = '',
+  $key_id     = '',
+  $old_keys   = [],
+  $shell      = '/bin/bash',
+  $home       = "/home/${title}",
+  $managehome = true
+) {
+
+  group { $title:
+    ensure =&gt; present,
+  }
+          </code></pre>
+      </section>
+
+      <section id="managing-users-and-ssh-keys-2" class="slide level2">
+          <h1>Managing users and ssh keys (cont.)</h1>
+          <pre><code>
+  user { $title:
+    ensure     =&gt; present,
+    comment    =&gt; $realname,
+    gid        =&gt; $title,
+    groups     =&gt; $groups,
+    home       =&gt; $home,
+    managehome =&gt; $managehome,
+    membership =&gt; 'minimum',
+    shell      =&gt; $shell,
+    require    =&gt; Group[$title],
+  }
+          </code></pre>
+      </section>
+
+      <section id="managing-users-and-ssh-keys-3" class="slide level2">
+          <h1>Managing users and ssh keys (cont.)</h1>
+          <pre><code>
+  ssh_authorized_key { $key_id:
+    ensure  =&gt; present,
+    key     =&gt; $sshkeys,
+    user    =&gt; $title,
+    type    =&gt; 'ssh-rsa',
+  }
+
+  if ( $old_keys != [] ) {
+    ssh_authorized_key { $old_keys:
+      ensure =&gt; absent,
+      user   =&gt; $title,
+    }
+  }
+}
+          </code></pre>
+      </section>
+
+      <section id="our-code-is-open-source-right-what-about-passwords-and-keys-..." class="slide level2">
+          <h1>Our code is Open Source, right? What about passwords and keys ...</h1>
+      </section>
+
+      <section id="hiera" class="slide level2">
+          <h1>hiera</h1>
+          <ul>
+              <li>Simple YAML database, sits on puppetmaster</li>
+              <li>Use it for secret data</li>
+              <li>puppet code is still complete</li>
+          </ul>
+          <pre><code>
+node default {
+  class { 'openstack_project::server':
+    sysadmins =&gt; hiera('sysadmins', []),
+  }
+}
+          </code></pre>
+          <p>Breaks ability to use simple puppet apply</p>
+      </section>
+
+      <section id="step-two-ansible-for-orchestration" class="titleslide slide level1">
+          <h1>Step Two: Ansible for Orchestration</h1>
+      </section>
+
+      <section id="about-ansible" class="slide level2">
+          <h1>About Ansible</h1>
+          <ul>
+              <li>Open Source System Management tool</li>
+              <li>Written in Python</li>
+              <li>Sequence of steps to perform</li>
+              <li>Works over SSH</li>
+              <li>Incremental Adoption</li>
+          </ul>
+      </section>
+
+      <section>
+          <h1>ad-hoc operation</h1>
+          <pre>
+ansible '*' -m shell -p uptime
+          </pre>
+      </section>
+
+      <section id="yaml-syntax" class="slide level2">
+          <h1>YAML Syntax</h1>
+          <pre><code>
+- hosts: '*.slave.openstack.org'
+  tasks:
+    - shell: 'rm -rf ~jenkins/workspace/*{{ project }}*'
+          </code></pre>
+          <p>That's executed:</p>
+          <pre>
+ansible-playbook -f 10 /etc/ansible/clean_workspaces.yaml --extra-vars "project=$PROJECTNAME"
+          </pre>
+      </section>
+
+      <section id="ansible-organization" class="slide level2">
+          <h1>Ansible Organization</h1>
+          <ul>
+              <li>modules</li>
+              <li>plays</li>
+              <li>playbooks</li>
+              <li>roles</li>
+          </ul>
+      </section>
+
+      <section id="use-ansible-to-run-puppet" class="slide level2">
+      <h1>Use Ansible to Run Puppet!</h1>
+      </section>
+
+      <section id="puppet-module" class="slide level2">
+          <h1>puppet module</h1>
+          <pre><code>def main():
+    module = AnsibleModule(argument_spec=dict(
+        timeout=dict(default="30m"),
+        puppetmaster=dict(required=True),
+        show_diff=dict(default=False, aliases=['show-diff'], type='bool'),
+    ))
+    p = module.params
+
+    puppet_cmd = module.get_bin_path("puppet", False)
+    if not puppet_cmd:
+        module.fail_json(msg="Could not find puppet. Please ensure it is installed.")
+          </code></pre>
+      </section>
+
+      <section id="puppet-module-2" class="slide level2">
+          <h1>puppet module (cont)</h1>
+          <pre><code class="python">
+    cmd = ("timeout -s 9 %(timeout)s %(puppet_cmd)s agent --onetime"
+           " --server %(puppetmaster)s"
+           " --ignorecache --no-daemonize --no-usecacheonfailure --no-splay"
+           " --detailed-exitcodes --verbose") % dict(
+               timeout=pipes.quote(p['timeout']), puppet_cmd=PUPPET_CMD,
+               puppetmaster=pipes.quote(p['puppetmaster']))
+    if p['show_diff']:
+        cmd += " --show-diff"
+    rc, stdout, stderr = module.run_command(cmd)
+          </code></pre>
+      </section>
+
+      <section id="puppet-module-3" class="slide level2">
+          Please. Everyone. Marvel at the following logic
+          <pre><code>
+    if rc == 0:  # success
+        module.exit_json(rc=rc, changed=False, stdout=stdout)
+    elif rc == 1:
+        # rc==1 could be because it's disabled OR there was a compilation failure
+        disabled = "administratively disabled" in stdout
+        if disabled:
+            msg = "puppet is disabled"
+        else:
+            msg = "puppet compilation failed"
+        module.fail_json(rc=rc, disabled=disabled, msg=msg, stdout=stdout, stderr=stderr)
+    elif rc == 2:  # success with changes
+        module.exit_json(changed=True)
+    elif rc == 124:  # timeout
+        module.exit_json(rc=rc, msg="%s timed out" % cmd, stdout=stdout, stderr=stderr)
+    else:  # failure
+        module.fail_json(rc=rc, msg="%s failed" % (cmd), stdout=stdout, stderr=stderr)
+          </code></pre>
+      </section>
+
+      <section id="puppet-play" class="slide level2">
+          <h1>puppet play</h1>
+          <pre><code>
+- name: run puppet
+  puppet:
+    puppetmaster: "{{puppetmaster}}"
+          </code></pre>
+      </section>
+
+      <section id="puppet-role" class="slide level2">
+          <h1>puppet role</h1>
+          <p>roles/puppet/tasks/main.yml</p>
+      </section>
+
+      <section id="remote-puppet-playbook" class="slide level2">
+          <h1>remote puppet playbook</h1>
+          <pre><code>
+- hosts: git0*
+  gather_facts: false
+  max_fail_percentage: 1
+  roles:
+    - { role: puppet, puppetmaster: puppetmaster.openstack.org }
+- hosts: review.openstack.org
+  gather_facts: false
+  roles:
+    - { role: puppet, puppetmaster: puppetmaster.openstack.org }
+- hosts: "!review.openstack.org:!git0*:!afs*"
+  gather_facts: false
+  roles:
+    - { role: puppet, puppetmaster: puppetmaster.openstack.org }
+      </pre></code>
+      </section>
+
+      <section id="ansible-inventory" class="slide level2">
+          <h1>ansible inventory</h1>
+          <ul>
+              <li>List of servers to operate on</li>
+              <li>Optionally variables associated with each server</li>
+              <li>Optional groups of servers</li>
+              <li>Simple yaml file in /etc/ansible/hosts</li>
+              <li>Dynamic executable that returns JSON</li>
+          </ul>
+      </section>
+
+      <section id="ansible-inventory-from-file" class="slide level2">
+          <h1>Simple inventory</h1>
+          <pre>
+review.openstack.org
+git01.openstack.org
+git02.openstack.org
+pypi.dfw.openstack.org
+pypi.iad.openstack.org
+
+[pypi]
+pypi.dfw.openstack.org
+pypi.iad.openstack.org
+
+[git]
+git01.openstack.org
+git02.openstack.org
+      </pre>
+      </section>
+
+      <section id="ansible-inventory-from-puppet" class="slide level2">
+          <h1>ansible inventory from puppet certs</h1>
+          <pre><code>
+import json
+import subprocess
+
+output = [
+    x.split()[1][1:-1] for x in subprocess.check_output(
+        ["puppet","cert","list","-a"]).split('\n')
+    if x.startswith('+')
+]
+
+data = {
+    '_meta': {'hostvars': dict()},
+    'ungrouped': output,
+}
+print json.dumps(data, sort_keys=True, indent=2)
+          </code></pre>
+      </section>
+
+      <section>
+          <h1>Step Three: Ansible for Cloud Management</h1>
+      </section>
+
+      <section>
+          <h1>ansible and OpenStack</h1>
+          <ul>
+              <li>Ansible modules are just python</li>
+              <li>playbooks are lists of steps to take</li>
+              <li>Have plays/roles that provision servers</li>
+              <li>Infrastructure as code - for real!</li>
+          </ul>
+      </section>
+
+      <section>
+          <h1>Consider this data</h1>
+          <pre><code>
+pypi.dfw.openstack.org:
+  image_name: Ubuntu 12.04.4
+  flavor_ram: 2048
+  region: DFW
+  cloud: rackspace
+  volumes:
+    - size: 200
+      mount: /srv
+pypi.region-b.geo-1.openstack.org:
+  image_name: Ubuntu 12.04.4
+  flavor_ram: 2048
+  region: region-b.geo-1
+  cloud: hp
+  volumes:
+    - size: 200
+      mount: /srv
+          </code></pre>
+    </section>
+
+      <section>
+          <h1>Further consider this data</h1>
+          <pre><code>
+pypi:
+  image_name: Ubuntu 12.04.4
+  flavor_ram: 2048
+  volumes:
+    - size: 200
+      mount: /srv
+  hosts:
+    pypi.dfw:
+      region: DFW
+    pypi.iad:
+      region: IAD
+    pypi.ord:
+      region: ORD
+    pypi.region-b.geo-1:
+      cloud: hp
+          </code></pre>
+    </section>
+
+    <section>
+        <h1>Steps to launch a node</h1>
+        <ol>
+            <li>Create a compute instance</li>
+            <li>Wait for instance to exist</li>
+            <li>Create a floating IP</li>
+            <li>Attach floating IP to instance</li>
+            <li>Create one or more volumes</li>
+            <li>Attach volumes to instance</li>
+            <li>Wait for SSH to work</li>
+            <li>On host, format each volume</li>
+            <li>On host, mount each volume</li>
+            <li>On host, install config management software</li>
+            <li>On host, run config management software</li>
+        </ol>
+    </section>
+
+    <section>
+        <h1>Launch a node</h1>
+        <pre><code>
+---
+- name: Launch Node
+  os_compute:
+      cloud: "{{ cloud }}"
+      region_name: "{{ region_name }}"
+      name: "{{ name }}"
+      image_name: "{{ image_name }}"
+      flavor_ram: "{{ flavor_ram }}"
+      flavor_include: "{{ flavor_include }}"
+      meta:
+          group: "{{ group }}"
+      key_name: "{{ launch_keypair }}"
+  register: node
+- name: Create volumes
+  os_volume:
+      cloud: "{{ cloud }}"
+      size: "{{ item.size }}"
+      display_name: "{{ item.display_name }}"
+  with_items: volumes
+- name: Attach volumes
+  os_compute_volume:
+      cloud: "{{ cloud }}"
+      server_id: "{{ node.id }}"
+      volume_name: "{{ item.display_name }}"
+  with_items: volumes
+  register: attached_volumes
+- debug: var=attached_volumes
+- name: Re-request server to get up to date metadata after the volume loop
+  os_compute_facts:
+      cloud: "{{ cloud }}"
+      name: "{{ name }}"
+  when: attached_volumes.changed
+- name: Wait for SSH to work
+  wait_for: host={{ node.openstack.interface_ip }} port=22
+  when: node.changed == True
+- name: Add SSH host key to known hosts
+  shell: ssh-keyscan "{{ node.openstack.interface_ip|quote }}" &gt;&gt; ~/.ssh/known_hosts
+  when: node.changed == True
+- name: Add all instance public IPs to host group
+  add_host:
+      name: "{{ node.openstack.interface_ip }}"
+      groups: "{{ provision_group }}"
+      openstack: "{{ node.openstack }}"
+  when: attached_volumes|length == 0
+- name: Add all instance public IPs to host and volumes group
+  add_host:
+      name: "{{ node.openstack.interface_ip }}"
+      groups: "{{ provision_group }},hasvolumes"
+      openstack: "{{ node.openstack }}"
+  when: attached_volumes|length != 0
+        </code></pre>
+    </section>
+
+    <section>
+        <h1> Cloud based inventory </h1>
+        <ul>
+            <li> Just ask the cloud for the inventory </li>
+            <li> All of the meta-data the cloud knows is available </li>
+            <li> No need for puppetmaster now </li>
+        </ul>
+    </section>
+
+    <section>
+        <pre><code>
+      "pypi.dfw.openstack.org": {
+        "ansible_ssh_host": "23.253.237.8",
+        "openstack": {
+          "HUMAN_ID": true,
+          "NAME_ATTR": "name",
+          "OS-DCF:diskConfig": "MANUAL",
+          "OS-EXT-STS:power_state": 1,
+          "OS-EXT-STS:task_state": null,
+          "OS-EXT-STS:vm_state": "active",
+          "accessIPv4": "23.253.237.8",
+          "accessIPv6": "2001:4800:7817:104:d256:7a33:5187:7e1b",
+          "addresses": {
+            "private": [
+              {
+                "addr": "10.208.195.50",
+                "version": 4
+              }
+            ],
+            "public": [
+              {
+                "addr": "23.253.237.8",
+                "version": 4
+              },
+              {
+                "addr": "2001:4800:7817:104:d256:7a33:5187:7e1b",
+                "version": 6
+              }
+            ]
+          },
+          "cloud": "rax",
+          "config_drive": "",
+          "created": "2014-09-05T15:32:14Z",
+          "flavor": {
+            "id": "performance1-4",
+            "links": [
+              {
+                "href": "https://dfw.servers.api.rackspacecloud.com/610275/flavors/performance1-4",
+                "rel": "bookmark"
+              }
+            ],
+            "name": "4 GB Performance"
+          },
+          "hostId": "adb603d4566efe0392756c76dab38ffcba22099368837c7973321e77",
+          "human_id": "pypidfwopenstackorg",
+          "id": "de672205-9245-46b6-b3df-489ccf9e0c17",
+          "image": {
+            "id": "928e709d-35f0-47eb-b296-d18e1b0a76b7",
+            "links": [
+              {
+                "href": "https://dfw.servers.api.rackspacecloud.com/610275/images/928e709d-35f0-47eb-b296-d18e1b0a76b7",
+                "rel": "bookmark"
+              }
+            ]
+          },
+          "interface_ip": "23.253.237.8",
+          "key_name": "launch-node-root",
+          "links": [
+            {
+              "href": "https://dfw.servers.api.rackspacecloud.com/v2/610275/servers/de672205-9245-46b6-b3df-489ccf9e0c17",
+              "rel": "self"
+            },
+            {
+              "href": "https://dfw.servers.api.rackspacecloud.com/610275/servers/de672205-9245-46b6-b3df-489ccf9e0c17",
+              "rel": "bookmark"
+            }
+          ],
+          "metadata": {},
+          "name": "pypi.dfw.openstack.org",
+          "networks": {
+            "private": [
+              "10.208.195.50"
+            ],
+            "public": [
+              "23.253.237.8",
+              "2001:4800:7817:104:d256:7a33:5187:7e1b"
+            ]
+          },
+          "progress": 100,
+          "region": "DFW",
+          "status": "ACTIVE",
+          "tenant_id": "610275",
+          "updated": "2014-09-05T15:32:49Z",
+          "user_id": "156284",
+          "volumes": [
+            {
+              "HUMAN_ID": false,
+              "NAME_ATTR": "name",
+              "attachments": [
+                {
+                  "device": "/dev/xvdb",
+                  "host_name": null,
+                  "id": "c6f5229c-1cc0-47c4-aab7-60db1f6cf8e8",
+                  "server_id": "de672205-9245-46b6-b3df-489ccf9e0c17",
+                  "volume_id": "c6f5229c-1cc0-47c4-aab7-60db1f6cf8e8"
+                }
+              ],
+              "availability_zone": "nova",
+              "bootable": "false",
+              "created_at": "2014-09-05T14:37:42.000000",
+              "device": "/dev/xvdb",
+              "display_description": null,
+              "display_name": "pypi.dfw.openstack.org/main01",
+              "human_id": null,
+              "id": "c6f5229c-1cc0-47c4-aab7-60db1f6cf8e8",
+              "metadata": {
+                "readonly": "False",
+                "storage-node": "1845027a-5e07-47a1-9572-3eea4716f726"
+              },
+              "os-vol-tenant-attr:tenant_id": "610275",
+              "size": 200,
+              "snapshot_id": null,
+              "source_volid": null,
+              "status": "in-use",
+              "volume_type": "SATA"
+            }
+          ]
+        }
+      },
+        </code></pre>
+    </section>
+
+    <section>
+        <h1> Wait - what about secrets? </h1>
+        <p class="fragment">ansible can just pass secrets to puppet apply as parameters </p>
+    </section>
+
+    <section>
+        <h1> Step Four: Just get rid of puppet ... </h1>
+        <p class="fragment">but that's another talk</p>
+    </section>
+
+    <section>
+        <h1> Thank you! </h1>
+        <p> http://inaugust.com/talks/ansible-cloud.html </p>
+        <h3>Monty Taylor</h3>
+        <h3> twitter: @e_monty </h3>
+        <h4> <a href='http://inaugust.com/talks/ansible-cloud.html'>http://inaugust.com/talks/ansible-cloud.html</a> </h4>
+    </section>
+
+    </div>
+    <div class="footer">
+      <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">
+          <img alt="Creative Commons License"
+               style="border-width:0"
+               src="https://i.creativecommons.org/l/by/4.0/88x31.png" />
+      </a><br />
+        Licensed under a
+      <a rel="license"
+         href="http://creativecommons.org/licenses/by/4.0/">
+           Creative Commons Attribution 4.0 International License
+      </a>.
+      <br />
+      Source code available at <a href='http://git.inaugust.com/cgit/inaugust.com'>http://git.inaugust.com/cgit/inaugust.com</a>
+    </div>
+  </div>
+
+  <script src="/lib/js/head.min.js"></script>
+  <script src="/js/reveal.js"></script>
+
+  <script src="/js/this.js"></script>
+
+</body>
+</html>

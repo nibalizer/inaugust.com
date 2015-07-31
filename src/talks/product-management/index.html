@@ -1,0 +1,454 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+
+    <title>Liberty, Product Management and OpenStack Technology</title>
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" href="/css/reveal.css">
+    <link rel="stylesheet" href="/css/theme/openstack.css" id="theme">
+
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="/lib/css/zenburn.css">
+
+    <!-- If the query includes 'print-pdf', include the PDF print sheet -->
+    <script>
+    if( window.location.search.match( /print-pdf/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = '/css/print/pdf.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+    }
+    </script>
+
+  </head>
+  <body>
+
+      <div class="reveal"><div class="slides">
+
+              <section data-state="cover">
+
+                  <h1><span xmlns:dct="http://purl.org/dc/terms/"
+                       href="http://purl.org/dc/dcmitype/InteractiveResource"
+                       property="dct:title"
+                       rel="dct:type">
+                          Liberty, Product Management and OpenStack Technology
+                      </span></h1>
+                      <h3 xmlns:cc="http://creativecommons.org/ns#"
+                       property="cc:attributionName">Monty Taylor</h3>
+                      <h4><a xmlns:cc="http://creativecommons.org/ns#"
+                       rel="cc:attributionURL"
+                       href='http://inaugust.com/talks/product-management.html'>http://inaugust.com/talks/product-management.html</a> </h4>
+                      <h3> twitter: @e_monty </h3>
+              </section>
+
+              <section class="slide level2">
+                  <img src="/images/openstack-cloud-software-vertical-large.png"
+                       alt="OpenStack" />
+              </section>
+
+              <section class="slide level2">
+                  <h1>Mission</h1>
+                  <p>
+                  to produce the ubiquitous Open Source Cloud Computing platform that will meet the needs of public and private clouds regardless of size, by being simple to implement and massively scalable.
+                  </p>
+              </section>
+
+              <section class="slide level2">
+                  <h1>Borrowed from Ubuntu</h1>
+                  <p>Time Based Releases</p>
+                  <p>Design summits each cycle</p>
+                  <p>Release codenames in alphabetical order</p>
+              </section>
+
+              <section class="slide level2">
+                  <h1>Different from Ubuntu</h1>
+                  <p>No BDFL</p>
+                  <p>All decisions are democratic</p>
+              </section>
+
+              <section class="slide level2">
+                  <img src="/images/openstack-size.jpg" />
+              </section>
+
+              <section class="slide level2">
+                  <h1>"OpenStack needs product management"</h1>
+              </section>
+
+              <section class="slide level2">
+                  <p>Developers work on whatever they feel like, so there is no cohesion</p>
+                  <p class='fragment'><small>not quite</small></p>
+              </section>
+
+              <section class="slide level2">
+                  <img src="/images/openstack-size.jpg" />
+              </section>
+
+              <section class="slide level2">
+                  <h1>OpenStack needs product management <em>coordination</em></h1>
+              </section>
+
+              <section class="slide level2">
+                  <h1> Product Management Working Group </h1>
+                  <p>Today 2:00pm - 3:30pm Room 212</p>
+              </section>
+
+              <section class="slide level2">
+                  <h1>What can the working group do?</h1>
+                  <ul>
+                      <li class='fragment'>
+                          Define problems
+                      </li>
+                      <li class='fragment'>
+                          Coordinate prorities
+                      </li>
+                      <li class='fragment'>
+                          Communicate problems clearly to tech community
+                      </li>
+              </section>
+
+              <section class="slide level2">
+                  <h1>I've got 99 Problems ...</h1>
+                  <img src="/images/worstcat-lettuce.jpg" />
+              </section>
+
+              <section class="slide level2">
+                  <p>As an application developer,<br />
+                  I want to deploy and run an application on the internet<br />
+                  so that my customers all over the world can consume it.</p>
+              </section>
+
+              <section class="slide level2">
+                  <p>As an application developer,<br />
+                  I want to deploy the application across multiple clouds<br />
+                  so that my service survives issues in any one of them.</p>
+              </section>
+
+              <section class="slide level2">
+                  <h1>THIS WORKS</h1>
+                  <h3>I'm doing it myself as we speak</h3>
+                  <img style="float:right; margin-right:24pt" src="/images/graphite.openstack.org.png"/>
+
+
+                  <p class='fragment'>10-20k VMs per-day</p>
+                  <p class='fragment'>3 (soon to be 6) clouds</p>
+                  <p class='fragment'>Only using OpenStack APIs</p>
+
+              </section>
+
+              <section class="slide level2">
+                  <h1>To do this, there are some basic steps</h1>
+
+                  <p class='fragment'>Get (make/fetch/find) a base image</p>
+                  <p class='fragment'>Upload it to each cloud</p>
+                  <p class='fragment'>Boot a VM on one or more of the clouds</p>
+                  <p class='fragment'>Ensure it's on the Internet</p>
+
+              </section>
+
+              <section class="slide level2">
+                  <h1>Get a base image</h1>
+                  <p class='fragment'>OpenStack diskimage-builder</p>
+                  <p class='fragment'>packer</p>
+                  <p class='fragment'>Download pre-built image from Ubuntu/Fedora</p>
+              </section>
+
+              <section class="slide level2">
+                  <h1>NO</h1>
+                  <img src="/images/worstcat-lettuce.jpg" />
+              </section>
+
+              <section class="slide level2">
+                  <h1>Problem: hypervisor image file format</h1>
+                  <ul>
+                      <li class='fragment'>
+                          Rackspace uses VHD
+                      </li>
+                      <li class='fragment'>
+                          HP uses qcow2
+                      </li>
+                      <li class='fragment'>
+                          DreamHost uses RAW
+                      </li>
+                  </ul>
+              </section>
+
+              <section class="slide level2">
+                  <h1>Upload it to each cloud</h1>
+                  <pre>glance image-create</pre>
+              </section>
+
+              <section class="slide level2">
+                  <h1>NO</h1>
+                  <img src="/images/worstcat-lettuce.jpg" />
+              </section>
+
+              <section class="slide level2">
+                  <h1>Problem: image API version</h1>
+                  <ul>
+                      <li class='fragment'>
+                          HP uses v1
+                      </li>
+                      <li class='fragment'>
+                          vexxhost uses v2
+                      </li>
+                  </ul>
+              </section>
+
+              <section class="slide level2">
+                  <h1>Problem: List API versions</h1>
+                  <p>Root of the Image API lists versions</p>
+                  <p>keystone catalog only lists a versioned endpoint</p>
+              </section>
+
+              <section class="slide level2">
+                  <h1>Problem: API version discovery</h1>
+                  <p>Try one - if it doesn't work, try the other</p>
+                  <p><em>maybe</em> look at the end of the API endpoint for v1 or v2</p>
+              </section>
+
+              <section class="slide level2">
+                  <h1>Upload it to each cloud</h1>
+                  <pre>glance image-create filename</pre>
+              </section>
+
+              <section class="slide level2">
+                  <h1>NO</h1>
+                  <img src="/images/worstcat-lettuce.jpg" />
+              </section>
+
+              <section class="slide level2">
+                  <h1>Problem: image task vs. PUT</h1>
+                  <pre>
+swift upload --object-name local-image-filename images image-name
+glance task-create
+   --type=import
+   --input='{"import_from": "images/image-name",
+             "image_properties" : {"name": "My Image Name"}}'
+                  </pre>
+                  <pre>
+glance image-create --name=image-name --file=local-image-filename
+                  </pre>
+              </section>
+
+              <section class="slide level2">
+                  <h1>Boot a VM on one or more of the clouds</h1>
+                  <pre>nova boot --image=image-name --flavor=something
+                  </pre>
+              </section>
+
+              <section class="slide level2">
+                  <h1>NO</h1>
+                  <img src="/images/worstcat-lettuce.jpg" />
+              </section>
+
+              <section class="slide level2">
+                  <h1>Problem: the image needs to get on the network</h1>
+                  <ul>
+                      <li class='fragment'>DHCP</li>
+                      <li class='fragment'>Static Network Config in Config Drive</li>
+                      <li class='fragment'>Vendor-specific agent doing file injection</li>
+                  </ul>
+              </section>
+
+              <section class="slide level2">
+                  <h1>
+                      <pre>nova boot --image=image-name --flavor=something
+                      </pre>
+              </section>
+
+              <section class="slide level2">
+                  <h1>NO</h1>
+                  <img src="/images/worstcat-lettuce.jpg" />
+              </section>
+
+              <section class="slide level2">
+                  <h1>Problem: Ensure it's on the Internet</h1>
+                  <ul>
+                      <li class='fragment'>My VM may have a public IP</li>
+                      <li class='fragment'>My VM may need a floating IP from nova</li>
+                      <li class='fragment'>My VM may need a floating IP from neutron</li>
+                  </ul>
+              </section>
+
+              <section class="slide level2">
+                  <h1>VM Network with nova-network</h1>
+                  <pre>
+        addresses:
+          private:
+          - addr: 10.181.5.77
+            version: 4
+          public:
+          - addr: 2001:4800:7810:512:be76:4eff:fe05:8325
+            version: 6
+          - addr: 98.129.169.30
+            version: 4
+                  </pre>
+              </section>
+
+              <section class="slide level2">
+                  <h1>VM Network with nova-network</h1>
+                  <pre>
+        addresses:
+          mordred@inaugust.com-network:
+          - OS-EXT-IPS-MAC:mac_addr: fa:16:3e:a6:de:26
+            OS-EXT-IPS:type: fixed
+            addr: 10.0.0.6
+            version: 4
+          - OS-EXT-IPS-MAC:mac_addr: fa:16:3e:a6:de:26
+            OS-EXT-IPS:type: floating
+            addr: 15.126.239.219
+            version: 4
+                  </pre>
+              </section>
+
+              <section class="slide level2">
+                  <h1>Boot a VM on one or more of the clouds</h1>
+                  <pre>
+nova boot --image=image-name --flavor=something --name=my-server
+nova floating-ip-create
+nova floating-ip-associate my-server {{ value_from_create }}
+                  </pre>
+              </section>
+
+              <section class="slide level2">
+                  <h1>NO</h1>
+                  <img src="/images/worstcat-lettuce.jpg" />
+              </section>
+
+              <section class="slide level2">
+                  <h1>Problem: My Internet server is behind a NAT</h1>
+              </section>
+
+              <section class="slide level2">
+                  <h1>Problem: Security Groups<h1>
+                          <p>I was trying to spin up a web server, but all my ports were blocked</p>
+                          <p><small>I'll be using ansible and puppet on this machine, I can configure iptables thanks</small></p>
+              </section>
+
+              <section class="slide level2">
+                  <h1>Boot a VM on one or more of the clouds</h1>
+                  <pre>
+nova secgroup-add-rule default tcp 80 80 0.0.0.0/0
+nova boot --image=image-name --flavor=something --name=my-server
+nova floating-ip-create
+nova floating-ip-associate my-server {{ value_from_create }}
+                  </pre>
+              </section>
+
+              <section class="slide level2">
+                  <h1>Wow. So that's</h1>
+                  <ul>
+                      <li>
+                          Image Format
+                      </li><li>
+                          Image API version
+                      </li><li>
+                          Image upload mechanism
+                      </li><li>
+                          Networking config / public private
+                      </li><li>
+                          Networking config nova/neutron
+                      </li><li>
+                          Floating IP?
+                      </li><li>
+                          Floating IP nova/neutron
+                      </li><li>
+                          DHCP or Static networking config
+                      </li><li>
+                          Security Group config
+                      </li>
+                  </ul>
+              </section>
+
+              <section class="slide level2">
+                  <h1>I think we can do better than that</h1>
+              </section>
+
+              <section class="slide level2">
+                  <h1>What am I doing about it?</h1>
+              </section>
+
+              <section class="slide level2">
+                  <h1>os-client-config</h1>
+                  <h3>http://git.openstack.org/cgit/openstack/os-client-config</h3>
+                  <p>A library to handle config information for openstack clients</p>
+                  <p>Tracks differences in vendors that can't be discovered</p>
+                  <p>In use in python-openstackclient and ansible today</p>
+              </section>
+
+              <section class="slide level2">
+                  <h1>shade</h1>
+                  <h3>http://git.openstack.org/cgit/openstack-infra/shade</h3>
+                  <p>A library to wrap business logic around client libraries</p>
+                  <pre>
+cloud.create_server('my-server', auto_ip=True)
+                  </pre>
+                  <p>In use in Infra Nodepool and ansible today</p>
+              </section>
+
+              <section class="slide level2">
+                  <h1>Raising Issues</h1>
+                  <ul>
+                     <li> Product Management Working Group (today, 2pm, room 212) </li>
+                      <li> DefCore (Wednesday 10:30 - 12:30, East Building Room 2/3)</li>
+                      <li> Direct interaction with the teams and PTLs </li>
+                  </ul>
+              </section>
+
+              <section class="slide level2">
+                  <h1>What should we do about it?</h1>
+                  <ul>
+                      <li>
+                          Get back to basics
+                      </li><li>
+                          shade existence is a bug
+                      </li><li>
+                          Make some decisions about divergences in the basic levels
+                      </li><li>
+                          Take a stand even if one of our product managers disagrees
+                      </li><li>
+                          Ensure that simple things are simple
+                      </li>
+                  </ul>
+              </section>
+
+
+              <section>
+                  <h1> Thank you! </h1>
+                  <h4> <a href='http://inaugust.com/talks/product-management.html'>http://inaugust.com/talks/product-management.html</a> </h4>
+                  <h3> twitter: @e_monty </h3>
+              </section>
+
+          </div>
+          <div class="footer">
+              <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">
+                  <img alt="Creative Commons License"
+                       style="border-width:0"
+                       src="https://i.creativecommons.org/l/by/4.0/88x31.png" />
+              </a><br />
+              Licensed under a
+              <a rel="license"
+                 href="http://creativecommons.org/licenses/by/4.0/">
+                  Creative Commons Attribution 4.0 International License
+              </a>.
+              <br />
+              Source code available at <a href='http://git.inaugust.com/cgit/inaugust.com'>http://git.inaugust.com/cgit/inaugust.com</a>
+          </div>
+
+      </div>
+
+      <script src="/lib/js/head.min.js"></script>
+      <script src="/js/reveal.js"></script>
+
+      <script src="/js/this.js"></script>
+
+  </body>
+</html>

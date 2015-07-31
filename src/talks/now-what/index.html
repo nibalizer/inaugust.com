@@ -1,0 +1,436 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+
+    <title>OpenStack works ... so now what?</title>
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" href="/css/reveal.css">
+    <link rel="stylesheet" href="/css/theme/openstack.css" id="theme">
+
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="/lib/css/zenburn.css">
+
+    <!-- If the query includes 'print-pdf', include the PDF print sheet -->
+    <script>
+    if( window.location.search.match( /print-pdf/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = '/css/print/pdf.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+    }
+    </script>
+
+  </head>
+  <body>
+
+      <div class="reveal"><div class="slides">
+
+              <section data-state="cover">
+
+                  <h1><span xmlns:dct="http://purl.org/dc/terms/"
+                       href="http://purl.org/dc/dcmitype/InteractiveResource"
+                       property="dct:title"
+                       rel="dct:type">
+                          OpenStack works ... so now what?
+                      </span></h1>
+                      <h3 xmlns:cc="http://creativecommons.org/ns#"
+                       property="cc:attributionName">Monty Taylor</h3>
+                      <h4><a xmlns:cc="http://creativecommons.org/ns#"
+                       rel="cc:attributionURL"
+                       href='http://inaugust.com/talks/now-what.html'>http://inaugust.com/talks/now-what.html</a> </h4>
+                      <h3> twitter: @e_monty </h3>
+              </section>
+
+              <section id="who-am-i-hp" class="slide level2">
+                  <h1>Who am I?</h1>
+                  <img style="float:right; margin-right:24pt" src="/images/hp-logo.png"/>
+                  <p> Distinguished Technologist </p>
+                  <p> HP Cloud </p>
+              </section>
+
+              <section id="who-am-i-openstack" class="slide level2">
+                  <h1>Who am I?</h1>
+                  <img style="float:right; margin-right:24pt" src="/images/openstack-cloud-software-vertical-large.png" />
+                      <p>Technical Committee</p>
+                      <p>Foundation Board of Directors</p>
+                      <p>Developer Infrastructure Core Team</p>
+              </section>
+
+              <section id="what-are-we-going-to-talk-about" class="slide level2">
+                  <h1>What are we going to talk about?</h1>
+                  <ul>
+                      <li>OpenStack</li>
+                      <li>My application</li>
+                      <li>Your applications</li>
+                  </ul>
+              </section>
+
+              <section class="slide level2">
+                  <img src="/images/openstack-software-diagram.png"
+                       alt="OpenStack" />
+              </section>
+
+              <section class="slide level2">
+                  <p>As an application developer,<br />
+                  I want to deploy and run an application on the internet<br />
+                  so that my customers all over the world can consume it.</p>
+              </section>
+
+              <section class="slide level2">
+                  <p>As an application developer,<br />
+                  I want to deploy the application across multiple clouds<br />
+                  so that my service survives issues in any one of them.</p>
+              </section>
+              <section class="slide level2">
+                  <h1>THIS WORKS</h1>
+                  <h3>I'm doing it myself as we speak</h3>
+                  <img style="float:right; margin-right:24pt" src="/images/graphite.openstack.org.png"/>
+
+
+                  <p class='fragment'>10-20k VMs per-day</p>
+                  <p class='fragment'>3 (soon to be 6) clouds</p>
+                  <p class='fragment'>Only using OpenStack APIs</p>
+
+              </section>
+
+                  <section id="openstack-infra" data-transition='zoom'>
+                      <h1>OpenStack Infra</h1>
+                  </section>
+
+                  <section id="tooling-automation-and-ci-for-openstack-project" class="slide level2" data-transition='zoom'>
+                      <h1>Tooling, Automation and CI for OpenStack Project</h1>
+                  </section>
+
+                  <section id="developers" class="slide level2" data-transition='zoom'>
+                      <h1>2000 Developers</h1>
+                  </section>
+
+                  <section id="gated-commits" class="slide level2" data-transition='zoom'>
+                      <h1>Gated Commits</h1>
+                      <p>Every commit is fully integration tested (twice) before landing</p>
+                  </section>
+
+                  <section id="each-test-runs-on-a-single-use-cloud-slave" class="slide level2" data-transition='zoom'>
+                      <h1>Each Test Runs on a Single Use Cloud Slave</h1>
+                      <p>This is that "cloud scale out" part</p>
+                  </section>
+
+                  <section id="million-test-jobs-in-the-last-6-months" class="slide level2" data-transition='zoom'>
+                      <h1>1.7 Million Test Jobs in the last 6 Months</h1>
+                  </section>
+
+                  <section id="million-tests-in-a-month" class="slide level2" data-transition='zoom'>
+                      <h1>15 Million Tests in a month</h1>
+                  </section>
+
+                  <section id="terabytes-of-log-data-in-six-months" class="slide level2" data-transition='zoom'>
+                      <h1>18 Terabytes of Log Data in six months</h1>
+                  </section>
+
+                  <section id="we-have-no-servers" class="slide level2" data-transition='zoom'>
+                      <h1>We have no servers</h1>
+                      <p>It all runs across HP and Rackspace Public Clouds.</p>
+                  </section>
+
+              <section id="architecture" class="slide level2">
+                  <h1>Architecture</h1>
+                  <p><img src="/images/infra_architecture.jpg" alt="image" /></p>
+              </section>
+
+              <section class="slide level2">
+                  <h1>Gerrit</h1>
+                  <ul>
+                      <li class="fragment">
+                          Traditional 'Enterprise' Java Application</li>
+                      <li class="fragment">Single Nova VM, Cinder Volume</li>
+                      <li class="fragment">Scale out farm of git replicas</li>
+                  </ul>
+              </section>
+
+              <section class="slide level2">
+                  <img src="/images/gerrit-graph.png" />
+              </section>
+
+              <section class="slide level2">
+                  <h1>Fun Numbers</h1>
+                  <ul>
+                      <li>2500 changes every week</li>
+                      <li>15000 change <em>revisions</em> every week</li>
+                      <li>10,000 new changes every 42 days</li>
+                  </ul>
+              </section>
+
+              <section class="slide level2">
+                  <img src="/images/what-happens.png" />
+              </section>
+
+              <section class="slide level2">
+                  <h1>nodepool</h1>
+                  <ul>
+                      <li class="fragment">Cloud Native</li>
+                      <li class="fragment">
+                          Purpose built in Python</li>
+                      <li class="fragment">Keeps a pool of ready to go nodes</li>
+                      <li class="fragment">Multi-cloud</li>
+                      <li class="fragment">Fully elastic - responds to demand</li>
+                  </ul>
+              </section>
+
+              <section class="slide level2">
+                  <img style="float:left; margin-left:24pt; width:35%;" src="/images/gerrit-graph.png" />
+                  <img style="float:right; margin-right:24pt; width: 50%;" src="/images/nodepool-graph.png" />
+              </section>
+
+              <section class="slide level2">
+                  <h1>OpenStack Works!</h1>
+                  <p class='fragment'>What next?</p>
+                  <p class='fragment'>Make it easier</p>
+              </section>
+
+              <section class="slide level2">
+                  <h1>Basic things you want to do</h1>
+
+                  <p class='fragment'>Get (make/fetch/find) a base image</p>
+                  <p class='fragment'>Upload it to each cloud</p>
+                  <p class='fragment'>Boot a VM on one or more of the clouds</p>
+                  <p class='fragment'>Ensure it's on the Internet</p>
+              </section>
+
+              <section class="slide level2">
+                  <h1>We've made this harder than it should be</h1>
+              </section>
+
+              <section class="slide level2">
+                  <h1>Get a base image</h1>
+                  <p class='fragment'>OpenStack diskimage-builder</p>
+                  <p class='fragment'>packer</p>
+                  <p class='fragment'>Download pre-built image from Ubuntu/RedHat/SuSE</p>
+              </section>
+
+              <section class="slide level2">
+                  <h1>Problem: hypervisor image file format</h1>
+                  <ul>
+                      <li class='fragment'>
+                          Rackspace uses VHD
+                      </li>
+                      <li class='fragment'>
+                          HP uses qcow2
+                      </li>
+                      <li class='fragment'>
+                          DreamHost uses RAW
+                      </li>
+                  </ul>
+              </section>
+
+              <section class="slide level2">
+                  <h1>Problem: image API version</h1>
+                  <ul>
+                      <li class='fragment'>
+                          HP uses v1
+                      </li>
+                      <li class='fragment'>
+                          vexxhost uses v2
+                      </li>
+                  </ul>
+                  <p class="fragment">Good news! We made a plan for this at
+                  the summit</p>
+              </section>
+
+              <section class="slide level2">
+                  <h1>Problem: image task vs. PUT</h1>
+                  <pre>
+swift upload --object-name local-image-filename images image-name
+glance task-create
+   --type=import
+   --input='{"import_from": "images/image-name",
+             "image_properties" : {"name": "My Image Name"}}'
+                  </pre>
+                  <pre>
+glance image-create --name=image-name --file=local-image-filename
+                  </pre>
+              </section>
+
+              <section class="slide level2">
+                  <h1>Problem: Ensure it's on the Internet</h1>
+                  <ul>
+                      <li class='fragment'>Cloud has externally routable IP from neutron (RunAbove, OVH)</li>
+                      <li class='fragment'>Cloud has externally routable IP neutron AND supports optional private tenant networks (vexxhost)</li>
+                      <li class='fragment'>Cloud has private tenant network provided by neutron and requires floating IP (HP, Dreamhost)</li>
+                      <li class='fragment'>Cloud only has private tenant network provided by nova-network and requires floating-ip for external routing (auro)</li>
+                      <li class='fragment'>Cloud has externally routable IP from neutron but no neutron APIs (Rackspace)</li>
+                  </ul>
+              </section>
+
+              <section class="slide level2">
+                  <h1>Maybe in code ...</h1>
+                  <pre>
+def get_server_external_ipv4(cloud, server):
+    if cloud.has_service('network'):
+        try:
+            server_ports = cloud.search_ports(
+                filters={'device_id': server.id})
+            ext_nets = cloud.search_networks(filters={'router:external': True})
+        except NeutronClientException as e:
+            pass  # fall through
+        else:
+            for net in ext_nets:
+                for port in server_ports:
+                    if net['id'] == port['network_id']:
+                        for ip in port['fixed_ips']:
+                            if _utils.is_ipv4(ip['ip_address']):
+                                return ip['ip_address']
+    ext_ip = get_server_ip(server, key_name='public')
+    if ext_ip is not None:
+        return ext_ip
+    for interfaces in server.addresses.values():
+        for interface in interfaces:
+            if _utils.is_ipv4(interface['addr']) and \
+                    _utils.is_globally_routable_ipv4(interface['addr']):
+                return interface['addr']
+    return None
+                  </pre>
+              </section>
+
+              <section class="slide level2">
+                  <h1>I think we can do better than that</h1>
+              </section>
+
+              <section class="slide level2">
+                  <h1>What am I doing about it?</h1>
+              </section>
+
+              <section class="slide level2">
+                  <h1>os-client-config</h1>
+                  <h3>http://git.openstack.org/cgit/openstack/os-client-config</h3>
+                  <p>A library to handle config information for openstack clients</p>
+                  <p>Tracks differences in vendors that can't be discovered</p>
+                  <p>In use in python-openstackclient and ansible</p>
+              </section>
+
+              <section class="slide level2">
+                  <h1>os-client-config</h1>
+                  <p>~/.config/openstack/clouds.yaml</p>
+                  <pre>
+clouds:
+  hp-mordred:
+    profile: hp
+    auth:
+      username: mordred@inaugust.com
+      password: XXXXXXXXXXXXX
+      project_name: mordred@inaugust.com
+    region_name: region-b.geo-1
+  dreamhost:
+    profile: dreamhost
+    auth:
+      username: montay6
+      project_name: dhc2111978
+      password: XXXXXXXXXXXXX
+    region_name: RegionOne
+                  </pre>
+              </section>
+
+              <section class="slide level2">
+                  <h1>shade</h1>
+                  <h3>http://git.openstack.org/cgit/openstack-infra/shade</h3>
+                  <p>A library to wrap business logic around client libraries</p>
+                  <pre>
+cloud.create_image('image-name', filename='image-filename.qcow2')
+cloud.create_server('my-server', image='immage-name', auto_ip=True)
+                  </pre>
+                  <p>In use in Infra Nodepool and ansible</p>
+              </section>
+
+              <section class="slide level2">
+                  <h1>ansible</h1>
+                  <p>Brand new modules, based on shade</p>
+                  <p>Coming in 2.0 release</p>
+                  <pre>
+- os_keypair:
+    cloud: hp-mordred
+    name: mordred
+    public_key_file: ~/.ssh/id_rsa.pub
+- os_image:
+    cloud: hp-mordred
+    name: Monty Ubuntu
+    file: ubuntu.vhd
+- os_server:
+    cloud: hp-mordred
+    name: my-server
+    flavor_ram: 1024
+    image: Monty Ubuntu
+                  </pre>
+              </section>
+
+              <section class="slide level2">
+                  <h1>ansible</h1>
+                  <p>multi-cloud support</p>
+                  <pre>
+- os_keypair:
+    cloud: "{{ item }"
+    name: mordred
+    public_key_file: ~/.ssh/id_rsa.pub
+    with-items:
+    - vexxhost
+    - rackspace
+    - mordred-hp
+    - ovh
+                  </pre>
+              </section>
+
+              <section class="slide level2">
+                  <h1>What should we do about it?</h1>
+                  <ul>
+                      <li>
+                          Get back to basics
+                      </li><li>
+                          shade existence is a bug
+                      </li><li>
+                          Make some decisions about divergences in the basic levels
+                      </li><li>
+                          Take a stand even if one of our product managers disagrees
+                      </li><li>
+                          Ensure that simple things are simple
+                      </li>
+                  </ul>
+              </section>
+
+
+              <section>
+                  <h1> Thank you! </h1>
+                  <h4> <a href='http://inaugust.com/talks/now-what.html'>http://inaugust.com/talks/now-what.html</a> </h4>
+                  <h3> twitter: @e_monty </h3>
+              </section>
+
+          </div>
+          <div class="footer">
+              <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">
+                  <img alt="Creative Commons License"
+                       style="border-width:0"
+                       src="https://i.creativecommons.org/l/by/4.0/88x31.png" />
+              </a><br />
+              Licensed under a
+              <a rel="license"
+                 href="http://creativecommons.org/licenses/by/4.0/">
+                  Creative Commons Attribution 4.0 International License
+              </a>.
+              <br />
+              Source code available at <a href='http://git.inaugust.com/cgit/inaugust.com'>http://git.inaugust.com/cgit/inaugust.com</a>
+          </div>
+
+      </div>
+
+      <script src="/lib/js/head.min.js"></script>
+      <script src="/js/reveal.js"></script>
+
+      <script src="/js/this.js"></script>
+
+  </body>
+</html>

@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+
+    <title>os-client-config: Making OpenStack usability easier, starting with client configuration</title>
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" href="/css/reveal.css">
+    <link rel="stylesheet" href="/css/theme/openstack.css" id="theme">
+
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="/lib/css/zenburn.css">
+
+    <!-- If the query includes 'print-pdf', include the PDF print sheet -->
+    <script>
+    if( window.location.search.match( /print-pdf/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = '/css/print/pdf.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+    }
+    </script>
+
+  </head>
+  <body>
+
+  <div class="background"></div>
+
+  <div class="reveal">
+    <div class="slides">
+
+      <section data-state="cover">
+          <h1><span xmlns:dct="http://purl.org/dc/terms/"
+                    href="http://purl.org/dc/dcmitype/InteractiveResource"
+                    property="dct:title"
+                    rel="dct:type">
+                os-client-config
+        </span></h1>
+          <h3 xmlns:cc="http://creativecommons.org/ns#"
+              property="cc:attributionName">Monty Taylor</h3>
+          <h4><a xmlns:cc="http://creativecommons.org/ns#"
+                 rel="cc:attributionURL"
+                 href='http://inaugust.com/talks/os-client-config.html'>http://inaugust.com/talks/os-client-config.html</a> </h4>
+          <h3> twitter: @e_monty </h3>
+      </section>
+
+      <section>
+          <h1>I'm awash in cloud accounts</h1>
+          <ul>
+              <li>Infra has 5<ul>
+                  <li>control plane and nodepool in 3 Rackspace regions</li>
+                  <li>control plane and nodepool in HP</li>
+              </ul></li>
+              <li>two personal on HP and one on Rackspace</li>
+              <li>two internal HP accounts</li>
+              <li>That's 12 OpenStack cloud-regions</li>
+          </ul>
+      </section>
+
+      <section>
+          How do I connect to them?
+      </section>
+
+      <section>
+          List Servers
+          <pre>
+openstack \
+        --auth-url=https://region-b.geo-1.identity.hpcloudsvc.com:35357/v2.0 \
+        --username=mordred@inaugust.com \
+        --password=XXXXXX \
+        --project-name=mordred@inaugust.com \
+        --region-name=region-b.geo-1 \
+    server list
+          </pre>
+      </section>
+
+      <section>
+          Well that's silly
+      </section>
+
+      <section>
+          Consistent Environment Variables   
+          <pre>
+export OS_AUTH_URL=https://region-b.geo-1.identity.hpcloudsvc.com:35357/v2.0
+export OS_USERNAME=mordred@inaugust.com
+export OS_PASSWORD=XXXXXXXXXXXXX
+export OS_TENANT_NAME=mordred@inaugust.com
+export OS_REGION_NAME=region-b.geo-1
+          </pre>
+        </section>
+
+        <section>
+            12 shell script snippet files
+        </section>
+
+        <section>
+            ENV processing is in command line tools, not client libraries
+        </section>
+
+        <section>
+            ENV processing is just copied everywhere
+          <pre>
+$ egrep -r 'add_(option|argument).*os-username' openstack/python*client | wc -l
+13
+          </pre>
+        </section>
+
+        <section>
+            <h1>  Pre-existing knowledge </h1>
+            <ul>
+                <li>auth-url</li>
+                <li>glance API version</li>
+                <li>override settings<ul>
+                    <li>URLs (swift URL in rackspace keystone catalog is wrong)</li>
+                    <li>service types (DNS in HP is hpext:dns)</li>
+                </ul></li>
+            </ul>
+        </section>
+
+        <section>
+            <p>I wrote a library (yay!)</p>
+            <h1>os-client-config</h1>
+        </section>
+
+        <section>
+            <h1>Processes, in this order</h1>
+            <ul>
+                <li>config file: clouds.yaml</li>
+                <li>env vars</li>
+                <li>command line args</li>
+            </ul>
+        </section>
+
+        <section>
+            <h1>Provides vendor defaults</h1>
+            <pre>
+CLOUD_DEFAULTS = dict(
+    hp=dict(
+        auth_url='https://region-b.geo-1.identity.hpcloudsvc.com:35357/v2.0',
+        dns_service_type='hpext:dns',
+    ),
+    rackspace=dict(
+        auth_url='https://identity.api.rackspacecloud.com/v2.0/',
+        database_service_type='rax:database',
+        image_api_version='2',
+    )
+)
+            </pre>
+            <p> Patches welcome for any cloud </p>
+        </section>
+
+        <section>
+            <h1>clouds.yaml</h1>
+            <pre>
+clouds:
+  mordred:
+    cloud: hp
+    username: mordred@inaugust.com
+    password: XXXXXXXXXX
+    project_name: mordred@inaugust.com
+    region_name: region-b.geo-1
+  monty:
+    cloud: https://region-b.geo-1.identity.hpcloudsvc.com:35357/v2.0
+    username: monty.taylor@hp.com
+    password: XXXXXXXXX
+    project_name: monty.taylor@hp.com-default-tenant
+    region_name: region-b.geo-1
+    dns_service_type: hpext:dns
+  rax:
+    cloud: rackspace
+    username: openstackci
+    password: XXXXXXX
+    project_id: 610275
+    region_name: DFW,ORD,IAD
+            </pre>
+        </section>
+
+        <section>
+            <h1> Allows for named clouds </h1>
+            <pre>
+openstack --cloud=mordred server list
+            </pre>
+            <pre>
+export OS_CLOUD=mordred
+openstack server list
+            </pre>
+        </section>
+
+
+        <section>
+            <h1> Where is it in use? </h1>
+            <ul>
+                <li>Shade library</li>
+                <li>python-openstackclient <small>(patch in flight)</small></li>
+                <li>ansible <small>(patch in flight)</small></li>
+            </ul>
+        </section>
+
+        <section>
+            <h1>Where is it?</h1>
+            <p>http://git.openstack.org/stackforge/os-client-config</p>
+            <p>http://pypi.python.org/pypi/os-client-config</p>
+        </section>
+
+        <section>
+            <h1>Where is it?</h1>
+            <p>http://git.openstack.org/stackforge/os-client-config</p>
+            <p>http://pypi.python.org/pypi/os-client-config</p>
+        </section>
+
+    </div>
+
+    <div class="footer">
+      <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">
+          <img alt="Creative Commons License"
+               style="border-width:0"
+               src="https://i.creativecommons.org/l/by/4.0/88x31.png" />
+      </a><br />
+        Licensed under a
+      <a rel="license"
+         href="http://creativecommons.org/licenses/by/4.0/">
+           Creative Commons Attribution 4.0 International License
+      </a>.
+      <br />
+      Source code available at <a href='http://git.inaugust.com/cgit/inaugust.com'>http://git.inaugust.com/cgit/inaugust.com</a>
+    </div>
+  </div>
+
+  <script src="/lib/js/head.min.js"></script>
+  <script src="/js/reveal.js"></script>
+
+  <script src="/js/this.js"></script>
+
+</body>
+</html>

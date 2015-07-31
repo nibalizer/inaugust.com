@@ -1,0 +1,794 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+
+    <title>TripleO and Ansible</title>
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" href="/css/reveal.css">
+    <link rel="stylesheet" href="/css/theme/openstack.css" id="theme">
+
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="/lib/css/zenburn.css">
+
+    <!-- If the query includes 'print-pdf', include the PDF print sheet -->
+    <script>
+    if( window.location.search.match( /print-pdf/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = '/css/print/pdf.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+    }
+    </script>
+
+  </head>
+  <body>
+
+  <div class="background">
+      <img alt="" id="head-icon" width="218" height="67"
+           src="/images/openstack-cloud-software-horizontal-small.png" /></div>
+
+
+  <div class="reveal">
+    <div class="slides">
+
+      <section data-state="cover">
+        <img src="/images/openstack-cloud-software-vertical-large.png"
+             alt="OpenStack" id="cover"/>
+
+          <h1><span xmlns:dct="http://purl.org/dc/terms/"
+                    href="http://purl.org/dc/dcmitype/InteractiveResource"
+                    property="dct:title"
+                    rel="dct:type">
+                TripleO and Ansible
+        </span></h1>
+          <h3 xmlns:cc="http://creativecommons.org/ns#"
+              property="cc:attributionName">Monty Taylor</h3>
+          <h4><a xmlns:cc="http://creativecommons.org/ns#"
+                 rel="cc:attributionURL"
+                 href='http://inaugust.com/talks/tripleo-ansible.html'>http://inaugust.com/talks/tripleo-ansible.html</a> </h4>
+          <h3> twitter: @e_monty </h3>
+      </section>
+
+      <section id="who-am-i" class="slide level2">
+          <h1>Who am I?</h1>
+          <ul>
+              <li>Distinguished Technologist at HP</li>
+              <li>OpenStack Technical Committee</li>
+              <li>OpenStack Foundation Board of Directors</li>
+              <li>OpenStack Infra Core Team</li>
+          </ul>
+      </section>
+
+      <section id="what-are-we-going-to-talk-about" class="slide level2">
+          <h1>What are we going to talk about?</h1>
+          <ul>
+              <li>TripleO</li>
+              <li>Ironic</li>
+              <li>Ansible</li>
+          </ul>
+      </section>
+
+      <section>
+          <h1>What is TripleO?</h1>
+          <ul>
+              <li class="fragment"> an idea </li>
+              <li class="fragment"> OpenStack On OpenStack </li>
+              <li class="fragment"> use Ironic-based OpenStack to Operate Openstack </li>
+          </ul>
+      </section>
+
+
+          <section>
+              <h1>Velocity</h1>
+              <ul>
+                  <li>Cloud Empowers <em>developers</em></li>
+                  <li>Cloud Enables Increased Velocity</li>
+                  <li>Cloud Drives Agility</li>
+              </ul>
+          </section>
+
+          <section>
+              <a href="#/2" class="image"><img src="/images/openstack-software-diagram.png" width="90%"></a>
+              <aside class="notes">
+                  Perhaps you've seen this before. <br>
+                  Even with addition of lots of PaaS projects, the abstraction here still holds.
+              </aside>
+          </section>
+
+          <section>
+              <h1>OpenStack is not a virtualization layer,
+                  it's an abstraction layer.</h1>
+              <aside class="notes">
+                  When Danny Sabah @ IBM said this, it hit home for me. I had already been working on Ironic for a year.<br>
+                  KVM, NFV ... <br>
+                  Virtualization is a powerful tool. Abstraction empowers people.<br>
+                  OpenStack community is thriving because of the power of open abstractions layers.
+              </aside>
+          </section>
+
+      <section>
+          <section>
+              <h1>What if your <em>developers</em> aren't writing Angry Birds?</h1>
+          </section>
+
+          <section>
+              <h1>What if your <em>developers</em> aren't developers?</h1>
+          </section>
+
+          <section>
+              <h3>If infrastructure is code ...</h3>
+              <h1>What  if your <em>developers</em> are <em>operators</em>?</h1>
+          </section>
+
+          <section>
+              <img src="/images/ugly-openstack.jpg" />
+          </section>
+
+          <section>
+              <h1>Why wouldn't you give your operators the same power as your
+                  developers?</h1>
+              <p>Don't you like them?</p>
+          </section>
+
+      </section>
+
+      <section>
+          <h1><i>Ironic</i> is a service capable of<br>
+              managing and provisioning<br>
+              <i>physical machines</i>.</h1>
+          <aside class="notes">
+              Do one thing and do it well. Ready-state-GO!<br>
+              Vendor neutral API. Distributed control plane.<br>
+              Deploy images to reduce entropy. Servers are cattle, not pets.<br>
+              Can use stand-alone, but not simple today.
+          </aside>
+      </section>
+
+      <section>
+          <h1>Nova + Ironic</h1>
+          Same but different
+          <aside class="notes">
+              User gets same Nova API. Abstraction is maintained.<br>
+              What are the benefits using Nova? (sched, flavors, etc)<br>
+              Talk briefly about evolution from nova-baremetal.
+          </aside>
+      </section>
+
+      <section>
+          <a href="#/2" class="image"><img src="/images/ironic-nova-layer.jpg"></a>
+          <aside class="notes">
+              Talk through the slide<br>
+              Going to show some examples next
+          </aside>
+      </section>
+      <section>
+          <pre><code>
+$ ironic node-create -d pxe_ipmitool \
+  -i ipmi_username=admin -i ipmi_password=fake -i ipmi_address=10.1.2.3 \
+  -p cpus=4 -p memory_mb=8192 -p local_gb=500 \
+  -e note='spare server'
++--------------+------------------------------------------------------------+
+| Property     | Value                                                      |
++--------------+------------------------------------------------------------+
+| chassis_uuid | None                                                       |
+| driver       | pxe_ipmitool                                               |
+| driver_info  | {u'ipmi_address': u'10.1.2.3', u'ipmi_username': u'admin', |
+|              | u'ipmi_password': u'fake'}                                 |
+| extra        | {u'note': u'spare server'}                                 |
+| properties   | {u'memory_mb': u'8192', u'local_gb': u'500', u'cpus': u'4'}|
+| uuid         | 7a1ce8d0-9679-4d87-8f54-b11f6e8adb8f                       |
++--------------+------------------------------------------------------------+
+          </code></pre>
+      </section>
+      <section>
+          <pre><code>
+$ tail -f /var/log/nova/n-cpu.log
+...
+2014-05-01 03:47:05.878 AUDIT nova.compute.resource_tracker [-]
+    Free ram (MB): 8192
+2014-05-01 03:47:05.878 AUDIT nova.compute.resource_tracker [-]
+    Free disk (GB): 500
+2014-05-01 03:47:05.878 AUDIT nova.compute.resource_tracker [-]
+    Free VCPUS: 4
+          </code></pre>
+      </section>
+
+      <section>
+          <h1>Diversity is good</h1>
+          <ul>
+              <li>Cloud providers: HP, Rackspace, Dreamhost, Cloudwatt</li>
+              <li>Deployments: Public, Managed, Private</li>
+              <li>Compute drivers: virtual, bare metal, container</li>
+              <li>Ironic drivers: pxe/impi, ilo, HP OneView</li>
+          </ul>
+      </section>
+
+      <section>
+          <h1>What can you do?</h1>
+          <h3 class="fragment">anything - it's a cloud</h3>
+      </section>
+
+      <section>
+          <h1>What the heck has the TripleO team been doing then?</h1>
+          <img src="/images/worstcat-lettuce.jpg" />
+      </section>
+
+      <section>
+          <h1>TripleO</h1>
+          <ul>
+              <li>Community developed</li>
+              <li>Opinionated</li>
+              <li>Avoid distro and config management religion</li>
+              <li>Be a usable <em>real</em> deployment we can gate on</li>
+          </ul>
+      </section>
+
+      <section>
+          <h1> Community Developed </h1>
+          <ul>
+              <li>Exist as part of the OpenStack project</li>
+              <li>Prove the story end to end</li>
+              <li>Subject to TC governance</li>
+              <li>Tighter feedback loop</li>
+          </ul>
+      </section>
+
+      <section>
+          <h1> Avoid distro and config management religion </h1>
+          <ul>
+              <li>rpm vs. deb - in the gate == rpm + deb</li>
+              <li>puppet vs. chef vs. salt vs. ansible == all of them</li>
+              <li>Choosing one excludes other folks from participating</li>
+          </ul>
+      </section>
+
+      <section>
+          <h1> Opinionated </h1>
+          <ul>
+              <li>Golden Images</li>
+              <li>Upgrade tied to HA</li>
+              <li>Target Continual Delivery</li>
+              <li>Drive fixes into OpenStack directly</li>
+          </ul>
+      </section>
+
+      <section>
+          <h1>Major Components</h1>
+          <ul>
+              <li>nova+ironic</li>
+              <li>heat</li>
+              <li>diskimage-builder</li>
+              <li>os-collect-config</li>
+              <li>os-apply-config</li>
+              <li>os-refresh-config</li>
+          </ul>
+      </section>
+
+      <section>
+          <h1>Lesson from os-*-config</h1>
+          <img class="fragment" src="/images/worstcat-dog.jpg" />
+      </section>
+
+      <section>
+          <h1>Lesson from os-*-config</h1>
+          <img class="fragment" src="/images/standards.png" />
+      </section>
+
+      <section>
+          <h1>Lesson from os-*-config</h1>
+          <p>If you ever think "oh, that's silly, it would be so much easier
+          if I just ..."<br /> it will almost never actually be easier if you
+             just ...</p>
+      </section>
+
+      <section>
+          <h1>The Deployment Story</h1>
+          <ol>
+              <li>disk-image-builder builds images and uploads to glance</li>
+              <li>Heat drives Nova/Ironic</li>
+              <li>Heat delivers metadata to os-collect-config</li>
+              <li>os-collect-config applies any in-instance changes needed</li>
+          </ol>
+      </section>
+
+      <section>
+          <h1>The Update Story</h1>
+          <p>Heat magically just updates things</li>
+      </section>
+
+      <section>
+          <h1>BUT I ALREADY USE ?????</h1>
+          <h3>(screw you guys, I'm going home)</h3>
+      </section>
+
+      <section>
+          <h1>Yeah, I do to</h1>
+          <h3>(I use puppet and ansible myself)</h3>
+      </section>
+
+      <section>
+          <h1>That's fine - use them - it's a cloud!</h1>
+          <h3 class="fragment">This is supposed to be empowering, not enforcing</h3>
+      </section>
+
+      <section>
+          <h1>Whatever you want!</h1>
+          <ul>
+              <li>Heat to deploy and update images, os-*-*config for config</li>
+              <li>Heat to deploy images, ansible to update images, puppet for config</li>
+              <li>Ansible to deploy base image + packages, salt to update packages, chef for config</li>
+              <li>juju to deploy ... nah, I'm just kidding</li>
+          </ul>
+      </section>
+
+      <section>
+          <h1>The New Update Story</h1>
+          <p>Ansible takes over for upgrades</p>
+      </section>
+
+      <section id="step-two-ansible-for-orchestration" class="titleslide slide level1">
+          <h1>Ansible for Orchestration</h1>
+      </section>
+
+      <section id="about-ansible" class="slide level2">
+          <h1>About Ansible</h1>
+          <ul>
+              <li>Open Source System Management tool</li>
+              <li>Written in Python</li>
+              <li>Sequence of steps to perform</li>
+              <li>Works over SSH</li>
+              <li>Incremental Adoption</li>
+          </ul>
+      </section>
+
+      <section>
+          <h1>ad-hoc operation</h1>
+          <pre>
+ansible '*' -m shell -p uptime
+          </pre>
+      </section>
+
+      <section id="yaml-syntax" class="slide level2">
+          <h1>YAML Syntax</h1>
+          <pre><code>
+- hosts: '*.slave.openstack.org'
+  tasks:
+    - shell: 'rm -rf ~jenkins/workspace/*{{ project }}*'
+          </code></pre>
+          <p>That's executed:</p>
+          <pre>
+ansible-playbook -f 10 /etc/ansible/clean_workspaces.yaml --extra-vars "project=$PROJECTNAME"
+          </pre>
+      </section>
+
+      <section id="ansible-organization" class="slide level2">
+          <h1>Ansible Organization</h1>
+          <ul>
+              <li>modules</li>
+              <li>plays</li>
+              <li>playbooks</li>
+              <li>roles</li>
+          </ul>
+      </section>
+
+      <section id="use-ansible-to-run-puppet" class="slide level2">
+      <h1>Use Ansible to Run Puppet!</h1>
+      </section>
+
+      <section id="puppet-module" class="slide level2">
+          <h1>puppet module</h1>
+          <pre><code>def main():
+    module = AnsibleModule(argument_spec=dict(
+        timeout=dict(default="30m"),
+        puppetmaster=dict(required=True),
+        show_diff=dict(default=False, aliases=['show-diff'], type='bool'),
+    ))
+    p = module.params
+
+    puppet_cmd = module.get_bin_path("puppet", False)
+    if not puppet_cmd:
+        module.fail_json(msg="Could not find puppet. Please ensure it is installed.")
+          </code></pre>
+      </section>
+
+      <section id="puppet-module-2" class="slide level2">
+          <h1>puppet module (cont)</h1>
+          <pre><code class="python">
+    cmd = ("timeout -s 9 %(timeout)s %(puppet_cmd)s agent --onetime"
+           " --server %(puppetmaster)s"
+           " --ignorecache --no-daemonize --no-usecacheonfailure --no-splay"
+           " --detailed-exitcodes --verbose") % dict(
+               timeout=pipes.quote(p['timeout']), puppet_cmd=PUPPET_CMD,
+               puppetmaster=pipes.quote(p['puppetmaster']))
+    if p['show_diff']:
+        cmd += " --show-diff"
+    rc, stdout, stderr = module.run_command(cmd)
+          </code></pre>
+      </section>
+
+      <section id="puppet-module-3" class="slide level2">
+          Please. Everyone. Marvel at the following logic
+          <pre><code>
+    if rc == 0:  # success
+        module.exit_json(rc=rc, changed=False, stdout=stdout)
+    elif rc == 1:
+        # rc==1 could be because it's disabled OR there was a compilation failure
+        disabled = "administratively disabled" in stdout
+        if disabled:
+            msg = "puppet is disabled"
+        else:
+            msg = "puppet compilation failed"
+        module.fail_json(rc=rc, disabled=disabled, msg=msg, stdout=stdout, stderr=stderr)
+    elif rc == 2:  # success with changes
+        module.exit_json(changed=True)
+    elif rc == 124:  # timeout
+        module.exit_json(rc=rc, msg="%s timed out" % cmd, stdout=stdout, stderr=stderr)
+    else:  # failure
+        module.fail_json(rc=rc, msg="%s failed" % (cmd), stdout=stdout, stderr=stderr)
+          </code></pre>
+      </section>
+
+      <section id="puppet-play" class="slide level2">
+          <h1>puppet play</h1>
+          <pre><code>
+- name: run puppet
+  puppet:
+    puppetmaster: "{{puppetmaster}}"
+          </code></pre>
+      </section>
+
+      <section id="puppet-role" class="slide level2">
+          <h1>puppet role</h1>
+          <p>roles/remote_puppet/tasks/main.yml</p>
+      </section>
+
+      <section id="remote-puppet-playbook" class="slide level2">
+          <h1>remote puppet playbook</h1>
+          <pre><code>
+- hosts: git0*
+  gather_facts: false
+  max_fail_percentage: 1
+  roles:
+    - { role: remote_puppet, puppetmaster: puppetmaster.openstack.org }
+- hosts: review.openstack.org
+  gather_facts: false
+  roles:
+    - { role: remote_puppet, puppetmaster: puppetmaster.openstack.org }
+- hosts: "!review.openstack.org:!git0*:!afs*"
+  gather_facts: false
+  roles:
+    - { role: remote_puppet, puppetmaster: puppetmaster.openstack.org }
+      </pre></code>
+      </section>
+
+      <section id="ansible-inventory" class="slide level2">
+          <h1>ansible inventory</h1>
+          <ul>
+              <li>List of servers to operate on</li>
+              <li>Optionally variables associated with each server</li>
+              <li>Optional groups of servers</li>
+              <li>Simple file in /etc/ansible/hosts</li>
+              <li>Dynamic executable that returns JSON</li>
+          </ul>
+      </section>
+
+      <section id="ansible-inventory-from-file" class="slide level2">
+          <h1>Simple inventory</h1>
+          <pre>
+review.openstack.org
+git01.openstack.org
+git02.openstack.org
+pypi.dfw.openstack.org
+pypi.iad.openstack.org
+
+[pypi]
+pypi.dfw.openstack.org
+pypi.iad.openstack.org
+
+[git]
+git01.openstack.org
+git02.openstack.org
+      </pre>
+      </section>
+
+      <section id="ansible-inventory-from-puppet" class="slide level2">
+          <h1>ansible inventory from puppet certs</h1>
+          <pre><code>
+import json
+import subprocess
+
+output = [
+    x.split()[1][1:-1] for x in subprocess.check_output(
+        ["puppet","cert","list","-a"]).split('\n')
+    if x.startswith('+')
+]
+
+data = {
+    '_meta': {'hostvars': dict()},
+    'ungrouped': output,
+}
+print json.dumps(data, sort_keys=True, indent=2)
+          </code></pre>
+      </section>
+
+      <section>
+          <h1>Ansible for Cloud Management</h1>
+      </section>
+
+      <section>
+          <h1>ansible and OpenStack</h1>
+          <ul>
+              <li>Ansible modules are just python</li>
+              <li>playbooks are lists of steps to take</li>
+              <li>Have plays/roles that provision servers</li>
+              <li>Infrastructure as code - for real!</li>
+          </ul>
+      </section>
+
+      <section>
+          <h1>Consider this data</h1>
+          <pre><code>
+pypi:
+  image_name: Ubuntu 12.04.4
+  flavor_ram: 2048
+  provision_group: ubuntu_hosts
+  volumes:
+    - size: 200
+      mount: /srv
+  hosts:
+    pypi.dfw:
+      region: DFW
+    pypi.iad:
+      region: IAD
+    pypi.ord:
+      region: ORD
+    pypi.region-b.geo-1:
+      cloud: hp
+          </code></pre>
+    </section>
+
+    <section>
+        <h1>Steps to launch a node</h1>
+        <ol>
+            <li>Create a compute instance</li>
+            <li>Wait for instance to exist</li>
+            <li>Create a floating IP</li>
+            <li>Attach floating IP to instance</li>
+            <li>Create one or more volumes</li>
+            <li>Attach volumes to instance</li>
+            <li>Wait for SSH to work</li>
+            <li>On host, format each volume</li>
+            <li>On host, mount each volume</li>
+            <li>On host, install config management software</li>
+            <li>On host, run config management software</li>
+        </ol>
+    </section>
+
+    <section>
+        <h1>Launch a node</h1>
+        <pre><code>
+---
+- name: Launch Node
+  os_compute:
+      cloud: "{{ cloud }}"
+      region_name: "{{ region_name }}"
+      name: "{{ name }}"
+      image_name: "{{ image_name }}"
+      flavor_ram: "{{ flavor_ram }}"
+      flavor_include: "{{ flavor_include }}"
+      meta:
+          group: "{{ group }}"
+      key_name: "{{ launch_keypair }}"
+  register: node
+- name: Create volumes
+  os_volume:
+      cloud: "{{ cloud }}"
+      size: "{{ item.size }}"
+      display_name: "{{ item.display_name }}"
+  with_items: volumes
+- name: Attach volumes
+  os_compute_volume:
+      cloud: "{{ cloud }}"
+      server_id: "{{ node.id }}"
+      volume_name: "{{ item.display_name }}"
+  with_items: volumes
+  register: attached_volumes
+- debug: var=attached_volumes
+- name: Re-request server to get up to date metadata after the volume loop
+  os_compute_facts:
+      cloud: "{{ cloud }}"
+      name: "{{ name }}"
+  when: attached_volumes.changed
+- name: Wait for SSH to work
+  wait_for: host={{ node.openstack.interface_ip }} port=22
+  when: node.changed == True
+- name: Add SSH host key to known hosts
+  shell: ssh-keyscan "{{ node.openstack.interface_ip|quote }}" &gt;&gt; ~/.ssh/known_hosts
+  when: node.changed == True
+- name: Add all instance public IPs to host group
+  add_host:
+      name: "{{ node.openstack.interface_ip }}"
+      groups: "{{ provision_group }}"
+      openstack: "{{ node.openstack }}"
+  when: attached_volumes|length == 0
+- name: Add all instance public IPs to host and volumes group
+  add_host:
+      name: "{{ node.openstack.interface_ip }}"
+      groups: "{{ provision_group }},hasvolumes"
+      openstack: "{{ node.openstack }}"
+  when: attached_volumes|length != 0
+        </code></pre>
+    </section>
+
+    <section>
+        <h1> Cloud based inventory </h1>
+        <ul>
+            <li> Just ask the cloud for the inventory </li>
+            <li> All of the meta-data the cloud knows is available </li>
+        </ul>
+    </section>
+
+    <section>
+        <pre><code>
+      "pypi.dfw.openstack.org": {
+        "ansible_ssh_host": "23.253.237.8",
+        "openstack": {
+          "HUMAN_ID": true,
+          "NAME_ATTR": "name",
+          "OS-DCF:diskConfig": "MANUAL",
+          "OS-EXT-STS:power_state": 1,
+          "OS-EXT-STS:task_state": null,
+          "OS-EXT-STS:vm_state": "active",
+          "accessIPv4": "23.253.237.8",
+          "accessIPv6": "2001:4800:7817:104:d256:7a33:5187:7e1b",
+          "addresses": {
+            "private": [
+              {
+                "addr": "10.208.195.50",
+                "version": 4
+              }
+            ],
+            "public": [
+              {
+                "addr": "23.253.237.8",
+                "version": 4
+              },
+              {
+                "addr": "2001:4800:7817:104:d256:7a33:5187:7e1b",
+                "version": 6
+              }
+            ]
+          },
+          "cloud": "rax",
+          "config_drive": "",
+          "created": "2014-09-05T15:32:14Z",
+          "flavor": {
+            "id": "performance1-4",
+            "links": [
+              {
+                "href": "https://dfw.servers.api.rackspacecloud.com/610275/flavors/performance1-4",
+                "rel": "bookmark"
+              }
+            ],
+            "name": "4 GB Performance"
+          },
+          "hostId": "adb603d4566efe0392756c76dab38ffcba22099368837c7973321e77",
+          "human_id": "pypidfwopenstackorg",
+          "id": "de672205-9245-46b6-b3df-489ccf9e0c17",
+          "image": {
+            "id": "928e709d-35f0-47eb-b296-d18e1b0a76b7",
+            "links": [
+              {
+                "href": "https://dfw.servers.api.rackspacecloud.com/610275/images/928e709d-35f0-47eb-b296-d18e1b0a76b7",
+                "rel": "bookmark"
+              }
+            ]
+          },
+          "interface_ip": "23.253.237.8",
+          "key_name": "launch-node-root",
+          "links": [
+            {
+              "href": "https://dfw.servers.api.rackspacecloud.com/v2/610275/servers/de672205-9245-46b6-b3df-489ccf9e0c17",
+              "rel": "self"
+            },
+            {
+              "href": "https://dfw.servers.api.rackspacecloud.com/610275/servers/de672205-9245-46b6-b3df-489ccf9e0c17",
+              "rel": "bookmark"
+            }
+          ],
+          "metadata": {},
+          "name": "pypi.dfw.openstack.org",
+          "networks": {
+            "private": [
+              "10.208.195.50"
+            ],
+            "public": [
+              "23.253.237.8",
+              "2001:4800:7817:104:d256:7a33:5187:7e1b"
+            ]
+          },
+          "progress": 100,
+          "region": "DFW",
+          "status": "ACTIVE",
+          "tenant_id": "610275",
+          "updated": "2014-09-05T15:32:49Z",
+          "user_id": "156284",
+          "volumes": [
+            {
+              "HUMAN_ID": false,
+              "NAME_ATTR": "name",
+              "attachments": [
+                {
+                  "device": "/dev/xvdb",
+                  "host_name": null,
+                  "id": "c6f5229c-1cc0-47c4-aab7-60db1f6cf8e8",
+                  "server_id": "de672205-9245-46b6-b3df-489ccf9e0c17",
+                  "volume_id": "c6f5229c-1cc0-47c4-aab7-60db1f6cf8e8"
+                }
+              ],
+              "availability_zone": "nova",
+              "bootable": "false",
+              "created_at": "2014-09-05T14:37:42.000000",
+              "device": "/dev/xvdb",
+              "display_description": null,
+              "display_name": "pypi.dfw.openstack.org/main01",
+              "human_id": null,
+              "id": "c6f5229c-1cc0-47c4-aab7-60db1f6cf8e8",
+              "metadata": {
+                "readonly": "False",
+                "storage-node": "1845027a-5e07-47a1-9572-3eea4716f726"
+              },
+              "os-vol-tenant-attr:tenant_id": "610275",
+              "size": 200,
+              "snapshot_id": null,
+              "source_volid": null,
+              "status": "in-use",
+              "volume_type": "SATA"
+            }
+          ]
+        }
+      },
+        </code></pre>
+    </section>
+
+
+    <section>
+        <h1> Thank you! </h1>
+        <h3>Monty Taylor</h3>
+        <h3> twitter: @e_monty </h3>
+        <h4> <a href='http://inaugust.com/talks/tripleo-ansible.html'>http://inaugust.com/talks/tripleo-ansible.html</a> </h4>
+    </section>
+
+    </div>
+
+    <div class="footer">
+      <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">
+          <img alt="Creative Commons License"
+               style="border-width:0"
+               src="https://i.creativecommons.org/l/by/4.0/88x31.png" />
+      </a><br />
+        Licensed under a
+      <a rel="license"
+         href="http://creativecommons.org/licenses/by/4.0/">
+           Creative Commons Attribution 4.0 International License
+      </a>.
+      <br />
+      Source code available at <a href='http://git.inaugust.com/cgit/inaugust.com'>http://git.inaugust.com/cgit/inaugust.com</a>
+    </div>
+  </div>
+
+  <script src="/lib/js/head.min.js"></script>
+  <script src="/js/reveal.js"></script>
+
+  <script src="/js/this.js"></script>
+
+</body>
+</html>
