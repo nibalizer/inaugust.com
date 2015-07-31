@@ -1,0 +1,498 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+
+    <title>OpenStack: a vision for the future</title>
+
+    <meta name="author" content="Monty Taylor" />
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" href="../css/reveal.min.css">
+    <link rel="stylesheet" href="../css/theme/openstack.css" id="theme">
+
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="../lib/css/zenburn.css">
+
+    <!-- If the query includes 'print-pdf', include the PDF print sheet -->
+    <script>
+      var link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href =
+        window.location.search.match(/print-pdf/gi) ? '../css/print/pdf.css' :
+          '../css/print/paper.css';
+      document.getElementsByTagName('head')[0].appendChild(link);
+    </script>
+  </head>
+  <body>
+
+      <div class="reveal"><div class="slides">
+
+              <section data-state="cover">
+
+                  <h1><span xmlns:dct="http://purl.org/dc/terms/"
+                       href="http://purl.org/dc/dcmitype/InteractiveResource"
+                       property="dct:title"
+                       rel="dct:type">
+                          OpenStack: a vision for the future
+                      </span></h1>
+                      <h3 xmlns:cc="http://creativecommons.org/ns#"
+                       property="cc:attributionName">Monty Taylor</h3>
+                      <h4><a xmlns:cc="http://creativecommons.org/ns#"
+                       rel="cc:attributionURL"
+                       href='http://inaugust.com/talks/a-vision-for-the-future.html'>http://inaugust.com/talks/a-vision-for-the-future.html</a> </h4>
+                      <h3> twitter: @e_monty </h3>
+              </section>
+
+              <section>
+                  <h1>Stanislavski</h1>
+              </section>
+
+
+              <section>
+                  <img src="images/openstack-cloud-software-vertical-large.png" />
+              </section>
+
+              <section id="who-am-i-openstack" class="slide level2">
+                  <h1>Who am I?</h1>
+                  <img style="float:right; margin-right:24pt" src="images/openstack-cloud-software-vertical-large.png" />
+                      <p>Technical Committee</p>
+                      <p>Foundation Board of Directors</p>
+                      <p>Developer Infrastructure Core Team</p>
+              </section>
+
+
+              <section id="who-am-i-openstack" class="slide level2">
+                  <h1>Who am I?</h1>
+                  <img style="float:right; margin-right:24pt" src="images/image39.JPG" />
+                  <p>Undergrad Degree in Theatre Directing</p>
+                  <p>Grad School at CalArts for Lighting Design</p>
+                  <p>Member of the Satori Group</p>
+              </section>
+
+
+              <section>
+                  <h1>Konstantin Sergeyevich Stanislavsky</h1>
+
+                  <h3>Константи́н Серге́евич Станисла́вский</h3>
+                  <p class="fragment">Founder of the Moscow Art Theatre</p>
+
+                  <p class="fragment">"The task of our generation is to liberate art from outmoded tradition, from tired cliché and to give greater freedom to imagination and creative ability."</p>
+
+                  <p class="fragment">Psychological Realism</p>
+              </section>
+
+
+              <section>
+                  <h1>Anton Chekhov</h1>
+                  <p>The Seagull (1898)</p>
+                  <p>Uncle Vanya (1899)</p>
+                  <p>The Three Sisters (1901)</p>
+                  <p>The Cherry Orchard (1904)</p>
+              </section>
+
+
+              <section>
+                  <h1>Moscow Art Theatre</h1>
+
+                  <p>Founded in 1897</p>
+
+                  <p>popular seat prices</p>
+
+                  <p>ensemble ethos</p>
+
+                  <p>realistic theatre</p>
+
+
+              </section>
+
+
+              <section>
+                  <h1>Verisimilitude</h1>
+
+                  <p>the appearance of being true or real</p>
+
+
+              </section>
+
+
+              <section>
+                  <h1>Psychology, Physiology and Neurology</h1>
+
+                  <p class="fragment">First meeting of International Congress of Psychology - Paris, 1889</p>
+
+                  <p class="fragment">Pavlov - Institute of Experimenal Medicine, St. Petersburg, 1891</p>
+
+                  <p class="fragment">(the dogs were in 1901)</p>
+
+                  <p class="fragment">Freud - Interpretation of Dreams 1899</p>
+
+
+              </section>
+
+
+              <section>
+                  <h1>Stanislavski's system</h1>
+
+                  <p>psychophisology</p>
+
+                  <p>interrelation between mind and body</p>
+
+                  <p>Physical Actions and Internal Life are linked</p>
+
+                  <p>Most modern theatre, tv and film actors</p>
+
+
+              </section>
+
+
+              <section>
+                  <h1>Key ideas</h1>
+
+                  <p class="fragment">"What if" (what if I were in the same situtaion as my character)</p>
+
+                  <p class="fragment">Motivation (why)</p>
+
+                  <p class="fragment">Objectives (what do I want)</p>
+
+              </section>
+
+              <section data-transition="zoom">
+                  <h1>Chekhov and Psychological action</h1>
+              </section>
+
+
+              <section data-transition="zoom">
+                  <h1>Emotional Memory</h1>
+              </section>
+
+
+              <section data-transition="zoom">
+                  <h1>Sense Memory</h1>
+              </section>
+
+
+              <section>
+                  <h1>Inside out</h1>
+
+                  <p>like using a programming framework</p>
+
+                  <p>Express the key points - let the framework handle the details</p>
+
+                  <p>Manipulate the emotional life - the body will handle a lot of the details</p>
+
+
+              </section>
+
+
+              <section>
+                  <h1><em>An Actor Prepares</em></h1>
+
+                  <p>For further reading</p>
+
+
+              </section>
+
+
+              <section>
+                  <h1>Lee Strasberg</h1>
+
+                  <p class="fragment">Moscow Art Theatre visited the US in 1923</p>
+
+                  <p class="fragment">Strasberg == Mind Blown</p>
+
+                  <p class="fragment">Dropped out of school and went to study with the Russians</p>
+
+
+              </section>
+
+
+              <section>
+                  <h1>The Group Theatre</h1>
+
+                  <p>New York - 1931</p>
+
+                  <p>Founded by Lee Strassberg, Harold Clurman and Cheryl Crawford</p>
+
+                  <p>Not the same as the Group Theatre in London</p>
+
+                  <p>Believed in Leaderless Operation and Collaborative Work</p>
+
+
+              </section>
+
+
+              <section>
+                  <h1>Sound familiar?</h1>
+              </section>
+
+
+              <section>
+                  <h1>The Method</h1>
+
+                  <p class="fragment">Strasberg took Stanislavski's system and made a training system</p>
+
+                  <p class="fragment">You've probably heard of it</p>
+
+                  <p class="fragment">Marlon Brando, Heath Ledger, Philip Seymor Hoffman, Robert DeNiro, Daniel Day-Lewis, Christian Bale, Al Pacino</p>
+
+
+              </section>
+
+
+              <section>
+                  <h1>Big differences from Stanislavski</h1>
+
+                  <p class="fragment">Emotional Memory becomes Affective Memory</p>
+
+                  <p class="fragment">Substitution - What would make me, the actor, behave in the way the character does</p>
+
+
+              </section>
+
+
+              <section>
+                  <h1>So I was at this bar ...</h1>
+              </section>
+
+
+              <section>
+                  <h1>Clear danger, right?</h1>
+
+                  <p>Notice that Heath Ledger and Philip Seymour Hoffman were in the list</p>
+
+                  <p>Everyone other than Strasberg walked away from pure-emotional immersion</p>
+
+
+              </section>
+
+
+              <section>
+                  <h1>Stanford Meisner</h1>
+
+                  <p>Split from Strasberg - thought emotional memory caused actors to focus on themselves and not the character</p>
+
+                  <p>Concentration on the parter instead</p>
+
+                  <p>live truthfully under imaginary circumstances</p>
+
+              </section>
+
+
+              <section>
+                  <h1>Stella Adler</h1>
+
+                  <p>Broke with Strasberg after studying with Stanislavski</p>
+
+                  <p>Emotion should come from imagination based on given circumstance</p>
+
+
+              </section>
+
+
+              <section>
+                  <h1>Uta Hagen</h1>
+
+                  <p>Another split</p>
+
+                  <p>Basic Object Exercises</p>
+
+                  <p>Start by doing mundane things in front of people</p>
+
+
+              </section>
+
+
+              <section>
+                  <h1>What the heck does this have to do with OpenStack?</h1>
+              </section>
+
+
+              <section>
+                  <h1>All of these people shared a purpose</h1>
+
+                  <p class="fragment">To create truth in realistic acting</p>
+
+
+              </section>
+
+
+              <section>
+                  <h1>All of these people both shared approaches and diverged substantially</h1>
+
+                  <p class="fragment">"What would I do if I were in this circumstance"</p>
+
+                  <p class="fragment">"What would motivate me, the actor, to behave in the way the character does?"</p>
+
+
+              </section>
+
+
+              <section>
+                  <h1>Tadashi Suzuki</h1>
+              </section>
+
+
+              <section>
+                  <h1>The Feet</h1>
+
+                  <p class="fragment">connection to the ground</p>
+                  <p class="fragment">outside in</p>
+                  <p class="fragment">Truth from Physicality, not from Psychological realism</p>
+              </section>
+
+
+              <section>
+                  <h1>The Trojan Women</h1>
+
+                  <p>Drew from Noh, Kabuki and Shingeki tranditions</p>
+
+                  <p>Produce a thing that is "true" to a modern Japanese sensibility</p>
+
+                  <p>Training arose from the need to train replacement actors for the show</p>
+
+
+              </section>
+
+
+              <section>
+                  <h1>SITI Company</h1>
+
+                  <p>Suzuki collaborated with Anne Bogart</p>
+
+                  <p>Added Anne Bogart's Viewpoints to Suzuki's techniques</p>
+
+
+              </section>
+
+
+              <section>
+                  <h1>P3</h1>
+
+                  <p>Robyn Hunt and Steve Pearson studied for 12 year in Japan with Suzuki</p>
+
+                  <p>Moved back to US to teach the techniques</p>
+
+                  <p>Added Shogo Ohta's slow-tempo techniques</p>
+
+
+              </section>
+
+
+              <section>
+                  <h1>Frank</h1>
+
+                  <p>Here in Brisbane</p>
+
+                  <p>Studied with Suzuki - Added Australian content and form</p>
+
+                  <p>Exercies to Nick Cave instead of Japanese Flute</p>
+
+              </section>
+
+
+              <section>
+                  <h1>The training is a tool</h1>
+
+                  <p>An actor might study all of them</p>
+                  <p>Each technique can be useful for different things</p>
+
+
+              </section>
+
+              <section>
+                  <h1>Shakespeare</h1>
+                  <p>Each of these directors has applied their techniques to Shakespeare</p>
+              </section>
+
+              <section>
+                  <h1>They're all useful tools for different hings</h1>
+              </section>
+
+
+              <section>
+                  <h1>Why all this talk about acting techniques?</h1>
+              </section>
+
+
+              <section>
+                  <h1>Four takeaways from the actors</h1>
+                  <p class="fragment">Know what problem they're trying to solve</p>
+                  <p class="fragment">Develop techniques to solve the problem</p>
+                  <p class="fragment">Don't confuse technique with results</p>
+                  <p class="fragment">Be willing to adapt based on new data</p>
+              </section>
+
+
+              <section>
+                  <h1>The problem</h1>
+                  <p class="fragment">Are we chasing psycological realism?</p>
+                  <p class="fragment">Are we chasing physical truth?</p>
+              </section>
+
+
+              <section>
+                  <h1>The problem for us</h1>
+                  <p class="fragment">Are we making a toolkit for people to use to build clouds?</p>
+                  <p class="fragment">Are we making a cloud that can be deployed in multiple places?</p>
+                  <p class="fragment">Are we providing computers?</p>
+              </section>
+
+              <section>
+                  <h1>What I want</h1>
+              </section>
+
+              <section data-transition='zoom'>
+                  <h1>OpenStack should provide computers and networks that work</h1>
+              </section>
+
+              <section data-transition='zoom'>
+                  <h1>OpenStack should not chase 12-factor apps</h1>
+              </section>
+
+              <section data-transition='zoom'>
+                  <h1>OpenStack should provide a happy home for app frameworks</h1>
+              </section>
+
+              <section data-transition='zoom'>
+                  <h1>OpenStack should, by default, give me a directly routable IP</h1>
+              </section>
+
+              <section>
+                  <h1> Thank you! </h1>
+                  <h4> <a href='http://inaugust.com/talks/a-vision-for-the-future.html'>http://inaugust.com/talks/a-vision-for-the-future.html</a> </h4>
+                  <h3> twitter: @e_monty </h3>
+              </section>
+
+          </div>
+          <div class="footer">
+              <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">
+                  <img alt="Creative Commons License"
+                       style="border-width:0"
+                       src="https://i.creativecommons.org/l/by/4.0/88x31.png" />
+              </a><br />
+              Licensed under a
+              <a rel="license"
+                 href="http://creativecommons.org/licenses/by/4.0/">
+                  Creative Commons Attribution 4.0 International License
+              </a>.
+              <br />
+              Source code available at <a href='http://git.inaugust.com/cgit/mordred-talks'>http://git.inaugust.com/cgit/mordred-talks</a>
+          </div>
+
+      </div>
+
+      <script src="../lib/js/head.min.js"></script>
+      <script src="../js/reveal.min.js"></script>
+
+      <script src="../js/this.js"></script>
+
+  </body>
+</html>
+

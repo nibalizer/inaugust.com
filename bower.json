@@ -1,11 +1,11 @@
 {
-  "name": "presentations",
+  "name": "inaugust",
   "version": "1.0.0",
-  "homepage": "https://krotscheck.github.com/presentations",
+  "homepage": "https://inaugust.com",
   "authors": [
-    "Michael Krotscheck <krotscheck@gmail.com>"
+    "Monty Taylor <mordred@inaugust.com>"
   ],
-  "license": "Apache-2.0",
+  "license": "CC-BY 4.0",
   "ignore": [
     "**/.*",
     "node_modules",

@@ -8,9 +8,9 @@
 
   var gulp = require('gulp');
   var git = require('gulp-git');
-  var ghPages = require('gulp-gh-pages');
   var filter = require('gulp-filter');
   var less = require('gulp-less');
+  var rsync = require('gulp-rsync');
   var webserver = require('gulp-webserver');
   var streamqueue = require('streamqueue');
   var ignore = require('gulp-ignore');
@@ -62,7 +62,6 @@
         var $ = cheerio.load(fs.readFileSync(file));
         presentations.push({
           'title': $("head title").text(),
-          'description': $("head meta[name='description']").attr('content'),
           'author': $('head meta[name="author"]').attr('content'),
           'mtime': stat.mtime,
           'path': files[i] + '/index.html'
@@ -216,18 +215,18 @@
    */
   gulp.task('package', ['package:html', 'package:hbs', 'package:libs']);
 
-  /**
-   * Push the contents of the dist directory to gh-pages.
-   */
-  gulp.task('gh-pages', function () {
-    return gulp.src(dir.dist + '/**/*')
-      .pipe(ghPages());
+  gulp.task('rsync', function () {
+    gulp.src('dest/**')
+      .pipe(rsync({
+            root: 'dest',
+            hostname: 'kleos.inaugust.com',
+            destination: '/var/www/inaugust.com/talks'
+      }));
   });
-
   /**
-   * Build the current release package and push it to gh-pages.
+   * Build the current release package and push it
    */
-  gulp.task('release', ['package', 'gh-pages']);
+  gulp.task('release', ['package', 'rsync']);
 
   /**
    * Start a local server and serve the application code. This is
