@@ -27,7 +27,14 @@
   var paths = {
     'html': dir.src + '/**/*.html',
     'hbs': dir.src + '/index.hbs',
-    'index': dir.src + '/index.hbs'
+    'index': dir.src + '/index.hbs',
+    'images': [
+      dir.src + '/**/*.png',
+      dir.src + '/**/*.gif',
+      dir.src + '/**/*.jpg',
+      dir.src + '/**/*.jpeg',
+      dir.src + '/**/*.svg'
+    ]
   };
 
   // Contents of all our bower dependencies' main:[] fields.
@@ -128,6 +135,14 @@
   });
 
   /**
+   * Package all images.
+   */
+  gulp.task('package:images', function () {
+    return gulp.src(paths.images, {'base': dir.src})
+      .pipe(gulp.dest(dir.dist));
+  });
+
+  /**
    * Package the handlebars files.
    */
   gulp.task('package:hbs', function () {
@@ -214,7 +229,8 @@
   /**
    * Package the entire site into the dist folder.
    */
-  gulp.task('package', ['package:html', 'package:hbs', 'package:libs']);
+  gulp.task('package', ['package:html', 'package:hbs', 'package:libs',
+    'package:images']);
 
   /**
    * Push the contents of the dist directory to gh-pages.
@@ -237,6 +253,7 @@
    */
   gulp.task('serve', function () {
     gulp.watch(paths.html, ['package:html']);
+    gulp.watch(paths.images, ['package:images']);
     gulp.watch(paths.hbs, ['package:hbs']);
 
     return gulp.src(dir.dist)
