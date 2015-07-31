@@ -96,6 +96,10 @@
       .pipe(filter('*.css'))
       .pipe(gulp.dest(dir.dist + '/css'));
 
+    var resolveLocalCSS = gulp.src(dir.src + '/css/**/*')
+      .pipe(filter('*.css'))
+      .pipe(gulp.dest(dir.dist + '/css'));
+
     var resolveLESS = gulp.src(bowerFiles)
       .pipe(filter('*.less'))
       .pipe(less())
@@ -106,6 +110,10 @@
       .pipe(gulp.dest(dir.dist + '/fonts'));
 
     var resolveLibs = gulp.src(bowerFiles)
+      .pipe(filter('*.js'))
+      .pipe(gulp.dest(dir.dist + '/js'));
+
+    var resolveLocalLibs = gulp.src(dir.src + '/js/**/*')
       .pipe(filter('*.js'))
       .pipe(gulp.dest(dir.dist + '/js'));
 
@@ -122,8 +130,9 @@
       ]))
       .pipe(gulp.dest(dir.dist));
 
-    return streamqueue({'objectMode': true}, resolveCSS, resolveLESS,
-      resolveReveal, resolveLibs, resolveFonts);
+    return streamqueue({'objectMode': true}, resolveCSS, resolveLocalCSS,
+      resolveLESS, resolveReveal,
+      resolveLibs, resolveLocalLibs, resolveFonts);
   });
 
   /**
