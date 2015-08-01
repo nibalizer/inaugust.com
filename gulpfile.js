@@ -300,11 +300,12 @@
     'package:images', 'package:css', 'package:js']);
 
   gulp.task('rsync', function () {
-    gulp.src('dest/**')
+    gulp.src(dir.dist)
       .pipe(rsync({
-            root: 'dest',
+            root: dir.dist,
             hostname: 'kleos.inaugust.com',
-            destination: '/var/www/inaugust.com/talks'
+            destination: '/var/www/inaugust.com',
+            recursive: true
       }));
   });
   /**
