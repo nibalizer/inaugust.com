@@ -308,10 +308,18 @@
             recursive: true
       }));
   });
+
+  gulp.task('push', function () {
+    gulp.src(dir.dist)
+      git.push('origin', 'master', function (err) {
+        if (err) throw err;
+      });
+  });
+
   /**
    * Build the current release package and push it
    */
-  gulp.task('release', ['package', 'rsync']);
+  gulp.task('release', ['package', 'rsync', 'push']);
 
   /**
    * Start a local server and serve the application code. This is
