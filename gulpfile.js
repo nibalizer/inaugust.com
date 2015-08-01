@@ -118,7 +118,7 @@
   }
 
   function performTemplateChange(content) {
-    var file = dir.src + '/templates/post.hbs';
+    var file = dir.src + '/layout/post.hbs';
     var stat = fs.statSync(file);
     return fs.readFileSync(file, {'encoding': 'utf-8'});
   }
