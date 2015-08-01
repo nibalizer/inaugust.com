@@ -18,24 +18,24 @@ Reveal.initialize({
 	// Optional libraries used to extend on reveal.js
 	dependencies: [
                 {
-                    src: '../lib/js/classList.js', condition: function () {
+                    src: '/lib/js/classList.js', condition: function () {
                     return !document.body.classList;
                 }
                 },
                 {
-                    src: '../plugin/markdown/marked.js',
+                    src: '/plugin/markdown/marked.js',
                     condition: function () {
                         return !!document.querySelector('[data-markdown]');
                     }
                 },
                 {
-                    src: '../plugin/markdown/markdown.js',
+                    src: '/plugin/markdown/markdown.js',
                     condition: function () {
                         return !!document.querySelector('[data-markdown]');
                     }
                 },
                 {
-                    src: '../plugin/highlight/highlight.js',
+                    src: '/plugin/highlight/highlight.js',
                     async: true,
                     condition: function () {
                         return !!document.querySelector('pre code');
@@ -44,8 +44,8 @@ Reveal.initialize({
                         hljs.initHighlightingOnLoad();
                     }
                 },
-                {src: '../plugin/zoom-js/zoom.js', async: true},
-                {src: '../plugin/notes/notes.js', async: true}
+                {src: '/plugin/zoom-js/zoom.js', async: true},
+                {src: '/plugin/notes/notes.js', async: true}
 	]
 });
 

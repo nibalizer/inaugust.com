@@ -4,58 +4,9 @@
   <head>
     <meta charset="utf-8">
 
-    <title>TripleO and Ansible</title>
-
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
-    <link rel="stylesheet" href="/css/reveal.css">
-    <link rel="stylesheet" href="/css/theme/openstack.css" id="theme">
-
-    <!-- For syntax highlighting -->
-    <link rel="stylesheet" href="/lib/css/zenburn.css">
-
-    <!-- If the query includes 'print-pdf', include the PDF print sheet -->
-    <script>
-    if( window.location.search.match( /print-pdf/gi ) ) {
-        var link = document.createElement( 'link' );
-        link.rel = 'stylesheet';
-        link.type = 'text/css';
-        link.href = '/css/print/pdf.css';
-        document.getElementsByTagName( 'head' )[0].appendChild( link );
-    }
-    </script>
-
+    <title>NoOps with Ansible and Puppet</title>
   </head>
   <body>
-
-  <div class="background">
-      <img alt="" id="head-icon" width="218" height="67"
-           src="/images/openstack-cloud-software-horizontal-small.png" /></div>
-
-
-  <div class="reveal">
-    <div class="slides">
-
-      <section data-state="cover">
-        <img src="/images/openstack-cloud-software-vertical-large.png"
-             alt="OpenStack" id="cover"/>
-
-          <h1><span xmlns:dct="http://purl.org/dc/terms/"
-                    href="http://purl.org/dc/dcmitype/InteractiveResource"
-                    property="dct:title"
-                    rel="dct:type">
-                TripleO and Ansible
-        </span></h1>
-          <h3 xmlns:cc="http://creativecommons.org/ns#"
-              property="cc:attributionName">Monty Taylor</h3>
-          <h4><a xmlns:cc="http://creativecommons.org/ns#"
-                 rel="cc:attributionURL"
-                 href='http://inaugust.com/talks/tripleo-ansible.html'>http://inaugust.com/talks/tripleo-ansible.html</a> </h4>
-          <h3> twitter: @e_monty </h3>
-      </section>
 
       <section id="who-am-i" class="slide level2">
           <h1>Who am I?</h1>
@@ -63,279 +14,244 @@
               <li>Distinguished Technologist at HP</li>
               <li>OpenStack Technical Committee</li>
               <li>OpenStack Foundation Board of Directors</li>
-              <li>OpenStack Infra Core Team</li>
+              <li>OpenStack Developer Infrastructure Core Team</li>
+              <li>Former Consultant for MySQL, Inc</li>
+              <li>Former Drizzle Core Developer</li>
           </ul>
       </section>
 
       <section id="what-are-we-going-to-talk-about" class="slide level2">
           <h1>What are we going to talk about?</h1>
           <ul>
-              <li>TripleO</li>
-              <li>Ironic</li>
+              <li>NoOps</li>
+              <li>Cloud Applications</li>
+              <li>Puppet</li>
               <li>Ansible</li>
           </ul>
       </section>
 
-      <section>
-          <h1>What is TripleO?</h1>
+      <section id="no-ops" class="slide level2">
+          <h1>NoOps</h1>
+          <p class="fragment">NoOps means developers can code and let a service deploy, manage and scale their code</p>
+          <p class="fragment">I don't want to "do ops"</p>
+          <p class="fragment">I want to change the system by landing commits</p>
+          <p class="fragment">If I have to use my root access, it's a bug</p>
+      </section>
+
+      <section id="cloud-native" class="slide level2">
+          <h1>Cloud Native</h1>
           <ul>
-              <li class="fragment"> an idea </li>
-              <li class="fragment"> OpenStack On OpenStack </li>
-              <li class="fragment"> use Ironic-based OpenStack to Operate Openstack </li>
+              <li>Ephemeral Compute</li>
+              <li>Data services</li>
+              <li>Design your applications to be resilient via scale out</li>
           </ul>
       </section>
 
+      <section id="cloud-scale-out" class="slide level2">
+          <h1>Cloud Scale Out</h1>
+          <ul>
+              <li>Forget HA of one system</li>
+              <li>Forget long-lived systems</li>
+              <li>Shared-nothing for EVERYTHING</li>
+          </ul>
+      </section>
 
-          <section>
-              <h1>Velocity</h1>
-              <ul>
-                  <li>Cloud Empowers <em>developers</em></li>
-                  <li>Cloud Enables Increased Velocity</li>
-                  <li>Cloud Drives Agility</li>
-              </ul>
-          </section>
+      <section id="cloud-scale-out-is-great-for-new-applications" class="slide level2">
+          <h1>Cloud Scale Out is great for new applications</h1>
+      </section>
 
-          <section>
-              <a href="#/2" class="image"><img src="/images/openstack-software-diagram.png" width="90%"></a>
-              <aside class="notes">
-                  Perhaps you've seen this before. <br>
-                  Even with addition of lots of PaaS projects, the abstraction here still holds.
-              </aside>
-          </section>
-
-          <section>
-              <h1>OpenStack is not a virtualization layer,
-                  it's an abstraction layer.</h1>
-              <aside class="notes">
-                  When Danny Sabah @ IBM said this, it hit home for me. I had already been working on Ironic for a year.<br>
-                  KVM, NFV ... <br>
-                  Virtualization is a powerful tool. Abstraction empowers people.<br>
-                  OpenStack community is thriving because of the power of open abstractions layers.
-              </aside>
-          </section>
+      <section id="what-about-existing-applications" class="slide level2">
+          <h1>What about existing applications?</h1>
+      </section>
 
       <section>
-          <section>
-              <h1>What if your <em>developers</em> aren't writing Angry Birds?</h1>
+          <section id="openstack-infra" data-transition='zoom'>
+              <h1>OpenStack Infra</h1>
           </section>
 
-          <section>
-              <h1>What if your <em>developers</em> aren't developers?</h1>
+          <section id="tooling-automation-and-ci-for-openstack-project" class="slide level2" data-transition='zoom'>
+              <h1>Tooling, Automation and CI for OpenStack Project</h1>
           </section>
 
-          <section>
-              <h3>If infrastructure is code ...</h3>
-              <h1>What  if your <em>developers</em> are <em>operators</em>?</h1>
+          <section id="developers" class="slide level2" data-transition='zoom'>
+              <h1>2000 Developers</h1>
           </section>
 
-          <section>
-              <img src="/images/ugly-openstack.jpg" />
+          <section id="gated-commits" class="slide level2" data-transition='zoom'>
+              <h1>Gated Commits</h1>
+              <p>Every commit is fully integration tested (twice) before landing</p>
           </section>
 
-          <section>
-              <h1>Why wouldn't you give your operators the same power as your
-                  developers?</h1>
-              <p>Don't you like them?</p>
+          <section id="each-test-runs-on-a-single-use-cloud-slave" class="slide level2" data-transition='zoom'>
+              <h1>Each Test Runs on a Single Use Cloud Slave</h1>
+              <p>This is that "cloud scale out" part</p>
+          </section>
+
+          <section id="million-test-jobs-in-the-last-6-months" class="slide level2" data-transition='zoom'>
+              <h1>1.7 Million Test Jobs in the last 6 Months</h1>
+          </section>
+
+          <section id="15-million-tests-in-december" class="slide level2" data-transition='zoom'>
+              <h1>15 Million Tests in December</h1>
+          </section>
+
+          <section id="terabytes-of-log-data-in-six-months" class="slide level2" data-transition='zoom'>
+              <h1>18 Terabytes of Log Data in six months</h1>
+          </section>
+
+          <section id="we-have-no-servers" class="slide level2" data-transition='zoom'>
+              <h1>We have no servers</h1>
+              <p>It all runs across HP and Rackspace Public Clouds.</p>
           </section>
 
       </section>
 
-      <section>
-          <h1><i>Ironic</i> is a service capable of<br>
-              managing and provisioning<br>
-              <i>physical machines</i>.</h1>
-          <aside class="notes">
-              Do one thing and do it well. Ready-state-GO!<br>
-              Vendor neutral API. Distributed control plane.<br>
-              Deploy images to reduce entropy. Servers are cattle, not pets.<br>
-              Can use stand-alone, but not simple today.
-          </aside>
+      <section id="architecture" class="slide level2">
+          <h1>Architecture</h1>
+          <p><img src="/images/infra_architecture.jpg" alt="image" /></p>
       </section>
 
-      <section>
-          <h1>Nova + Ironic</h1>
-          Same but different
-          <aside class="notes">
-              User gets same Nova API. Abstraction is maintained.<br>
-              What are the benefits using Nova? (sched, flavors, etc)<br>
-              Talk briefly about evolution from nova-baremetal.
-          </aside>
+      <section id="it-didnt-start-this-way" class="slide level2">
+          <h1>It didn't start this way</h1>
+          <p><img src="/images/original.jpg" alt="image" /></p>
       </section>
 
-      <section>
-          <a href="#/2" class="image"><img src="/images/ironic-nova-layer.jpg"></a>
-          <aside class="notes">
-              Talk through the slide<br>
-              Going to show some examples next
-          </aside>
+      <section id="step-one-puppet" class="titleslide slide level1">
+          <h1>Step One: Puppet</h1>
       </section>
-      <section>
+
+      <section id="overview" class="slide level2">
+          <h1>Overview</h1>
+          <ul>
+              <li>Open Source Config Management System</li>
+              <li>Written in Ruby</li>
+              <li>Models intended state</li>
+              <li>Wants to own entire system</li>
+          </ul>
+      </section>
+
+      <section id="config-management-is-great" class="slide level2">
+          <h1>Config Management is Great</h1>
+          <ul>
+              <li>Repeatable and consistent machines</li>
+              <li>Code Review</li>
+              <li>Collaboration from non-root users</li>
+              <li>Less repetition for me</li>
+              <li>Open Source Infrastructure</li>
+              <li><a href="http://git.openstack.org/cgit/openstack-infra/system-config/">http://git.openstack.org/cgit/openstack-infra/system-config/</a></li>
+              <li><a href="http://puppetdb.openstack.org/">http://puppetdb.openstack.org/</a></li>
+          </ul>
+      </section>
+
+      <section id="ruby-dsl" class="slide level2">
+          <h1>Ruby DSL</h1>
           <pre><code>
-$ ironic node-create -d pxe_ipmitool \
-  -i ipmi_username=admin -i ipmi_password=fake -i ipmi_address=10.1.2.3 \
-  -p cpus=4 -p memory_mb=8192 -p local_gb=500 \
-  -e note='spare server'
-+--------------+------------------------------------------------------------+
-| Property     | Value                                                      |
-+--------------+------------------------------------------------------------+
-| chassis_uuid | None                                                       |
-| driver       | pxe_ipmitool                                               |
-| driver_info  | {u'ipmi_address': u'10.1.2.3', u'ipmi_username': u'admin', |
-|              | u'ipmi_password': u'fake'}                                 |
-| extra        | {u'note': u'spare server'}                                 |
-| properties   | {u'memory_mb': u'8192', u'local_gb': u'500', u'cpus': u'4'}|
-| uuid         | 7a1ce8d0-9679-4d87-8f54-b11f6e8adb8f                       |
-+--------------+------------------------------------------------------------+
-          </code></pre>
-      </section>
-      <section>
-          <pre><code>
-$ tail -f /var/log/nova/n-cpu.log
-...
-2014-05-01 03:47:05.878 AUDIT nova.compute.resource_tracker [-]
-    Free ram (MB): 8192
-2014-05-01 03:47:05.878 AUDIT nova.compute.resource_tracker [-]
-    Free disk (GB): 500
-2014-05-01 03:47:05.878 AUDIT nova.compute.resource_tracker [-]
-    Free VCPUS: 4
+package { 'git':
+  ensure =&gt; 'present',
+}
           </code></pre>
       </section>
 
-      <section>
-          <h1>Diversity is good</h1>
+      <section id="leaky-abstraction" class="slide level2">
+          <h1>Leaky Abstraction</h1>
+          <pre><code>
+if !defined(Package['git']) {
+  package { 'git':
+    ensure =&gt; 'present',
+  }
+}
+          </code></pre>
+      </section>
+
+      <section id="three-ways-to-run" class="slide level2">
+          <h1>Three ways to run</h1>
           <ul>
-              <li>Cloud providers: HP, Rackspace, Dreamhost, Cloudwatt</li>
-              <li>Deployments: Public, Managed, Private</li>
-              <li>Compute drivers: virtual, bare metal, container</li>
-              <li>Ironic drivers: pxe/impi, ilo, HP OneView</li>
+              <li>puppet apply</li>
+              <li>puppetmaster + puppet agent daemons</li>
+              <li>puppetmaster + puppet agent non-daemon</li>
           </ul>
       </section>
 
-      <section>
-          <h1>What can you do?</h1>
-          <h3 class="fragment">anything - it's a cloud</h3>
+      <section id="managing-users-and-ssh-keys" class="slide level2">
+          <h1>Managing users and ssh keys</h1>
+          <pre><code>
+define user::virtual::localuser(
+  $realname,
+  $groups     = [ 'sudo', 'admin', ],
+  $sshkeys    = '',
+  $key_id     = '',
+  $old_keys   = [],
+  $shell      = '/bin/bash',
+  $home       = "/home/${title}",
+  $managehome = true
+) {
+
+  group { $title:
+    ensure =&gt; present,
+  }
+          </code></pre>
       </section>
 
-      <section>
-          <h1>What the heck has the TripleO team been doing then?</h1>
-          <img src="/images/worstcat-lettuce.jpg" />
+      <section id="managing-users-and-ssh-keys-2" class="slide level2">
+          <h1>Managing users and ssh keys (cont.)</h1>
+          <pre><code>
+  user { $title:
+    ensure     =&gt; present,
+    comment    =&gt; $realname,
+    gid        =&gt; $title,
+    groups     =&gt; $groups,
+    home       =&gt; $home,
+    managehome =&gt; $managehome,
+    membership =&gt; 'minimum',
+    shell      =&gt; $shell,
+    require    =&gt; Group[$title],
+  }
+          </code></pre>
       </section>
 
-      <section>
-          <h1>TripleO</h1>
+      <section id="managing-users-and-ssh-keys-3" class="slide level2">
+          <h1>Managing users and ssh keys (cont.)</h1>
+          <pre><code>
+  ssh_authorized_key { $key_id:
+    ensure  =&gt; present,
+    key     =&gt; $sshkeys,
+    user    =&gt; $title,
+    type    =&gt; 'ssh-rsa',
+  }
+
+  if ( $old_keys != [] ) {
+    ssh_authorized_key { $old_keys:
+      ensure =&gt; absent,
+      user   =&gt; $title,
+    }
+  }
+}
+          </code></pre>
+      </section>
+
+      <section id="our-code-is-open-source-right-what-about-passwords-and-keys-..." class="slide level2">
+          <h1>Our code is Open Source, right? What about passwords and keys ...</h1>
+      </section>
+
+      <section id="hiera" class="slide level2">
+          <h1>hiera</h1>
           <ul>
-              <li>Community developed</li>
-              <li>Opinionated</li>
-              <li>Avoid distro and config management religion</li>
-              <li>Be a usable <em>real</em> deployment we can gate on</li>
+              <li>Simple YAML database, sits on puppetmaster</li>
+              <li>Use it for secret data</li>
+              <li>puppet code is still complete</li>
           </ul>
-      </section>
-
-      <section>
-          <h1> Community Developed </h1>
-          <ul>
-              <li>Exist as part of the OpenStack project</li>
-              <li>Prove the story end to end</li>
-              <li>Subject to TC governance</li>
-              <li>Tighter feedback loop</li>
-          </ul>
-      </section>
-
-      <section>
-          <h1> Avoid distro and config management religion </h1>
-          <ul>
-              <li>rpm vs. deb - in the gate == rpm + deb</li>
-              <li>puppet vs. chef vs. salt vs. ansible == all of them</li>
-              <li>Choosing one excludes other folks from participating</li>
-          </ul>
-      </section>
-
-      <section>
-          <h1> Opinionated </h1>
-          <ul>
-              <li>Golden Images</li>
-              <li>Upgrade tied to HA</li>
-              <li>Target Continual Delivery</li>
-              <li>Drive fixes into OpenStack directly</li>
-          </ul>
-      </section>
-
-      <section>
-          <h1>Major Components</h1>
-          <ul>
-              <li>nova+ironic</li>
-              <li>heat</li>
-              <li>diskimage-builder</li>
-              <li>os-collect-config</li>
-              <li>os-apply-config</li>
-              <li>os-refresh-config</li>
-          </ul>
-      </section>
-
-      <section>
-          <h1>Lesson from os-*-config</h1>
-          <img class="fragment" src="/images/worstcat-dog.jpg" />
-      </section>
-
-      <section>
-          <h1>Lesson from os-*-config</h1>
-          <img class="fragment" src="/images/standards.png" />
-      </section>
-
-      <section>
-          <h1>Lesson from os-*-config</h1>
-          <p>If you ever think "oh, that's silly, it would be so much easier
-          if I just ..."<br /> it will almost never actually be easier if you
-             just ...</p>
-      </section>
-
-      <section>
-          <h1>The Deployment Story</h1>
-          <ol>
-              <li>disk-image-builder builds images and uploads to glance</li>
-              <li>Heat drives Nova/Ironic</li>
-              <li>Heat delivers metadata to os-collect-config</li>
-              <li>os-collect-config applies any in-instance changes needed</li>
-          </ol>
-      </section>
-
-      <section>
-          <h1>The Update Story</h1>
-          <p>Heat magically just updates things</li>
-      </section>
-
-      <section>
-          <h1>BUT I ALREADY USE ?????</h1>
-          <h3>(screw you guys, I'm going home)</h3>
-      </section>
-
-      <section>
-          <h1>Yeah, I do to</h1>
-          <h3>(I use puppet and ansible myself)</h3>
-      </section>
-
-      <section>
-          <h1>That's fine - use them - it's a cloud!</h1>
-          <h3 class="fragment">This is supposed to be empowering, not enforcing</h3>
-      </section>
-
-      <section>
-          <h1>Whatever you want!</h1>
-          <ul>
-              <li>Heat to deploy and update images, os-*-*config for config</li>
-              <li>Heat to deploy images, ansible to update images, puppet for config</li>
-              <li>Ansible to deploy base image + packages, salt to update packages, chef for config</li>
-              <li>juju to deploy ... nah, I'm just kidding</li>
-          </ul>
-      </section>
-
-      <section>
-          <h1>The New Update Story</h1>
-          <p>Ansible takes over for upgrades</p>
+          <pre><code>
+node default {
+  class { 'openstack_project::server':
+    sysadmins =&gt; hiera('sysadmins', []),
+  }
+}
+          </code></pre>
+          <p>Breaks ability to use simple puppet apply</p>
       </section>
 
       <section id="step-two-ansible-for-orchestration" class="titleslide slide level1">
-          <h1>Ansible for Orchestration</h1>
+          <h1>Step Two: Ansible for Orchestration</h1>
       </section>
 
       <section id="about-ansible" class="slide level2">
@@ -447,7 +363,7 @@ ansible-playbook -f 10 /etc/ansible/clean_workspaces.yaml --extra-vars "project=
 
       <section id="puppet-role" class="slide level2">
           <h1>puppet role</h1>
-          <p>roles/remote_puppet/tasks/main.yml</p>
+          <p>roles/puppet/tasks/main.yml</p>
       </section>
 
       <section id="remote-puppet-playbook" class="slide level2">
@@ -457,15 +373,15 @@ ansible-playbook -f 10 /etc/ansible/clean_workspaces.yaml --extra-vars "project=
   gather_facts: false
   max_fail_percentage: 1
   roles:
-    - { role: remote_puppet, puppetmaster: puppetmaster.openstack.org }
+    - { role: puppet, puppetmaster: puppetmaster.openstack.org }
 - hosts: review.openstack.org
   gather_facts: false
   roles:
-    - { role: remote_puppet, puppetmaster: puppetmaster.openstack.org }
+    - { role: puppet, puppetmaster: puppetmaster.openstack.org }
 - hosts: "!review.openstack.org:!git0*:!afs*"
   gather_facts: false
   roles:
-    - { role: remote_puppet, puppetmaster: puppetmaster.openstack.org }
+    - { role: puppet, puppetmaster: puppetmaster.openstack.org }
       </pre></code>
       </section>
 
@@ -475,7 +391,7 @@ ansible-playbook -f 10 /etc/ansible/clean_workspaces.yaml --extra-vars "project=
               <li>List of servers to operate on</li>
               <li>Optionally variables associated with each server</li>
               <li>Optional groups of servers</li>
-              <li>Simple file in /etc/ansible/hosts</li>
+              <li>Simple yaml file in /etc/ansible/hosts</li>
               <li>Dynamic executable that returns JSON</li>
           </ul>
       </section>
@@ -520,7 +436,7 @@ print json.dumps(data, sort_keys=True, indent=2)
       </section>
 
       <section>
-          <h1>Ansible for Cloud Management</h1>
+          <h1>Step Three: Ansible for Cloud Management</h1>
       </section>
 
       <section>
@@ -536,10 +452,31 @@ print json.dumps(data, sort_keys=True, indent=2)
       <section>
           <h1>Consider this data</h1>
           <pre><code>
+pypi.dfw.openstack.org:
+  image_name: Ubuntu 12.04.4
+  flavor_ram: 2048
+  region: DFW
+  cloud: rackspace
+  volumes:
+    - size: 200
+      mount: /srv
+pypi.region-b.geo-1.openstack.org:
+  image_name: Ubuntu 12.04.4
+  flavor_ram: 2048
+  region: region-b.geo-1
+  cloud: hp
+  volumes:
+    - size: 200
+      mount: /srv
+          </code></pre>
+    </section>
+
+      <section>
+          <h1>Further consider this data</h1>
+          <pre><code>
 pypi:
   image_name: Ubuntu 12.04.4
   flavor_ram: 2048
-  provision_group: ubuntu_hosts
   volumes:
     - size: 200
       mount: /srv
@@ -633,6 +570,7 @@ pypi:
         <ul>
             <li> Just ask the cloud for the inventory </li>
             <li> All of the meta-data the cloud knows is available </li>
+            <li> No need for puppetmaster now </li>
         </ul>
     </section>
 
@@ -759,36 +697,15 @@ pypi:
         </code></pre>
     </section>
 
-
     <section>
-        <h1> Thank you! </h1>
-        <h3>Monty Taylor</h3>
-        <h3> twitter: @e_monty </h3>
-        <h4> <a href='http://inaugust.com/talks/tripleo-ansible.html'>http://inaugust.com/talks/tripleo-ansible.html</a> </h4>
+        <h1> Wait - what about secrets? </h1>
+        <p class="fragment">ansible can just pass secrets to puppet apply as parameters </p>
     </section>
 
-    </div>
-
-    <div class="footer">
-      <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">
-          <img alt="Creative Commons License"
-               style="border-width:0"
-               src="https://i.creativecommons.org/l/by/4.0/88x31.png" />
-      </a><br />
-        Licensed under a
-      <a rel="license"
-         href="http://creativecommons.org/licenses/by/4.0/">
-           Creative Commons Attribution 4.0 International License
-      </a>.
-      <br />
-      Source code available at <a href='http://git.inaugust.com/cgit/inaugust.com'>http://git.inaugust.com/cgit/inaugust.com</a>
-    </div>
-  </div>
-
-  <script src="/lib/js/head.min.js"></script>
-  <script src="/js/reveal.js"></script>
-
-  <script src="/js/this.js"></script>
+    <section>
+        <h1> Step Four: Just get rid of puppet ... </h1>
+        <p class="fragment">but that's another talk</p>
+    </section>
 
 </body>
 </html>

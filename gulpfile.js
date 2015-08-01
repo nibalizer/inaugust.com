@@ -69,14 +69,15 @@
     var files = fs.readdirSync(paths.talks);
 
     for (var i = 0; i < files.length; i++) {
-      var file = paths.talks + '/' + files[i] + '/index.html';
+      var file = paths.talks + '/' + files[i];
       try {
         var stat = fs.statSync(file);
         var $ = cheerio.load(fs.readFileSync(file));
         presentations.push({
           'title': $("head title").text(),
+          'description': $("head meta[name='description']").attr('content'),
           'mtime': stat.mtime,
-          'path': files[i] + '/index.html'
+          'path': 'talks/' + files[i].replace('.hbs', '.html')
         });
       } catch (e) {
         // Do nothing
@@ -119,6 +120,12 @@
 
   function performTemplateChange(content) {
     var file = dir.src + '/layout/post.hbs';
+    var stat = fs.statSync(file);
+    return fs.readFileSync(file, {'encoding': 'utf-8'});
+  }
+
+  function performTalkTemplateChange(content) {
+    var file = dir.src + '/layout/talk.hbs';
     var stat = fs.statSync(file);
     return fs.readFileSync(file, {'encoding': 'utf-8'});
   }
@@ -201,7 +208,7 @@
   /**
    * Package the handlebars files.
    */
-  gulp.task('package:talks', function () {
+  gulp.task('package:talkindex', function () {
 
     var templateData = {
       'presentations': buildPresentationManifest(),
@@ -209,7 +216,7 @@
     };
 
     // Automatically build the site list.
-    return gulp.src(paths.talks + '/index.hbs', {'base': dir.src})
+    return gulp.src(dir.src + '/talks.hbs', {'base': dir.src})
       .pipe(handlebars(templateData, handlebarsConfig))
       .pipe(rename(function (path) {
         path.extname = ".html";
@@ -253,6 +260,31 @@
           'body': $("body").html(),
         }}))
       .pipe(change(performTemplateChange))
+      .pipe(handlebars(templateData, handlebarsConfig))
+      .pipe(rename(function (path) {
+        path.extname = ".html";
+      }))
+      .pipe(gulp.dest(dir.dist));
+  });
+
+
+  gulp.task('package:talks', function () {
+
+    var templateData = {
+      'author': packageJson.author
+    };
+
+    // Automatically build the site list.
+    return gulp.src(dir.src + '/talks/*.hbs', {'base': dir.src})
+      .pipe(data(function(file) {
+        var stat = fs.statSync(file.path);
+        var $ = cheerio.load(fs.readFileSync(file.path));
+        return {
+          'title': $("head title").text(),
+          'description': $("head meta[name='description']").attr('content'),
+          'body': $("body").html(),
+        }}))
+      .pipe(change(performTalkTemplateChange))
       .pipe(handlebars(templateData, handlebarsConfig))
       .pipe(rename(function (path) {
         path.extname = ".html";
@@ -328,9 +360,10 @@
   /**
    * Package the entire site into the dist folder.
    */
-  gulp.task('package', ['package:html', 'package:talks',
-    'package:posts',
-    'package:postindex', 'package:libs',
+  gulp.task('package', ['package:html',
+    'package:talks', 'package:talkindex',
+    'package:posts', 'package:postindex',
+    'package:libs',
     'package:images', 'package:css', 'package:js']);
 
   gulp.task('rsync', function () {

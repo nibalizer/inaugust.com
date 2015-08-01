@@ -5,51 +5,9 @@
     <meta charset="utf-8">
 
     <title>glean: a minimal non-cloud-init cloud-init</title>
-
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
-    <link rel="stylesheet" href="/css/reveal.css">
-    <link rel="stylesheet" href="/css/theme/openstack.css" id="theme">
-
-    <!-- For syntax highlighting -->
-    <link rel="stylesheet" href="/lib/css/zenburn.css">
-
-    <!-- If the query includes 'print-pdf', include the PDF print sheet -->
-    <script>
-    if( window.location.search.match( /print-pdf/gi ) ) {
-        var link = document.createElement( 'link' );
-        link.rel = 'stylesheet';
-        link.type = 'text/css';
-        link.href = '/css/print/pdf.css';
-        document.getElementsByTagName( 'head' )[0].appendChild( link );
-    }
-    </script>
-
   </head>
   <body>
 
-  <div class="background"></div>
-
-  <div class="reveal">
-      <div class="slides">
-
-          <section data-state="cover">
-              <h1><span xmlns:dct="http://purl.org/dc/terms/"
-                   href="http://purl.org/dc/dcmitype/InteractiveResource"
-                   property="dct:title"
-                   rel="dct:type">
-                      glean: a minimal non-cloud-init cloud-init
-                  </span></h1>
-                  <h3 xmlns:cc="http://creativecommons.org/ns#"
-                   property="cc:attributionName">Monty Taylor</h3>
-                  <h4><a xmlns:cc="http://creativecommons.org/ns#"
-                   rel="cc:attributionURL"
-                   href='http://inaugust.com/talks/os-client-config.html'>http://inaugust.com/talks/glean.html</a> </h4>
-                  <h3> twitter: @e_monty </h3>
-          </section>
 
           <section>
               <h1>When you boot a VM, it needs boot time data or bootstrapping</h1>
@@ -183,27 +141,6 @@ disk-image-create -o debian.qcow2 debian-minimal vm simple-init
           </section>
 
       </div>
-
-      <div class="footer">
-          <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">
-              <img alt="Creative Commons License"
-                   style="border-width:0"
-                   src="https://i.creativecommons.org/l/by/4.0/88x31.png" />
-          </a><br />
-          Licensed under a
-          <a rel="license"
-             href="http://creativecommons.org/licenses/by/4.0/">
-              Creative Commons Attribution 4.0 International License
-          </a>.
-          <br />
-          Source code available at <a href='http://git.inaugust.com/cgit/inaugust.com'>http://git.inaugust.com/cgit/inaugust.com</a>
-      </div>
-  </div>
-
-  <script src="/lib/js/head.min.js"></script>
-  <script src="/js/reveal.js"></script>
-
-  <script src="/js/this.js"></script>
 
 </body>
 </html>
