@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+
+    <title>OpenStack works ... who cares?</title>
+
+  </head>
+  <body>
+
+              <section id="who-am-i-hp" class="slide level2">
+                  <h1>Who am I?</h1>
+                  <img style="float:right; margin-right:24pt" src="/images/ibm-logo.png"/>
+                  <p> Distinguished Engineer </p>
+                  <p> IBM Cloud </p>
+              </section>
+
+              <section id="who-am-i-openstack" class="slide level2">
+                  <h1>Who am I?</h1>
+                  <img style="float:right; margin-right:24pt" src="/images/openstack-cloud-software-vertical-large.png" />
+                      <p>Technical Committee</p>
+                      <p>Foundation Board of Directors</p>
+                      <p>Developer Infrastructure Core Team</p>
+              </section>
+
+              <section id="what-are-we-going-to-talk-about" class="slide level2">
+                  <h1>What are we going to talk about?</h1>
+                  <ul>
+                      <li>OpenStack</li>
+                      <li>My application</li>
+                      <li>Your applications</li>
+                  </ul>
+              </section>
+
+              <section class="slide level2">
+                  <img src="/images/openstack-software-diagram.png"
+                       alt="OpenStack" />
+              </section>
+
+              <section class="slide level2">
+                  <p>As an application developer,<br />
+                  I want to deploy and run an application on the internet<br />
+                  so that my customers all over the world can consume it.</p>
+              </section>
+
+              <section class="slide level2">
+                  <p>As an application developer,<br />
+                  I want to deploy and run an application in a location of my choosing<br />
+                  so that I can comply with regulatory demands.</p>
+              </section>
+
+              <section class="slide level2">
+                  <p>As an application developer,<br />
+                  I want to deploy the application across multiple clouds<br />
+                  so that my service survives issues in any one of them.</p>
+              </section>
+
+              <section class="slide level2">
+                  <h1>THIS WORKS</h1>
+                  <h3>I'm doing it myself as we speak</h3>
+                  <img style="float:right; margin-right:24pt" src="/images/graphite.openstack.org.png"/>
+
+
+                  <p class='fragment'>10-20k VMs per-day</p>
+                  <p class='fragment'>3 (soon to be 6) clouds</p>
+                  <p class='fragment'>Only using OpenStack APIs</p>
+
+              </section>
+
+                  <section id="openstack-infra" data-transition='zoom'>
+                      <h1>OpenStack Infra</h1>
+                  </section>
+
+                  <section id="tooling-automation-and-ci-for-openstack-project" class="slide level2" data-transition='zoom'>
+                      <h1>Tooling, Automation and CI for OpenStack Project</h1>
+                  </section>
+
+                  <section id="developers" class="slide level2" data-transition='zoom'>
+                      <h1>2000 Developers</h1>
+                  </section>
+
+                  <section id="gated-commits" class="slide level2" data-transition='zoom'>
+                      <h1>Gated Commits</h1>
+                      <p>Every commit is fully integration tested (twice) before landing</p>
+                  </section>
+
+                  <section id="each-test-runs-on-a-single-use-cloud-slave" class="slide level2" data-transition='zoom'>
+                      <h1>Each Test Runs on a Single Use Cloud Slave</h1>
+                      <p>This is that "cloud scale out" part</p>
+                  </section>
+
+                  <section id="million-test-jobs-in-the-last-6-months" class="slide level2" data-transition='zoom'>
+                      <h1>1.7 Million Test Jobs in the last 6 Months</h1>
+                  </section>
+
+                  <section id="million-tests-in-a-month" class="slide level2" data-transition='zoom'>
+                      <h1>15 Million Tests in a month</h1>
+                  </section>
+
+                  <section id="terabytes-of-log-data-in-six-months" class="slide level2" data-transition='zoom'>
+                      <h1>18 Terabytes of Log Data in six months</h1>
+                  </section>
+
+                  <section id="we-have-no-servers" class="slide level2">
+                      <h1>We have no servers</h1>
+                      <ul>
+                        <li>Rackspace Public Cloud</li>
+                        <li>HP Helion Public Cloud</li>
+                        <li>TripleO Community Cloud hosted at RedHat</li>
+                      </ul>
+                      <span class='fragment'>
+                      <p>Coming soon:</p>
+                      <ul>
+                        <li>OVH Public Cloud</li>
+                        <li>Blue Box Dedicated Cloud on SoftLayer</li>
+                        <li>Infra Cloud hosted at HP</li>
+                        <li>IBM Public Cloud</li>
+                      </ul>
+                      </span>
+                  </section>
+
+                  <section id="our-vms-are-everywhere" class="slide level2">
+                      <h1>Our VMs are everywhere</h1>
+                      <ul>
+                        <li>HP: Las Vegas, DC</li>
+                        <li>Rackspace: Dallas, Chicago, DC</li>
+                        <li>RedHat: Phoenix</li>
+                        <li>OVH: Strassbourg, Gravelines</li>
+                        <li>Blue Box: San Jose</li>
+                        <li>IBM: Amsterdam, Dallas, Franfurt, Hong Kong, Houston, London, Montreal, Paris, Querétaro, San Jose, São Paulo, Seattle, Singapore, Sydney, Tokyo, Toronto, DC</li>
+                      </ul>
+                  </section>
+
+              <section id="architecture" class="slide level2">
+                  <h1>Architecture</h1>
+                  <p><img src="/images/infra_architecture.jpg" alt="image" /></p>
+              </section>
+
+              <section class="slide level2">
+                  <h1>Gerrit</h1>
+                  <ul>
+                      <li class="fragment">
+                          Traditional 'Enterprise' Java Application</li>
+                      <li class="fragment">Single Nova VM, Cinder Volume</li>
+                      <li class="fragment">Scale out farm of git replicas</li>
+                  </ul>
+              </section>
+
+              <section class="slide level2">
+                  <img src="/images/gerrit-graph.png" />
+              </section>
+
+              <section class="slide level2">
+                  <h1>Fun Numbers</h1>
+                  <ul>
+                      <li>2500 changes every week</li>
+                      <li>15000 change <em>revisions</em> every week</li>
+                      <li>10,000 new changes every 42 days</li>
+                  </ul>
+              </section>
+
+              <section class="slide level2">
+                  <img src="/images/what-happens.png" />
+              </section>
+
+              <section class="slide level2">
+                  <h1>nodepool</h1>
+                  <ul>
+                      <li class="fragment">Cloud Native</li>
+                      <li class="fragment">
+                          Purpose built in Python</li>
+                      <li class="fragment">Keeps a pool of ready to go nodes</li>
+                      <li class="fragment">Multi-cloud</li>
+                      <li class="fragment">Fully elastic - responds to demand</li>
+                  </ul>
+              </section>
+
+              <section class="slide level2">
+                  <img style="float:left; margin-left:24pt; width:35%;" src="/images/gerrit-graph.png" />
+                  <img style="float:right; margin-right:24pt; width: 50%;" src="/images/nodepool-graph.png" />
+              </section>
+
+              <section class="slide level2">
+                  <h1>OpenStack Works!</h1>
+                  <p class='fragment'>Why should you care?</p>
+              </section>
+
+              <section class="slide level2">
+                <h1>Three Benefits to OpenStack</h1>
+                <ul>
+                  <li>Run what you want</li>
+                  <li>Run it where you want</li>
+                  <li>Do business with who you want</li>
+                </ul>
+              </section>
+
+              <section class="slide level2">
+                <h1>Run what you want</h1>
+                <p class='fragment'>Cloud-native 12-factor application</p>
+                <p class='fragment'>Traditional Java web application</p>
+                <p class='fragment'>Kerberos Server</p>
+                <p class='fragment'>Baremetal for hardware enabled transcoding</p>
+              </section>
+
+              <section class="slide level2">
+                <h1>Run it where you want</h1>
+                <ul>
+                  <li>Geography</li>
+                  <li>Delivery Model</li>
+                </ul>
+
+              </section>
+
+              <section class="slide level2">
+                <h1>Geography</h1>
+                <ul>
+                  <li>Put it near your users</li>
+                  <li>Don't put it in an NSA data center</li>
+                  <li>Locality Requirements</li>
+                  <li class='fragment'>What if you have customers in Suriname?</li>
+                </ul>
+              </section>
+
+              <section class="slide level2">
+                <h1>Delivery Model</h1>
+                <h3>Hybrid works</h3>
+                <ul>
+                  <li>Public</li>
+                  <li>Hosted Private</li>
+                  <li>Managed Private On-Premise</li>
+                  <li>Run your own</li>
+                </ul>
+              </section>
+
+              <section class="slide level2">
+                <h1>Do Business with who you want</h1>
+              </section>
+
+              <section class="slide level2" data-transition='zoom'>
+                <h1>Want to do business with someone who
+                  throws chairs in business meetings?</h1>
+                <h3>Me either.</h3>
+              </section>
+
+              <section class="slide level2" data-transition='zoom'>
+                <h1>Prefer to work with someone wth a local presence?</h1>
+              </section>
+
+              <section class="slide level2" data-transition='zoom'>
+                <h1>Maybe someone with a global reach?</h1>
+              </section>
+
+              <section class="slide level2" data-transition='zoom'>
+                <h1>Who cares about your business being successful?</h1>
+              </section>
+
+              <section class="slide level2" data-transition='zoom'>
+                <h1>All of those things?</h1>
+              </section>
+
+              <section class="slide level2">
+                <h1>OpenStack is over 400 companies</h1>
+                  <img src="/images/openstack-company-size.jpg" />
+              </section>
+
+              <section class="slide level2">
+                <h1>European Public Clouds</h1>
+                <p class='fragment'>OVH: France</p>
+                <p class='fragment'>CityCloud: Sweden, UK</p>
+                <p class='fragment'>Elastx: Sweden</p>
+                <p class='fragment'>Datacentred: UK</p>
+                <p class='fragment'>Ultimum: Prague</p>
+                <p class='fragment'>Enter Cloud Suite: Italy, Germany, Frankfurt</p>
+
+              </section>
+
+              <section class="slide level2">
+                <h1>Global Reach</h1>
+                <p>Blue Box Dedicated: In every Softlayer Data Center Worldwide</p>
+                <h3>Including right here in Amsterdam</h3>
+                <p>Blue Box Local: Same thing, but in your DC</p>
+              </section>
+
+              <section class="slide level2">
+                <h1>OpenStack gives you the power to make the choices that
+                  are right for you and for your business</h1>
+              </section>
+
+              <section>
+                  <h1> Thank you! </h1>
+                  <h4> <a href='http://inaugust.com/talks/who-cares.html'>http://inaugust.com/talks/who-cares.html</a> </h4>
+                  <h3> twitter: @e_monty </h3>
+              </section>
+
+  </body>
+</html>
