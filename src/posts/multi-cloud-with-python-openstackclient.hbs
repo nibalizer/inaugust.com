@@ -1,0 +1,122 @@
+<!doctype html>
+<html>
+  <head>
+    <title>python-openstackclient and os-client-config</title>
+    <meta name="description" content="How to use multiple clouds like a pro" />
+  </head>
+  <body>
+    <p>Sometimes it's the little things.</p>
+    <p>Sometime this last year we added support to
+    <a href='http://docs.openstack.org/developer/python-openstackclient/'>
+    python-openstackclient
+    </a>
+    for using
+    <a href='http://docs.openstack.org/developer/os-client-config/'>
+      os-client-config</a>
+    based configuration. Doesn't that sound
+    exciting? It should - because it means you can put your 15 OpenStack
+    public cloud accounts into ~/.config/openstack/clouds.yaml and refer to
+    them by name. Like this:</p>
+    <pre><code>
+clouds:
+  vexxhost:
+    profile: vexxhost
+    auth:
+      project_name: d8af8a8f-a573-48e6-898a-af333b970a2d
+      username: 0b8c435b-cc4d-4e05-8a47-a2ada0539af1
+      password: XXXXXXXXXXXXXXXXXX
+    region_name: ca-ymq-1
+  ovh:
+    profile: ovh
+    auth:
+      username: 6WjmCk3Kbe5v
+      password: XXXXXXXXXXXXXXXXX
+      project_name: 3614264792735868
+    regions:
+    - SBG1
+    - GRA1
+    </code></pre>
+
+    <p>The profile entry in the file is a reference to
+    <a href='http://docs.openstack.org/developer/os-client-config/vendor-support.html'>known cloud vendors</a> so that you can take advantage of us
+    knowing things like their AUTH_URL and whether they use tasks or PUT
+    for image uploads</p>
+
+    <p>The neat thing about all that is that you can then just say:</p>
+
+    <pre><code>
+openstack --os-cloud=vexxhost server list
+openstack --os-cloud=vexxhost --os-region-name=SBG1 server list
+    </code></pre>
+
+    <p>to interact with your cloud accounts. The exact same config file
+    can also drive your ansible playbooks, so you cn do:</p>
+    <pre><code>
+---
+- hosts: localhost
+  connection: local
+  gather_facts: False
+  tasks:
+  - os_keypair:
+      cloud: vexxhost
+      name: mordred
+      state: present
+    </code></pre>
+
+    <p>Followed by:</p>
+    <pre><code>
+openstack --os-cloud=vexxhost openstack keypair show mordred
+    </code></pre>
+
+    <p>When you need to poke around manually.</p>
+
+    <h3>That's still too much typing</h3>
+
+    <p>If you're like me, that's still too much of a pain. So I added the
+    following to my bashrc:</p>
+
+    <pre><code>
+if [ "$color_prompt" = yes ]; then
+    PS1='${debian_chroot:+($debian_chroot)}${OS_CLOUD:+${OS_CLOUD}:}${OS_REGION_NAME:+${OS_REGION_NAME}:}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+else
+    PS1='${debian_chroot:+($debian_chroot)}${OS_CLOUD:+${OS_CLOUD}:}${OS_REGION_NAME:+${OS_REGION_NAME}:}\u@\h:\w\$ '
+fi
+
+function use {
+  declare -a CloudRegion=(${1//:/ })
+  export OS_CLOUD=${CloudRegion[0]}
+  export OS_REGION_NAME=${CloudRegion[1]}
+}
+    </code></pre>
+
+    <p>Which got me this:</p>
+    <pre><code>
+mordred@camelot:~/src/openstack-infra/shade$ use vexxhostvexxhost:mordred@camelot:~/src/openstack-infra/shade$ openstack keypair show mordred
++-------------+-------------------------------------------------+
+| Field       | Value                                           |
++-------------+-------------------------------------------------+
+| created_at  | 2015-04-13T13:30:12.000000                      |
+| deleted     | False                                           |
+| deleted_at  | None                                            |
+| fingerprint | 6b:8c:bd:93:e6:05:c7:1b:2f:fd:3c:11:b5:da:a6:52 |
+| id          | 68                                              |
+| name        | mordred                                         |
+| updated_at  | None                                            |
+| user_id     | e9b21dc437d149858faee0898fb08e92                |
++-------------+-------------------------------------------------+
+vexxhost:mordred@camelot:~/src/openstack-infra/shade$ use ovh:GRA1ovh:GRA1:mordred@camelot:~/src/openstack-infra/shade$ openstack keypair show mordred
++-------------+-------------------------------------------------+
+| Field       | Value                                           |
++-------------+-------------------------------------------------+
+| created_at  | 2015-09-22T19:15:01.000000                      |
+| deleted     | False                                           |
+| deleted_at  | None                                            |
+| fingerprint | 6b:8c:bd:93:e6:05:c7:1b:2f:fd:3c:11:b5:da:a6:52 |
+| id          | 84923                                           |
+| name        | mordred                                         |
+| updated_at  | None                                            |
+| user_id     | e84b8554e09e4d9a9403b5c0b1184850                |
++-------------+-------------------------------------------------+
+    </code></pre>
+</body>
+</html>
