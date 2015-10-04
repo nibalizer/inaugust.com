@@ -36,6 +36,7 @@
                 <li>Limitations</li>
             </ul>
         </section>
+
         <section>
             <section id="not-a-virt-layer">
                 <h1>"OpenStack is not a virtualization layer. It is an abstraction layer."</h1>
@@ -430,88 +431,8 @@ nova flavor-key my-baremetal-flavor set capabilities:boot_mode="uefi"</pre>
     2014-05-01 03:47:05.878 AUDIT nova.compute.resource_tracker [-] Free VCPUS: 0</code></pre>
             </section>
         </section>
-        <section id="end">
-            <h1>Thanks!</h1><br>
-            @devananda<br><br>
-            <a href="http://devananda.github.io/talks/isnt-it-ironic.html">devananda.github.io/talks/isnt-it-ironic.html</a>
-            <a href="http://docs.openstack.org/developer/ironic/deploy/install-guide.html">docs.openstack.org/developer/ironic/deploy/install-guide.html</a>
-            <br><br>
-        </section>
-        <section id="deploy-process">
-            <h1>Two methods for image deployment</h1>
-            <table >
-                <tr>
-                    <th>Direct from source</th>
-                    <th> || </th>
-                    <th>Cache on conductor</th>
-                </tr>
-                <tr>
-                    <td valign="top"><ul>
-                        <li>agent_ipmitool</li>
-                        <li>agent_pyghmi</li>
-                        <li>agent_ilo</li>
-                    </ul></td>
-                    <td></td>
-                    <td><ul>
-                        <li>pxe_ipmitool</li>
-                        <li>pxe_ipminative</li>
-                        <li>pxe_seamicro</li>
-                        <li>pxe_iboot</li>
-                        <li>pxe_ilo</li>
-                        <li>pxe_snmp</li>
-                        <li>pxe_drac</li>
-                        <li>pxe_irmc</li>
-                        <li>pxe_amt</li>
-                        <li>iscsi_ilo</li>
-                    </ul></td>
-                </tr>
-                </table>
-        </section>
-        <section id="pxe-1">
-            <h1>PXE Deploy Process</h1>
-            <img src="/images/pxe-deploy-1.png" />
-        </section>
-        <section id="pxe-2">
-            <h1>PXE Deploy Process (cont)</h1>
-            <img src="/images/pxe-deploy-2.png" />
-        </section>
-        <section id="agent-1">
-            <h1>Agent Deploy Process</h1>
-            <img src="/images/agent-deploy-1.png" />
-        </section>
-        <section id="agent-2">
-            <h1>Agent Deploy Process (cont)</h1>
-            <img src="/images/agent-deploy-2.png" />
-        </section>
     </div>
   </div>
 
-  <script src="lib/js/head.min.js"></script>
-  <script src="js/reveal.js"></script>
-  <script>
-      // Full list of configuration options available here:
-      // https://github.com/hakimel/reveal.js#configuration
-      Reveal.initialize({
-          controls: true,
-          progress: true,
-          history: true,
-          center: true,
-
-          theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
-          transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
-
-          // Optional libraries used to extend on reveal.js
-          dependencies: [
-              { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
-              { src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-              { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-              { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
-              { src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
-              { src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
-              // { src: 'plugin/search/search.js', async: true, condition: function() { return !!document.body.classList; } }
-              // { src: 'plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
-          ]
-      });
-  </script>
 </body>
 </html>
