@@ -279,10 +279,12 @@
       .pipe(data(function(file) {
         var stat = fs.statSync(file.path);
         var $ = cheerio.load(fs.readFileSync(file.path));
+        var newpath = file.clone();
         return {
           'title': $("head title").text(),
           'description': $("head meta[name='description']").attr('content'),
           'body': $("body").html(),
+          'path': newpath.relative.replace('.hbs', '.html'),
         }}))
       .pipe(change(performTalkTemplateChange))
       .pipe(handlebars(templateData, handlebarsConfig))
