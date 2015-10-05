@@ -180,6 +180,7 @@ glance image-create --name my-image --is-public True \
         </section>
         <section id="bifrost-1">
             <h1>OK, but what about that Bifrost thing?</h1>
+            <h2 class="fragment">the rainbow bridge that connects Asgard, the world of the Aesir tribe of gods, with Midgard, the world of humanity.</h2>
             <br>
             <ul>
                 <li class="fragment">You don't need a Cloud to provision Hardware</li>
@@ -188,6 +189,7 @@ glance image-create --name my-image --is-public True \
                 <li class="fragment">Starts with simple "inventory" file,<br>loads data into Ironic & sets correct driver info</li>
                 <li class="fragment">Downloads (or builds locally) a machine image,<br>and just boots it on every machine</li>
             </ul>
+            <image src="/images/Bifrost.jpg" width="30%" align="right"/>
         </section>
         <section id="so-in-openstack">
             <h1>That's cool, but I wanted a cloud...</h1>
@@ -392,7 +394,8 @@ nova flavor-key my-baremetal-flavor set capabilities:boot_mode="uefi"</pre>
 
     The provisioning operation can't be performed on node
     7a1ce8d0-9679-4d87-8f54-b11f6e8adb8f because it's in maintenance mode.
-    </code><code class="fragment">$ ironic node-set-maintenance db01.example false
+    </code><code class="fragment">
+    $ ironic node-set-maintenance db01.example false
     $ ironic node-set-provision-state db01.example active
     $
     # ... time goes on ...</code>
