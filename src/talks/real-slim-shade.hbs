@@ -1,0 +1,669 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+
+    <title>The Real Slim Shade</title>
+  </head>
+  <body>
+
+    <section id="who-am-i-ibm">
+      <h1>Who am I?</h1>
+      <img style="float:right; margin-right:24pt" src="/images/ibm-logo.png"/>
+      <p> Distinguished Engineer </p>
+      <p> IBM Cloud </p>
+    </section>
+
+    <section id="who-am-i-openstack">
+      <h1>Who am I?</h1>
+      <img style="float:right; margin-right:24pt" src="/images/openstack-cloud-software-vertical-large.png" />
+      <p>Technical Committee</p>
+      <p>Foundation Board of Directors</p>
+      <p>Developer Infrastructure Core Team</p>
+    </section>
+
+    <section id="what-are-we-going-to-talk-about" class="slide level2">
+      <h1>What are we going to talk about?</h1>
+      <ul>
+        <li>What</li>
+        <li>Why</li>
+        <li>Configuration</li>
+        <li>Basics</li>
+        <li>Advanced things
+          <ul>
+            <li>Caching</li>
+            <li>Task Management</li>
+          </ul>
+        </li>
+      </ul>
+    </section>
+
+    <section class="slide level2">
+      <h1>shade: a Python library to wrap business logic around
+        OpenStack resources and operations</h1>
+    </section>
+
+    <section class="slide level2">
+      <h1>Design Principles</h1>
+      <ul>
+        <li class='fragment'>Expose a single API that works on all clouds</li>
+        <li class='fragment'>Hide all vendor or deployer differences</li>
+        <li class='fragment'>Support multi-cloud (<em>write once, run anywhere</em>)</li>
+        <li class='fragment'>Simple to use (<em>sane defaults</em>)</li>
+        <li class='fragment'>No plugins *</li>
+        <li class='fragment'>Efficient at scale</li>
+        <li class='fragment'>API always backwards compatible</li>
+      </ul>
+    </section>
+
+    <section class="slide level2">
+      <h1>Current Status</h1>
+      <h3>https://git.openstack.org/cgit/openstack-infra/shade</h3>
+      <h3>https://pypi.python.org/pypi/shade</h3>
+      <ul>
+        <li class='fragment'>Version 1.0 Released!</li>
+        <li class='fragment'>Used in Ansible 2.0</li>
+        <li class='fragment'>Partially used in Infra Nodepool</li>
+      </ul>
+    </section>
+
+    <section class="slide level2">
+      <h1>Why?</h1>
+    </section>
+
+    <section class="slide level2">
+    <blockquote>
+      Brand experts insist that success comes from promoting your unique attributes, but in practice differentiation is less profitable than consolidation.</blockquote>
+    </section>
+
+    <section class="slide level2" data-transition='zoom'>
+      <h1>OpenStack Leaks Abstractions</h1>
+    </section>
+
+    <section class="slide level2" data-transition='zoom'>
+      <h1>OpenStack Breaks APIs</h1>
+    </section>
+
+    <section class="slide level2" data-transition='zoom'>
+      <h1>Basic concepts are needlessly complex</h1>
+    </section>
+
+    <section class="slide level2" data-transition='zoom'>
+      <h1>libcloud doens't really work</h1>
+    </section>
+
+    <section class="slide level2" data-transition='zoom'>
+      <h1>Client libraries are really for server-server communication</h1>
+    </section>
+
+    <section class="slide level2">
+      <h1>Infra solved these problems</h1>
+      <p>Infra runs across five clouds at massive scale</p>
+      <p>Why not share what we've learned with other people?</p>
+    </section>
+
+    <section class="slide level2">
+      <h1>simplicity</h1>
+      <p>This is what using a cloud should look like</p>
+      <pre><code>
+cloud = openstack_cloud('vexxhost')
+image = cloud.create_image(
+    'image-name', filename='image-filename.qcow2', wait=True)
+flavor = cloud.get_flavor_by_ram(512)
+cloud.create_server(
+    'my-server', image=image['id'], flavor=flavor['id'],
+     wait=True, auto_ip=True)
+      </code></pre>
+    </section>
+
+    <section class="slide level2" data-transition='zoom'>
+      <h1>existence of shade is a bug</h1>
+    </section>
+
+    <section class="slide level2">
+    <blockquote>
+      Brand experts insist that success comes from promoting your unique attributes, but in practice differentiation is less profitable than consolidation.</blockquote>
+    </section>
+
+    <section class="slide level2" data-transition='zoom'>
+      <h1>Let's drive towards profitable homogenization</h1>
+    </section>
+
+    <section class="slide level2">
+      <h1>Using shade</h1>
+      <h2>Step One: Configuration</h2>
+    </section>
+
+    <section class="slide level2">
+      <h1>os-client-config</h1>
+      <h3>http://git.openstack.org/cgit/openstack/os-client-config</h3>
+      <ul>
+        <li>A library to handle config information for openstack clients</li>
+        <li>Tracks differences in vendors that can't be discovered</li>
+        <li>In use in python-openstackclient and ansible</li>
+        <li>Patches up for neutronclient - on the way for nova and glance</li>
+        <li>Reads clouds.yaml config file, environment vars and argparse</li>
+      </ul>
+    </section>
+
+    <section class="slide level2">
+      <h1>os-client-config</h1>
+      <ul>
+        <li>OS_ Environment Variables</li>
+        <li>~/.config/openstack/clouds.yaml</li>
+      </ul>
+      <pre><code>
+clouds:
+  dreamhost:
+    profile: dreamhost
+    auth:
+      username: montay6
+      project_name: dhc2111978
+      password: XXXXXXXXXXXXX
+  montytaylor-sjc:
+    region_name: RegionOne
+    auth:
+      username: openstackjenkins
+      password: XXXXXXXXXXXXXX
+      project_name: openstackjenkins
+      auth_url: https://montytaylor-sjc.openstack.blueboxgrid.com:5001/v2.0
+  ustack:
+    profile: unitedstack
+    verify: False
+    auth_type: v3password
+    auth:
+      username: mordred
+      password: XXXXXXXXXXXXX
+      project_name: mordred_project
+      user_domain_id: 7fda84e224134e118158afd7d69936fd
+      project_domain_id: 7fda84e224134e118158afd7d69936fd
+      </code></pre>
+    </section>
+
+    <section class="slide level2">
+      <h1>auth_type</h1>
+      <p>keystone has pluggable authentication</p>
+
+      <ul>
+        <li>Defaults to 'password' which autodetects based on parameters</li>
+        <li>Other options: admin_token, v3oidcpassword, v3oidcauthcode</li>
+        <li>This is where I said "*" on "no plugins" earlier</li>
+      </ul>
+    </section>
+
+    <section class="slide level2">
+      <h1>python-openstackclient</h1>
+      <pre>
+openstack --os-cloud=rax --os-region=DFW servers list
+      </pre>
+    </section>
+
+    <section class="slide level2">
+      <h1>How I do it</h1>
+      <pre><code>
+function use {
+  declare -a CloudRegion=(${1//:/ })
+  export OS_CLOUD=${CloudRegion[0]}
+  export OS_REGION_NAME=${CloudRegion[1]}
+}
+PS1='${debian_chroot:+($debian_chroot)}${OS_CLOUD:+${OS_CLOUD}:}${OS_REGION_NAME:+${OS_REGION_NAME}:}\u@\h:\w\$ '
+      </code></pre>
+
+      <pre>
+mordred@camelot:~$ use rax:DFW
+rax:DFW:mordred@camelot:~$ openstack servers list
+      </pre>
+    </section>
+
+    <section class="slide level2">
+      <h1>shade inventory</h1>
+      <ul>
+        <li>Code behind ansible OpenStack dynamic inventory plugin</li>
+        <li>All resources in all of your clouds</li>
+      </ul>
+      <pre>
+mordred@camelot:~$ shade-inventory --list --yaml
+      </pre>
+      <pre><code>
+- HUMAN_ID: true
+  NAME_ATTR: name
+  OS-EXT-AZ:availability_zone: az2
+  OS-EXT-STS:power_state: 1
+  OS-EXT-STS:task_state: null
+  OS-EXT-STS:vm_state: active
+  accessIPv4: 15.126.131.74
+  accessIPv6: ''
+  addresses:
+    mordred@inaugust.com-network:
+    - OS-EXT-IPS-MAC:mac_addr: fa:16:3e:f3:20:9b
+      OS-EXT-IPS:type: fixed
+      addr: 10.0.0.106
+      version: 4
+    - OS-EXT-IPS-MAC:mac_addr: fa:16:3e:f3:20:9b
+      OS-EXT-IPS:type: floating
+      addr: 15.126.131.74
+      version: 4
+  az: az2
+  cloud: hp
+  config_drive: 'True'
+  created: '2015-04-25T15:15:22Z'
+  flavor:
+    id: '100'
+    name: standard.xsmall
+  hostId: 2a84ca599420d68466b782308f7892b81b4eda74debd037fe76c3ded
+  human_id: launch_node
+  id: f39df771-dd82-49b3-b325-b0b1a6842259
+  image:
+    id: c47a348c-fd37-437d-b7c4-e17ff6c86211
+  interface_ip: 15.126.131.74
+  key_name: null
+  metadata: {}
+  name: launch_node
+  networks:
+    mordred@inaugust.com-network:
+    - 10.0.0.106
+    - 15.126.131.74
+  private_v4: 10.0.0.106
+  progress: 0
+  public_v4: 15.126.131.74
+  public_v6: ''
+  region: region-b.geo-1
+  security_groups:
+  - name: default
+  status: ACTIVE
+  tenant_id: '51595564575618'
+  updated: '2015-06-06T17:26:09Z'
+  user_id: '71312979441162'
+  volumes: []
+- HUMAN_ID: true
+  NAME_ATTR: name
+  OS-DCF:diskConfig: MANUAL
+  OS-EXT-AZ:availability_zone: nova
+  OS-EXT-STS:power_state: 1
+  OS-EXT-STS:task_state: null
+  OS-EXT-STS:vm_state: active
+  OS-SRV-USG:launched_at: '2015-08-01T19:52:02.000000'
+  OS-SRV-USG:terminated_at: null
+  accessIPv4: 162.253.54.192
+  accessIPv6: ''
+  addresses:
+    public:
+    - OS-EXT-IPS-MAC:mac_addr: fa:16:3e:9f:46:3e
+      OS-EXT-IPS:type: fixed
+      addr: 162.253.54.192
+      version: 4
+  az: nova
+  cloud: vexxhost
+  config_drive: 'True'
+  created: '2015-08-01T19:52:16Z'
+  flavor:
+    id: bbcb7eb5-5c8d-498f-9d7e-307c575d3566
+    name: v1-standard-1
+  hostId: d998a94193237f8d12111cfdc856b83559e3a5b2e7716326ff46ad65
+  human_id: mordred-irc
+  id: 811c5197-dba7-4d3a-a3f6-68ca5328b9a7
+  image:
+    id: 69c99b45-cd53-49de-afdc-f24789eb8f83
+    name: Ubuntu 14.04.2 LTS
+  interface_ip: 162.253.54.192
+  key_name: mordred
+  metadata: {}
+  name: mordred-irc
+  networks:
+    public:
+    - 162.253.54.192
+  os-extended-volumes:volumes_attached: []
+  private_v4: ''
+  progress: 0
+  public_v4: 162.253.54.192
+  public_v6: ''
+  region: ca-ymq-1
+  security_groups:
+  - name: default
+  status: ACTIVE
+  tenant_id: db92b20496ae4fbda850a689ea9d563f
+  updated: '2015-08-01T19:52:02Z'
+  user_id: e9b21dc437d149858faee0898fb08e92
+  volumes: []
+      </code></pre>
+    </section>
+
+    <section class="slide level2">
+      <h1>Cloud-Region</h1>
+      <p>Each OpenStackCloud object represents one region of one cloud</p>
+      <ul>
+        <li>'envvars', $OS_REGION_NAME</li>
+        <li>cloud_config.name, cloud_config.region</li>
+      </ul>
+    </section>
+
+    <section class="slide level2">
+      <h1>Simplest Cloud Construction</h1>
+      <pre><code>
+import shade
+cloud = shade.openstack_cloud()
+      </code></pre>
+    </section>
+
+    <section class="slide level2">
+      <h1>Simple Cloud Construction</h1>
+      <pre><code>
+import shade
+cloud = shade.openstack_cloud(cloud='ustack', region_name='bj1')
+      </code></pre>
+    </section>
+
+    <section class="slide level2">
+      <h1>Complex Cloud Construction</h1>
+      <pre><code>
+import os_client_config
+import shade
+
+config = os_client_config.OpenStackConfig()
+cloud_config = config.get_one_cloud(
+    cloud='ustack', region_name='bj1',
+    argparse=my_args, **other_arguments)
+cloud = shade.OpenStackCloud(cloud_config=cloud_config)
+      </code></pre>
+    </section>
+
+    <section class="slide level2">
+      <h1>logging</h1>
+      <ul>
+        <li>Python logging</li>
+        <li>shade.simple_logging(debug=True) helper function</li>
+      </ul>
+    </section>
+
+    <section class="slide level2">
+      <h1>A note on Exceptions</h1>
+      <ul>
+        <li>All python*client exceptions are hidden and re-raised</li>
+        <li>Hiding exceptions is evil and I'm a bad person</li>
+        <li>Exceptions are part of the interface</li>
+        <li>Can't hide vendor choice if shade user catches underlying exception</li>
+        <li>Plan to get rid of python*client in the future</li>
+      </ul>
+    </section>
+
+    <section class="slide level2">
+      <h1>Putting it all together</h1>
+      <pre><code>
+import shade
+
+shade.simple_logging(debug=True)
+cloud = shade.openstack_cloud(cloud='vexxhost')
+image = cloud.create_image(
+    'ubuntu-trusty', filename='ubuntu-trusty.qcow2', wait=True)
+flavor = cloud.get_flavor_by_ram(512)
+cloud.create_server(
+    'my-server', image=image['id'], flavor=flavor['id'],
+     wait=True, auto_ip=True)
+      </code></pre>
+    </section>
+
+    <section class="slide level2">
+      <pre>
+Manager vexxhost running task GlanceImageList
+Manager vexxhost ran task GlanceImageList in 1.52185106277s
+Manager vexxhost running task ImageCreate
+Manager vexxhost ran task ImageCreate in 0.535313844681s
+Manager vexxhost running task ImageUpload
+Manager vexxhost ran task ImageUpload in 3.40991711617s
+Manager vexxhost running task GlanceImageList
+Manager vexxhost ran task GlanceImageList in 0.513506174088s
+Manager vexxhost running task FlavorList
+Manager vexxhost ran task FlavorList in 1.30724596977s
+Manager vexxhost running task ServerCreate
+Manager vexxhost ran task ServerCreate in 0.609236955643s
+Manager vexxhost running task ServerGet
+Manager vexxhost ran task ServerGet in 0.275503873825s
+Manager vexxhost running task ServerList
+Manager vexxhost ran task ServerList in 0.338351964951s
+Waiting 5 seconds <span style='color: red' class='fragment'>Poll loop</span>
+Manager vexxhost running task ServerList
+Manager vexxhost ran task ServerList in 0.318593025208s
+Manager vexxhost running task NetworkList
+Manager vexxhost ran task NetworkList in 1.11756396294s
+      </pre>
+    </section>
+
+    <section class="slide level2">
+      <h1>Problem: Image API version</h1>
+      <ul>
+        <li class='fragment'>
+          v1 PUT: HP, Catalyst, Datacentred, Internap
+        </li>
+        <li class='fragment'>
+          v2 PUT: Auro, Blue Box, City Cloud, Dreamhost, Elastx, Enter Cloud Suite, HP, OVH, RunAbove, Vexxhost, Ultimum, UnitedStack
+        </li>
+        <li class='fragment'>
+          v2 Tasks: Switch Engines, Rackspace
+        </li>
+      </ul>
+    </section>
+
+    <section class="slide level2">
+      <pre>
+Manager vexxhost running task GlanceImageList
+Manager vexxhost ran task GlanceImageList in 1.52185106277s
+Manager vexxhost running task ImageCreate
+Manager vexxhost ran task ImageCreate in 0.535313844681s
+Manager vexxhost running task ImageUpload
+Manager vexxhost ran task ImageUpload in 3.40991711617s
+Manager vexxhost running task GlanceImageList
+Manager vexxhost ran task GlanceImageList in 0.513506174088s
+      </pre>
+    </section>
+
+    <section class="slide level2">
+      <h1>Image Tasks</h1>
+      <pre><code>
+cloud = shade.openstack_cloud(cloud='rax')
+cloud.create_image('ubuntu-trusty', filename='ubuntu-trusty.vhd', wait=True)
+      </code></pre>
+    </section>
+
+    <section class="slide level2">
+      <pre>
+Manager rax running task GlanceImageList
+Manager rax ran task GlanceImageList in 2.0544719696s
+Manager rax running task ObjectCapabilities
+Manager rax ran task ObjectCapabilities in 0.616773843765s
+Manager rax running task ContainerGet
+Manager rax ran task ContainerGet in 0.978188037872s
+Manager rax running task ObjectMetadata
+Manager rax ran task ObjectMetadata in 0.427683115005s
+swift stale check, no object: images/ubuntu-trusty
+swift uploading ubuntu-trusty.vhd to images/ubuntu-trusty <span style='color: red' class='fragment'>Uses Swift Service</span>
+Manager rax running task ObjectCreate
+Manager rax ran task ObjectCreate in 0.00043797492981s
+Manager rax running task GlanceImageList
+Manager rax ran task GlanceImageList in 0.844120025635s
+Manager rax running task ImageTaskCreate
+Manager rax ran task ImageTaskCreate in 1.22424006462s
+Manager rax running task ImageTaskGet
+Manager rax ran task ImageTaskGet in 0.235086917877s
+Waiting 2 seconds
+Manager rax running task ImageTaskGet
+Manager rax ran task ImageTaskGet in 0.215805053711s
+      </pre>
+    </section>
+
+    <section class="slide level2">
+      <h1>Problem: Networking choices</h1>
+      <ul>
+        <li class='fragment'>Cloud has externally routable IP from neutron (RunAbove, OVH)</li>
+        <li class='fragment'>Cloud has externally routable IP neutron AND supports optional private tenant networks (vexxhost)</li>
+        <li class='fragment'>Cloud has private tenant network provided by neutron and requires floating IP (HP, Dreamhost)</li>
+        <li class='fragment'>Cloud has private tenant network provided by nova-network and requires floating-ip for external routing (auro)</li>
+        <li class='fragment'>Cloud has externally routable IP from neutron but no neutron APIs (Rackspace)</li>
+      </ul>
+    </section>
+
+    <section class="slide level2">
+      <h1>The Floating IP Case</h1>
+      <pre><code>
+import shade
+
+shade.simple_logging(debug=True)
+cloud = shade.openstack_cloud(cloud='hp')
+flavor = cloud.get_flavor_by_ram(512)
+image = cloud.get_image('ubuntu-trusty')
+cloud.create_server(
+    'my-server', image=image['id'], flavor=flavor['id'],
+     wait=True, auto_ip=True)
+      </code></pre>
+    </section>
+
+    <section class="slide level2">
+      <h1>The Floating IP Case</h1>
+      <pre>
+Manager hp running task ServerCreate
+Manager hp ran task ServerCreate in 1.52772402763s
+Manager hp running task ServerGet
+Manager hp ran task ServerGet in 0.483407020569s
+Manager hp running task ServerList
+Manager hp ran task ServerList in 0.809002876282s
+Waiting 5 seconds
+Manager hp running task ServerList
+Manager hp ran task ServerList in 1.091807127s
+Manager hp running task NetworkList
+Manager hp ran task NetworkList in 21.8774280548s
+Manager hp running task NeutronFloatingIPList
+Manager hp ran task NeutronFloatingIPList in 0.213263988495s
+Manager hp running task PortList
+Manager hp ran task PortList in 0.342208862305s
+Manager hp running task NeutronFloatingIPUpdate
+Manager hp ran task NeutronFloatingIPUpdate in 0.356763124466s
+Manager hp running task ServerGet
+Manager hp ran task ServerGet in 0.433247089386s
+Waiting 2 seconds
+Manager hp running task ServerGet
+Manager hp ran task ServerGet in 0.56911110878s
+Manager hp running task ServerGet
+Manager hp ran task ServerGet in 0.302348852158s
+      </pre>
+    </section>
+
+    <section class="slide level2">
+      <h1>Don't Reuse Floating IP Case</h1>
+      <pre><code>
+import shade
+
+shade.simple_logging(debug=True)
+cloud = shade.openstack_cloud(cloud='bluebox')
+flavor = cloud.get_flavor_by_ram(512)
+image = cloud.get_image('ubuntu-trusty')
+cloud.create_server(
+    'my-server', image=image['id'], flavor=flavor['id'],
+     wait=True, auto_ip=True, reuse=False)
+      </code></pre>
+    </section>
+
+    <section class="slide level2">
+      <pre>
+Manager bluebox running task NetworkList
+Manager bluebox ran task NetworkList in 0.432415008545s
+Manager bluebox running task NeutronFloatingIPList
+Manager bluebox ran task NeutronFloatingIPList in 0.54718708992s
+Manager bluebox running task NetworkList
+Manager bluebox ran task NetworkList in 0.495000839233s
+Manager bluebox running task NeutronFloatingIPCreate
+Manager bluebox ran task NeutronFloatingIPCreate in 0.819630146027s
+Manager bluebox running task PortList
+Manager bluebox ran task PortList in 0.736854076385s
+Manager bluebox running task NeutronFloatingIPUpdate
+Manager bluebox ran task NeutronFloatingIPUpdate in 0.588222026825s
+Manager bluebox running task ServerGet
+Manager bluebox ran task ServerGet in 0.646552085876s
+Waiting 2 seconds
+Manager bluebox running task ServerGet
+Manager bluebox ran task ServerGet in 0.726951122284s
+Manager bluebox running task ServerGet
+Manager bluebox ran task ServerGet in 0.668478965759s
+      </pre>
+    </section>
+
+    <section class="slide level2">
+      <h1>Advanced Topics</h1>
+    </section>
+
+    <section class="slide level2">
+      <h1>Task Manager</h1>
+      <pre>
+Manager bluebox running task ServerGet
+Manager bluebox ran task ServerGet in 0.726951122284s
+      </pre>
+      <ul>
+        <li>Every API operation is a Task() that is run by a TaskManager()</li>
+        <li>Default shade TaskManager immediately executes the call</li>
+        <li>nodepool passes in a threaded TaskManager to manage API throttling</li>
+        <pre><code>
+cloud = shade.OpenStackCloud(
+    cloud_config=cloud_config,
+    manager=MyTaskManager())
+        </code></pre>
+      </ul>
+    </section>
+
+    <section class="slide level2">
+      <h1>Caching</h1>
+      <ul>
+        <li>API Operations can be expensive</li>
+        <li>shade uses dogpile.cache - default to NullCache</li>
+      </li>
+    </section>
+
+    <section class="slide level2">
+      <h1>Cache Config</h1>
+      <h2>clouds.yaml</h2>
+      <pre><code>
+cache:
+  class: dogpile.cache.dbm
+  expiration_time: 3600
+  arguments:
+    filename: /home/mordred/.cache/openstack/shade.dbm
+  expiration:
+      server: 5
+      </code></pre>
+    </section>
+
+    <section class="slide level2">
+      <h1>ansible 2.0</h1>
+      <p>Brand new modules, based on shade</p>
+      <p>Coming in 2.0 release</p>
+      <pre><code>
+- os_image:
+    cloud: vexxhost
+    name: ubuntu-trusty
+    file: ubuntu-trusty.qcow2
+    wait: true
+- os_server:
+    cloud: vexxhost
+    name: my-server
+    flavor_ram: 1024
+    image: ubuntu-trusty
+    wait: true
+      </code></pre>
+    </section>
+
+    <section class="slide level2">
+      <h1>ansible</h1>
+      <p>multi-cloud support</p>
+      <pre><code>
+- os_keypair:
+    cloud: "{{ item }"
+    name: mordred
+    public_key_file: ~/.ssh/id_rsa.pub
+    with-items:
+    - vexxhost
+    - rackspace
+    - hp
+    - ovh
+      </code></pre>
+    </section>
+
+  </body>
+</html>
