@@ -405,26 +405,16 @@ cloud.create_server(
 
     <section class="slide level2">
       <pre>
-Manager vexxhost running task GlanceImageList
 Manager vexxhost ran task GlanceImageList in 1.52185106277s
-Manager vexxhost running task ImageCreate
 Manager vexxhost ran task ImageCreate in 0.535313844681s
-Manager vexxhost running task ImageUpload
 Manager vexxhost ran task ImageUpload in 3.40991711617s
-Manager vexxhost running task GlanceImageList
 Manager vexxhost ran task GlanceImageList in 0.513506174088s
-Manager vexxhost running task FlavorList
 Manager vexxhost ran task FlavorList in 1.30724596977s
-Manager vexxhost running task ServerCreate
 Manager vexxhost ran task ServerCreate in 0.609236955643s
-Manager vexxhost running task ServerGet
 Manager vexxhost ran task ServerGet in 0.275503873825s
-Manager vexxhost running task ServerList
 Manager vexxhost ran task ServerList in 0.338351964951s
 Waiting 5 seconds <span style='color: red' class='fragment'>Poll loop</span>
-Manager vexxhost running task ServerList
 Manager vexxhost ran task ServerList in 0.318593025208s
-Manager vexxhost running task NetworkList
 Manager vexxhost ran task NetworkList in 1.11756396294s
       </pre>
     </section>
@@ -446,13 +436,9 @@ Manager vexxhost ran task NetworkList in 1.11756396294s
 
     <section class="slide level2">
       <pre>
-Manager vexxhost running task GlanceImageList
 Manager vexxhost ran task GlanceImageList in 1.52185106277s
-Manager vexxhost running task ImageCreate
 Manager vexxhost ran task ImageCreate in 0.535313844681s
-Manager vexxhost running task ImageUpload
 Manager vexxhost ran task ImageUpload in 3.40991711617s
-Manager vexxhost running task GlanceImageList
 Manager vexxhost ran task GlanceImageList in 0.513506174088s
       </pre>
     </section>
@@ -467,26 +453,17 @@ cloud.create_image('ubuntu-trusty', filename='ubuntu-trusty.vhd', wait=True)
 
     <section class="slide level2">
       <pre>
-Manager rax running task GlanceImageList
 Manager rax ran task GlanceImageList in 2.0544719696s
-Manager rax running task ObjectCapabilities
 Manager rax ran task ObjectCapabilities in 0.616773843765s
-Manager rax running task ContainerGet
 Manager rax ran task ContainerGet in 0.978188037872s
-Manager rax running task ObjectMetadata
 Manager rax ran task ObjectMetadata in 0.427683115005s
 swift stale check, no object: images/ubuntu-trusty
 swift uploading ubuntu-trusty.vhd to images/ubuntu-trusty <span style='color: red' class='fragment'>Uses Swift Service</span>
-Manager rax running task ObjectCreate
 Manager rax ran task ObjectCreate in 0.00043797492981s
-Manager rax running task GlanceImageList
 Manager rax ran task GlanceImageList in 0.844120025635s
-Manager rax running task ImageTaskCreate
 Manager rax ran task ImageTaskCreate in 1.22424006462s
-Manager rax running task ImageTaskGet
 Manager rax ran task ImageTaskGet in 0.235086917877s
 Waiting 2 seconds
-Manager rax running task ImageTaskGet
 Manager rax ran task ImageTaskGet in 0.215805053711s
       </pre>
     </section>
@@ -520,29 +497,18 @@ cloud.create_server(
     <section class="slide level2">
       <h1>The Floating IP Case</h1>
       <pre>
-Manager hp running task ServerCreate
 Manager hp ran task ServerCreate in 1.52772402763s
-Manager hp running task ServerGet
 Manager hp ran task ServerGet in 0.483407020569s
-Manager hp running task ServerList
 Manager hp ran task ServerList in 0.809002876282s
 Waiting 5 seconds
-Manager hp running task ServerList
 Manager hp ran task ServerList in 1.091807127s
-Manager hp running task NetworkList
 Manager hp ran task NetworkList in 21.8774280548s
-Manager hp running task NeutronFloatingIPList
 Manager hp ran task NeutronFloatingIPList in 0.213263988495s
-Manager hp running task PortList
 Manager hp ran task PortList in 0.342208862305s
-Manager hp running task NeutronFloatingIPUpdate
 Manager hp ran task NeutronFloatingIPUpdate in 0.356763124466s
-Manager hp running task ServerGet
 Manager hp ran task ServerGet in 0.433247089386s
 Waiting 2 seconds
-Manager hp running task ServerGet
 Manager hp ran task ServerGet in 0.56911110878s
-Manager hp running task ServerGet
 Manager hp ran task ServerGet in 0.302348852158s
       </pre>
     </section>
@@ -564,24 +530,15 @@ cloud.create_server(
 
     <section class="slide level2">
       <pre>
-Manager bluebox running task NetworkList
 Manager bluebox ran task NetworkList in 0.432415008545s
-Manager bluebox running task NeutronFloatingIPList
 Manager bluebox ran task NeutronFloatingIPList in 0.54718708992s
-Manager bluebox running task NetworkList
 Manager bluebox ran task NetworkList in 0.495000839233s
-Manager bluebox running task NeutronFloatingIPCreate
 Manager bluebox ran task NeutronFloatingIPCreate in 0.819630146027s
-Manager bluebox running task PortList
 Manager bluebox ran task PortList in 0.736854076385s
-Manager bluebox running task NeutronFloatingIPUpdate
 Manager bluebox ran task NeutronFloatingIPUpdate in 0.588222026825s
-Manager bluebox running task ServerGet
 Manager bluebox ran task ServerGet in 0.646552085876s
 Waiting 2 seconds
-Manager bluebox running task ServerGet
 Manager bluebox ran task ServerGet in 0.726951122284s
-Manager bluebox running task ServerGet
 Manager bluebox ran task ServerGet in 0.668478965759s
       </pre>
     </section>
@@ -593,7 +550,6 @@ Manager bluebox ran task ServerGet in 0.668478965759s
     <section class="slide level2">
       <h1>Task Manager</h1>
       <pre>
-Manager bluebox running task ServerGet
 Manager bluebox ran task ServerGet in 0.726951122284s
       </pre>
       <ul>
