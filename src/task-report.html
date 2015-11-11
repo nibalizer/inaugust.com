@@ -116,7 +116,7 @@ for(i=0; i<providers.length; ++i) {
       bgcolor: 'ffffff',
       fgcolor: '000000',
       areaMode: 'stacked',
-      title: providers[i] + " success rate",
+      title: providers[i] + " nodes launched",
       target: [
          "color(alias(summarize(sumSeries(stats_counts.nodepool.launch.provider." + providers[i] + "*.ready), '1h'), 'Ready'), '00ff22')",
          "color(alias(summarize(sumSeries(stats_counts.nodepool.launch.provider." + providers[i] + "*.error.*), '1h'), 'Ready'), 'ff0000')"
