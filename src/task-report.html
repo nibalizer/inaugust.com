@@ -45,6 +45,11 @@ providers = [
     'ovh'
 ]
 
+jobs = [
+    'gate-tempest-dsvm-full',
+    'gate-tempest-dsvm-neutron-full'
+]
+
 for(i=0; i<tasks.length; ++i) {
 
   $("#graph-container").append($(new Image()).addClass('graph').graphite({
@@ -85,6 +90,24 @@ for(i=0; i<float_tasks.length; ++i) {
 
 }
 
+  $("#graph-container").append($(new Image()).addClass('graph').graphite({
+      from: "-72hours",
+      width: 885,
+      height: 495,
+      bgcolor: 'ffffff',
+      fgcolor: '000000',
+      lineMode: 'connected',
+      title: 'Time to SSH Ready',
+      target: [
+          "alias(averageSeries(stats.timers.nodepool.launch.provider.hpcloud-b*.ready.mean), 'HP')",
+          "alias(averageSeries(stats.timers.nodepool.launch.provider.rax-dfw.ready.mean), 'RAX DFW')",
+          "alias(averageSeries(stats.timers.nodepool.launch.provider.rax-iad.ready.mean), 'RAX IAD')",
+          "alias(averageSeries(stats.timers.nodepool.launch.provider.rax-ord.ready.mean), 'RAX ORD')",
+          "alias(averageSeries(stats.timers.nodepool.launch.provider.tripleo-test-cloud-rh1.ready.mean), 'TripleO')"
+      ]
+  }));
+
+
 for(i=0; i<providers.length; ++i) {
   $("#graph-container").append($(new Image()).addClass('graph').graphite({
       from: "-72hours",
@@ -101,6 +124,25 @@ for(i=0; i<providers.length; ++i) {
   }));
 
 }
+
+for(i=0; i<jobs.length; ++i) {
+  $("#graph-container").append($(new Image()).addClass('graph').graphite({
+      from: "-72hours",
+      width: 885,
+      height: 495,
+      bgcolor: 'ffffff',
+      fgcolor: '000000',
+      lineMode: 'connected',
+      title: jobs[i] + ' job runtime',
+      target: [
+          "alias(averageSeries(stats.timers.nodepool.job." + jobs[i] + ".master.*.hpcloud-b*.runtime.mean), 'HP')",
+          "alias(averageSeries(stats.timers.nodepool.job." + jobs[i] + ".master.*.rax-dfw.runtime.mean), 'RAX DFW')",
+          "alias(averageSeries(stats.timers.nodepool.job." + jobs[i] + ".master.*.rax-iad.runtime.mean), 'RAX IAD')",
+          "alias(averageSeries(stats.timers.nodepool.job." + jobs[i] + ".master.*.rax-ord.runtime.mean), 'RAX ORD')"
+      ]
+  }));
+}
+
       </script>
     </div>
 
