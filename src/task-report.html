@@ -1,25 +1,108 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:py="http://genshi.edgewall.org/"
+      lang="en">
+  <HEAD>
+    <TITLE>Task Report</TITLE>
 
-<html>
-<body>
+<script type="text/javascript"
+	src="http://status.openstack.org/jquery.min.js"></script>
+<script type="text/javascript"
+	src="http://status.openstack.org/jquery-visibility.min.js"></script>
+<script type="text/javascript"
+	src="http://status.openstack.org/jquery-graphite.js"></script>
+<script type="text/javascript"
+	src="http://status.openstack.org/common.js"></script>
+<script type="text/javascript"
+	src="status.js"></script>
 
-<img src='http://graphite.openstack.org/render/?from=-72hours&title=CreateServer%20Times&width=885&height=495&_salt=1399393247.759&target=alias(averageSeries(stats.timers.nodepool.task.hpcloud-b*.CreateServerTask.mean)%2C%27HP%27)&target=alias(stats.timers.nodepool.task.rax-dfw*.CreateServerTask.mean%2C%27DFW%27)&target=alias(stats.timers.nodepool.task.rax-iad*.CreateServerTask.mean%2C%27IAD%27)&target=alias(stats.timers.nodepool.task.rax-ord*.CreateServerTask.mean%2C%27ORD%27))&target=alias(stats.timers.nodepool.task.tripleo-test-cloud-rh1*.CreateServerTask.mean%2C%27TripleO%27))&lineMode=connected' /><p />
+  </HEAD>
 
-<img src='http://graphite.openstack.org/render/?from=-72hours&title=DeleteServer%20Times&width=885&height=495&_salt=1399393247.759&target=alias(averageSeries(stats.timers.nodepool.task.hpcloud-b*.DeleteServerTask.mean)%2C%27HP%27)&target=alias(stats.timers.nodepool.task.rax-dfw*.DeleteServerTask.mean%2C%27DFW%27)&target=alias(stats.timers.nodepool.task.rax-iad*.DeleteServerTask.mean%2C%27IAD%27)&target=alias(stats.timers.nodepool.task.rax-ord*.DeleteServerTask.mean%2C%27ORD%27))&target=alias(stats.timers.nodepool.task.tripleo-test-cloud-rh1*.DeleteServerTask.mean%2C%27TripleO%27))&lineMode=connected' /><p />
+  <BODY>
 
-<img src='http://graphite.openstack.org/render/?from=-72hours&title=ListServers%20Times&width=885&height=495&_salt=1399393247.759&target=alias(averageSeries(stats.timers.nodepool.task.hpcloud-b*.ListServersTask.mean)%2C%27HP%27)&target=alias(stats.timers.nodepool.task.rax-dfw*.ListServersTask.mean%2C%27DFW%27)&target=alias(stats.timers.nodepool.task.rax-iad*.ListServersTask.mean%2C%27IAD%27)&target=alias(stats.timers.nodepool.task.rax-ord*.ListServersTask.mean%2C%27ORD%27))&target=alias(stats.timers.nodepool.task.tripleo-test-cloud-rh1*.ListServersTask.mean%2C%27TripleO%27))&lineMode=connected' /><p />
+    <div class="container" id="graph-container">
+      <h2> Job Stats </h2>
 
-<img src='http://graphite.openstack.org/render/?from=-72hours&title=AddFloatingIP%20Times&width=885&height=495&_salt=1399393247.759&target=alias(averageSeries(stats.timers.nodepool.task.hpcloud-b*.AddFloatingIPTask.mean)%2C%27HP%27)&target=alias(stats.timers.nodepool.task.rax-dfw*.AddFloatingIPTask.mean%2C%27DFW%27)&target=alias(stats.timers.nodepool.task.rax-iad*.AddFloatingIPTask.mean%2C%27IAD%27)&target=alias(stats.timers.nodepool.task.rax-ord*.AddFloatingIPTask.mean%2C%27ORD%27))&target=alias(stats.timers.nodepool.task.tripleo-test-cloud-rh1*.AddFloatingIPTask.mean%2C%27TripleO%27))&lineMode=connected' /><p />
+      <script type="text/javascript">
+$.fn.graphite.defaults.url = "http://graphite.openstack.org/render/";
+tasks = [
+    'CreateServer',
+    'DeleteServer',
+    'ListServers'
+];
 
-<img src='http://graphite.openstack.org/render/?from=-72hours&title=CreateFloatingIP%20Times&width=885&height=495&_salt=1399393247.759&target=alias(averageSeries(stats.timers.nodepool.task.hpcloud-b*.CreateFloatingIPTask.mean)%2C%27HP%27)&target=alias(stats.timers.nodepool.task.rax-dfw*.CreateFloatingIPTask.mean%2C%27DFW%27)&target=alias(stats.timers.nodepool.task.rax-iad*.CreateFloatingIPTask.mean%2C%27IAD%27)&target=alias(stats.timers.nodepool.task.rax-ord*.CreateFloatingIPTask.mean%2C%27ORD%27))&target=alias(stats.timers.nodepool.task.tripleo-test-cloud-rh1*.CreateFloatingIPTask.mean%2C%27TripleO%27))&lineMode=connected' /><p />
+float_tasks = [
+    'AddFloatingIP',
+    'CreateFloatingIP',
+    'DeleteFloatingIP',
+    'GetFloatingIP',
+    'ListFloatingIPs'
+]
 
-<img src='http://graphite.openstack.org/render/?from=-72hours&title=GetFloatingIP%20Times&width=885&height=495&_salt=1399393247.759&target=alias(averageSeries(stats.timers.nodepool.task.hpcloud-b*.GetFloatingIPTask.mean)%2C%27HP%27)&target=alias(stats.timers.nodepool.task.rax-dfw*.GetFloatingIPTask.mean%2C%27DFW%27)&target=alias(stats.timers.nodepool.task.rax-iad*.GetFloatingIPTask.mean%2C%27IAD%27)&target=alias(stats.timers.nodepool.task.rax-ord*.GetFloatingIPTask.mean%2C%27ORD%27))&target=alias(stats.timers.nodepool.task.tripleo-test-cloud-rh1*.GetFloatingIPTask.mean%2C%27TripleO%27))&lineMode=connected' /><p />
+providers = [
+    'hpcloud',
+    'rax',
+    'tripleo',
+    'ovh'
+]
 
-<img src='http://graphite.openstack.org/render/?from=-72hours&title=DeleteFloatingIP%20Times&width=885&height=495&_salt=1399393247.759&target=alias(averageSeries(stats.timers.nodepool.task.hpcloud-b*.DeleteFloatingIPTask.mean)%2C%27HP%27)&target=alias(stats.timers.nodepool.task.rax-dfw*.DeleteFloatingIPTask.mean%2C%27DFW%27)&target=alias(stats.timers.nodepool.task.rax-iad*.DeleteFloatingIPTask.mean%2C%27IAD%27)&target=alias(stats.timers.nodepool.task.rax-ord*.DeleteFloatingIPTask.mean%2C%27ORD%27))&target=alias(stats.timers.nodepool.task.tripleo-test-cloud-rh1*.DeleteFloatingIPTask.mean%2C%27TripleO%27))&lineMode=connected' /><p />
+for(i=0; i<tasks.length; ++i) {
 
-<img src='http://graphite.openstack.org/render/?from=-72hours&title=ListFloatingIPs%20Times&width=885&height=495&_salt=1399393247.759&target=alias(averageSeries(stats.timers.nodepool.task.hpcloud-b*.ListFloatingIPsTask.mean)%2C%27HP%27)&target=alias(stats.timers.nodepool.task.rax-dfw*.ListFloatingIPsTask.mean%2C%27DFW%27)&target=alias(stats.timers.nodepool.task.rax-iad*.ListFloatingIPsTask.mean%2C%27IAD%27)&target=alias(stats.timers.nodepool.task.rax-ord*.ListFloatingIPsTask.mean%2C%27ORD%27))&target=alias(stats.timers.nodepool.task.tripleo-test-cloud-rh1*.DeleteFloatingIPTask.mean%2C%27TripleO%27))&lineMode=connected' /><p />
+  $("#graph-container").append($(new Image()).addClass('graph').graphite({
+      from: "-72hours",
+      width: 885,
+      height: 495,
+      bgcolor: 'ffffff',
+      fgcolor: '000000',
+      lineMode: 'connected',
+      title: tasks[i],
+      target: [
+          "alias(averageSeries(stats.timers.nodepool.task.hpcloud-b*." + tasks[i] + "Task.mean), 'HP')",
+          "alias(averageSeries(stats.timers.nodepool.task.ovh-gra1." + tasks[i] + "Task.mean), 'OVH')",
+          "alias(averageSeries(stats.timers.nodepool.task.rax-dfw." + tasks[i] + "Task.mean), 'DFW')",
+          "alias(averageSeries(stats.timers.nodepool.task.rax-iad." + tasks[i] + "Task.mean), 'IAD')",
+          "alias(averageSeries(stats.timers.nodepool.task.rax-ord." + tasks[i] + "Task.mean), 'ORD')",
+          "alias(averageSeries(stats.timers.nodepool.task.tripleo-test-cloud-rh1." + tasks[i] + "Task.mean), 'TripleO')"
+      ]
+  }));
 
-<img src='http://graphite.openstack.org/render/?title=HP%20Cloud%201.1%20East&from=-72hours&width=885&height=495&_salt=1399342237.376&target=color%28alias%28summarize%28sumSeries%28stats_counts.nodepool.launch.provider.hpcloud-b*.ready%29%2C%20%221h%22%29%2C%20%27Ready%27%29%2C%20%2700ff22%27%29&target=color%28alias%28summarize%28sumSeries%28stats_counts.nodepool.launch.provider.hpcloud-b*.error.%2A%29%2C%20%221h%22%29%2C%20%27Error%27%29%2C%20%27ff0000%27%29&areaMode=stacked0' /><p />
-<img src='http://graphite.openstack.org/render/?title=Rackspace&from=-72hours&width=885&height=495&_salt=1399342237.376&target=color%28alias%28summarize%28sumSeries%28stats_counts.nodepool.launch.provider.rax-%2A.ready%29%2C%20%221h%22%29%2C%20%27Ready%27%29%2C%20%2700ff22%27%29&target=color%28alias%28summarize%28sumSeries%28stats_counts.nodepool.launch.provider.rax-%2A.error.%2A%29%2C%20%221h%22%29%2C%20%27Error%27%29%2C%20%27ff0000%27%29&areaMode=stacked0' /><p />
+}
 
-</body>
+for(i=0; i<float_tasks.length; ++i) {
+
+  $("#graph-container").append($(new Image()).addClass('graph').graphite({
+      from: "-72hours",
+      width: 885,
+      height: 495,
+      bgcolor: 'ffffff',
+      fgcolor: '000000',
+      lineMode: 'connected',
+      title: float_tasks[i],
+      target: [
+          "alias(averageSeries(stats.timers.nodepool.task.hpcloud-b*." + float_tasks[i] + "Task.mean), 'HP')",
+          "alias(averageSeries(stats.timers.nodepool.task.tripleo-test-cloud-rh1*." + float_tasks[i] + "Task.mean), 'TripleO')"
+      ]
+  }));
+
+}
+
+for(i=0; i<providers.length; ++i) {
+  $("#graph-container").append($(new Image()).addClass('graph').graphite({
+      from: "-72hours",
+      width: 885,
+      height: 495,
+      bgcolor: 'ffffff',
+      fgcolor: '000000',
+      areaMode: 'stacked',
+      title: providers[i] + " success rate",
+      target: [
+         "color(alias(summarize(sumSeries(stats_counts.nodepool.launch.provider." + providers[i] + "*.ready), '1h'), 'Ready'), '00ff22')",
+         "color(alias(summarize(sumSeries(stats_counts.nodepool.launch.provider." + providers[i] + "*.error.*), '1h'), 'Ready'), 'ff0000')"
+      ]
+  }));
+
+}
+      </script>
+    </div>
+
+  </BODY>
 </html>
