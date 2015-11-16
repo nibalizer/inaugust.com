@@ -17,7 +17,6 @@ providers = [
     'bluebox',
     'hpcloud',
     'rax',
-    'tripleo',
     'ovh'
 ]
 
@@ -40,10 +39,7 @@ for(i=0; i<tasks.length; ++i) {
           "alias(averageSeries(stats.timers.nodepool.task.hpcloud-b*." + tasks[i] + "Task.mean), 'HP')",
           "alias(averageSeries(stats.timers.nodepool.task.ovh-gra1." + tasks[i] + "Task.mean), 'OVH')",
           "alias(averageSeries(stats.timers.nodepool.task.bluebox-sjc1." + tasks[i] + "Task.mean), 'BB')",
-          "alias(averageSeries(stats.timers.nodepool.task.rax-dfw." + tasks[i] + "Task.mean), 'DFW')",
-          "alias(averageSeries(stats.timers.nodepool.task.rax-iad." + tasks[i] + "Task.mean), 'IAD')",
-          "alias(averageSeries(stats.timers.nodepool.task.rax-ord." + tasks[i] + "Task.mean), 'ORD')",
-          "alias(averageSeries(stats.timers.nodepool.task.tripleo-test-cloud-rh1." + tasks[i] + "Task.mean), 'TripleO')"
+          "alias(averageSeries(stats.timers.nodepool.task.rax-*." + tasks[i] + "Task.mean), 'RAX')",
       ]
   }));
 
@@ -62,7 +58,6 @@ for(i=0; i<float_tasks.length; ++i) {
       target: [
           "alias(averageSeries(stats.timers.nodepool.task.hpcloud-b*." + float_tasks[i] + "Task.mean), 'HP')",
           "alias(averageSeries(stats.timers.nodepool.task.bluebox-sjc1." + float_tasks[i] + "Task.mean), 'BB')",
-          "alias(averageSeries(stats.timers.nodepool.task.tripleo-test-cloud-rh1*." + float_tasks[i] + "Task.mean), 'TripleO')"
       ]
   }));
 
@@ -80,10 +75,7 @@ for(i=0; i<float_tasks.length; ++i) {
           "alias(averageSeries(stats.timers.nodepool.launch.provider.hpcloud-b*.ready.mean), 'HP')",
           "alias(averageSeries(stats.timers.nodepool.launch.provider.ovh-gra1.ready.mean), 'OVH')",
           "alias(averageSeries(stats.timers.nodepool.launch.provider.bluebox-sjc1.ready.mean), 'BB')",
-          "alias(averageSeries(stats.timers.nodepool.launch.provider.rax-dfw.ready.mean), 'RAX DFW')",
-          "alias(averageSeries(stats.timers.nodepool.launch.provider.rax-iad.ready.mean), 'RAX IAD')",
-          "alias(averageSeries(stats.timers.nodepool.launch.provider.rax-ord.ready.mean), 'RAX ORD')",
-          "alias(averageSeries(stats.timers.nodepool.launch.provider.tripleo-test-cloud-rh1.ready.mean), 'TripleO')"
+          "alias(averageSeries(stats.timers.nodepool.launch.provider.rax-*.ready.mean), 'RAX')",
       ]
   }));
 
@@ -117,9 +109,7 @@ for(i=0; i<jobs.length; ++i) {
       target: [
           "alias(averageSeries(stats.timers.nodepool.job." + jobs[i] + ".master.*.hpcloud-b*.runtime.mean), 'HP')",
           "alias(averageSeries(stats.timers.nodepool.job." + jobs[i] + ".master.*.ovh-gra1.runtime.mean), 'OVH')",
-          "alias(averageSeries(stats.timers.nodepool.job." + jobs[i] + ".master.*.rax-dfw.runtime.mean), 'RAX DFW')",
-          "alias(averageSeries(stats.timers.nodepool.job." + jobs[i] + ".master.*.rax-iad.runtime.mean), 'RAX IAD')",
-          "alias(averageSeries(stats.timers.nodepool.job." + jobs[i] + ".master.*.rax-ord.runtime.mean), 'RAX ORD')"
+          "alias(averageSeries(stats.timers.nodepool.job." + jobs[i] + ".master.*.rax-*.runtime.mean), 'RAX')",
       ]
   }));
 }
