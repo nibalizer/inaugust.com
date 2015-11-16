@@ -141,6 +141,7 @@ for(i=0; i<jobs.length; ++i) {
       title: jobs[i] + ' job runtime',
       target: [
           "alias(averageSeries(stats.timers.nodepool.job." + jobs[i] + ".master.*.hpcloud-b*.runtime.mean), 'HP')",
+          "alias(averageSeries(stats.timers.nodepool.job." + jobs[i] + ".master.*.ovh-gra1.runtime.mean), 'OVH')",
           "alias(averageSeries(stats.timers.nodepool.job." + jobs[i] + ".master.*.rax-dfw.runtime.mean), 'RAX DFW')",
           "alias(averageSeries(stats.timers.nodepool.job." + jobs[i] + ".master.*.rax-iad.runtime.mean), 'RAX IAD')",
           "alias(averageSeries(stats.timers.nodepool.job." + jobs[i] + ".master.*.rax-ord.runtime.mean), 'RAX ORD')"
