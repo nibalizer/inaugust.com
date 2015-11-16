@@ -14,9 +14,9 @@ float_tasks = [
 ]
 
 providers = [
-    'bluebox',
     'hpcloud',
     'rax',
+    'bluebox',
     'ovh'
 ]
 
@@ -63,23 +63,6 @@ for(i=0; i<float_tasks.length; ++i) {
 
 }
 
-  $("#graph-container").append($(new Image()).addClass('graph').graphite({
-      from: "-72hours",
-      width: 885,
-      height: 495,
-      bgcolor: 'ffffff',
-      fgcolor: '000000',
-      lineMode: 'connected',
-      title: 'Time to SSH Ready',
-      target: [
-          "alias(averageSeries(stats.timers.nodepool.launch.provider.hpcloud-b*.ready.mean), 'HP')",
-          "alias(averageSeries(stats.timers.nodepool.launch.provider.ovh-gra1.ready.mean), 'OVH')",
-          "alias(averageSeries(stats.timers.nodepool.launch.provider.bluebox-sjc1.ready.mean), 'BB')",
-          "alias(averageSeries(stats.timers.nodepool.launch.provider.rax-*.ready.mean), 'RAX')",
-      ]
-  }));
-
-
 for(i=0; i<providers.length; ++i) {
   $("#graph-container").append($(new Image()).addClass('graph').graphite({
       from: "-72hours",
@@ -113,3 +96,19 @@ for(i=0; i<jobs.length; ++i) {
       ]
   }));
 }
+
+$("#graph-container").append($(new Image()).addClass('graph').graphite({
+    from: "-72hours",
+    width: 885,
+    height: 495,
+    bgcolor: 'ffffff',
+    fgcolor: '000000',
+    lineMode: 'connected',
+    title: 'Time to SSH Ready',
+    target: [
+        "alias(averageSeries(stats.timers.nodepool.launch.provider.hpcloud-b*.ready.mean), 'HP')",
+        "alias(averageSeries(stats.timers.nodepool.launch.provider.ovh-gra1.ready.mean), 'OVH')",
+        "alias(averageSeries(stats.timers.nodepool.launch.provider.bluebox-sjc1.ready.mean), 'BB')",
+        "alias(averageSeries(stats.timers.nodepool.launch.provider.rax-*.ready.mean), 'RAX')",
+    ]
+}));
