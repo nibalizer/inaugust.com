@@ -114,6 +114,7 @@ for(i=0; i<jobs.length; ++i) {
       fgcolor: '000000',
       lineMode: 'connected',
       vtitle: 'Time in Minute',
+      yMax: '90',
       title: jobs[i] + ' job runtime',
       target: [
           "alias(scale(averageSeries(stats.timers.nodepool.job." + jobs[i] + ".master.*.hpcloud-b*.runtime.mean), '0.000016'), 'HP')",
