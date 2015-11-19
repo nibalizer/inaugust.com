@@ -113,12 +113,13 @@ for(i=0; i<jobs.length; ++i) {
       bgcolor: 'ffffff',
       fgcolor: '000000',
       lineMode: 'connected',
+      vtitle: 'Time in Minute',
       title: jobs[i] + ' job runtime',
       target: [
-          "alias(averageSeries(stats.timers.nodepool.job." + jobs[i] + ".master.*.hpcloud-b*.runtime.mean), 'HP')",
-          "alias(averageSeries(stats.timers.nodepool.job." + jobs[i] + ".master.*.bluebox-sjc1.runtime.mean), 'BB')",
-          "alias(averageSeries(stats.timers.nodepool.job." + jobs[i] + ".master.*.ovh-gra1.runtime.mean), 'OVH')",
-          "alias(averageSeries(stats.timers.nodepool.job." + jobs[i] + ".master.*.rax-*.runtime.mean), 'RAX')",
+          "alias(scale(averageSeries(stats.timers.nodepool.job." + jobs[i] + ".master.*.hpcloud-b*.runtime.mean), '0.000016'), 'HP')",
+          "alias(scale(averageSeries(stats.timers.nodepool.job." + jobs[i] + ".master.*.bluebox-sjc1.runtime.mean), '0.000016'), 'BB')",
+          "alias(scale(averageSeries(stats.timers.nodepool.job." + jobs[i] + ".master.*.ovh-gra1.runtime.mean), '0.000016'), 'OVH')",
+          "alias(scale(averageSeries(stats.timers.nodepool.job." + jobs[i] + ".master.*.rax-*.runtime.mean), '0.000016'), 'RAX')",
       ]
   }));
 }
@@ -130,11 +131,12 @@ $("#graph-container").append($(new Image()).addClass('graph').graphite({
     bgcolor: 'ffffff',
     fgcolor: '000000',
     lineMode: 'connected',
+    vtitle: 'Time in Minutes',
     title: 'Time to SSH Ready',
     target: [
-        "alias(averageSeries(stats.timers.nodepool.launch.provider.hpcloud-b*.ready.mean), 'HP')",
-        "alias(averageSeries(stats.timers.nodepool.launch.provider.bluebox-sjc1.ready.mean), 'BB')",
-        "alias(averageSeries(stats.timers.nodepool.launch.provider.ovh-gra1.ready.mean), 'OVH')",
-        "alias(averageSeries(stats.timers.nodepool.launch.provider.rax-*.ready.mean), 'RAX')",
+        "alias(scale(averageSeries(stats.timers.nodepool.launch.provider.hpcloud-b*.ready.mean), '0.000016'), 'HP')",
+        "alias(scale(averageSeries(stats.timers.nodepool.launch.provider.bluebox-sjc1.ready.mean), '0.000016'), 'BB')",
+        "alias(scale(averageSeries(stats.timers.nodepool.launch.provider.ovh-gra1.ready.mean), '0.000016'), 'OVH')",
+        "alias(scale(averageSeries(stats.timers.nodepool.launch.provider.rax-*.ready.mean), '0.000016'), 'RAX')",
     ]
 }));
