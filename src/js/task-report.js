@@ -37,8 +37,8 @@ for(i=0; i<tasks.length; ++i) {
       title: tasks[i],
       target: [
           "alias(averageSeries(stats.timers.nodepool.task.hpcloud-b*." + tasks[i] + "Task.mean), 'HP')",
-          "alias(averageSeries(stats.timers.nodepool.task.ovh-gra1." + tasks[i] + "Task.mean), 'OVH')",
           "alias(averageSeries(stats.timers.nodepool.task.bluebox-sjc1." + tasks[i] + "Task.mean), 'BB')",
+          "alias(averageSeries(stats.timers.nodepool.task.ovh-gra1." + tasks[i] + "Task.mean), 'OVH')",
           "alias(averageSeries(stats.timers.nodepool.task.rax-*." + tasks[i] + "Task.mean), 'RAX')",
       ]
   }));
@@ -91,6 +91,7 @@ for(i=0; i<jobs.length; ++i) {
       title: jobs[i] + ' job runtime',
       target: [
           "alias(averageSeries(stats.timers.nodepool.job." + jobs[i] + ".master.*.hpcloud-b*.runtime.mean), 'HP')",
+          "alias(averageSeries(stats.timers.nodepool.job." + jobs[i] + ".master.*.bluebox-sjc1.runtime.mean), 'BB')",
           "alias(averageSeries(stats.timers.nodepool.job." + jobs[i] + ".master.*.ovh-gra1.runtime.mean), 'OVH')",
           "alias(averageSeries(stats.timers.nodepool.job." + jobs[i] + ".master.*.rax-*.runtime.mean), 'RAX')",
       ]
@@ -107,8 +108,8 @@ $("#graph-container").append($(new Image()).addClass('graph').graphite({
     title: 'Time to SSH Ready',
     target: [
         "alias(averageSeries(stats.timers.nodepool.launch.provider.hpcloud-b*.ready.mean), 'HP')",
-        "alias(averageSeries(stats.timers.nodepool.launch.provider.ovh-gra1.ready.mean), 'OVH')",
         "alias(averageSeries(stats.timers.nodepool.launch.provider.bluebox-sjc1.ready.mean), 'BB')",
+        "alias(averageSeries(stats.timers.nodepool.launch.provider.ovh-gra1.ready.mean), 'OVH')",
         "alias(averageSeries(stats.timers.nodepool.launch.provider.rax-*.ready.mean), 'RAX')",
     ]
 }));
