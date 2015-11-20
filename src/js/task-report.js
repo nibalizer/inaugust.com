@@ -95,7 +95,7 @@ for(i=0; i<small_providers.length; ++i) {
       bgcolor: 'ffffff',
       fgcolor: '000000',
       areaMode: 'stacked',
-      yMax: '25',
+      yMax: '60',
       title: small_providers[i] + " nodes launched",
       target: [
          "color(alias(summarize(sumSeries(stats_counts.nodepool.launch.provider." + small_providers[i] + "*.ready), '1h'), 'Ready'), '00ff22')",
