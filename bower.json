@@ -1,9 +1,9 @@
 {
   "name": "inaugust",
   "version": "1.0.0",
-  "homepage": "https://inaugust.com",
+  "homepage": "http://spencerkrum.com",
   "authors": [
-    "Monty Taylor <mordred@inaugust.com>"
+    "Spencer Krum <nibz@spencerkrum.com>"
   ],
   "license": "CC-BY 4.0",
   "ignore": [
